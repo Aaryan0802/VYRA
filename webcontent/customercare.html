@@ -137,7 +137,7 @@
                         
                         <div class="row">
                             <div class="col-lg-7 mb-4 mb-lg-0">
-                                <form onsubmit="event.preventDefault(); alert('Message sent to Maison Vyra Concierge. We will reply shortly.');">
+                                <form onsubmit="event.preventDefault(); sendMsg();">
                                     <div class="row">
                                         <div class="col-md-6"><input type="text" class="form-control" placeholder="First Name" required></div>
                                         <div class="col-md-6"><input type="text" class="form-control" placeholder="Last Name" required></div>
@@ -304,6 +304,24 @@
             opacity: 0, scale: 0, duration: Math.random() * 1.5 + 0.5, ease: "power1.out",
             onComplete: () => sparkle.remove()
         });
+    }
+
+    async function sendMsg(){
+
+        await fetch("http://localhost:3000/api/contact",{
+        method:"POST",
+        headers:{
+        "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+        name:"Customer",
+        email:"test@test.com",
+        message:"Help"
+        })
+        });
+
+        alert("Message sent");
+
     }
 </script>
 

@@ -156,7 +156,7 @@
 
         <h5 class="text-center mb-4" id="formTitle" style="color: var(--gold); letter-spacing: 2px;">LOGIN</h5>
 
-        <form onsubmit="event.preventDefault(); simulateLogin();">
+        <form onsubmit="event.preventDefault(); login();">
             <div id="nameField" style="display: none;">
                 <input type="text" name="fullName" class="auth-input" placeholder="Full Name">
             </div>
@@ -294,10 +294,25 @@
 
 <script>
     // --- Evaluator Testing Functions ---
-    function simulateLogin() {
-        // Hides Login, Shows Dashboard
-        document.getElementById("auth-section").style.display = "none";
-        document.getElementById("dashboard-section").style.display = "block";
+    async function login(){
+
+        const email = document.querySelector('[name="email"]').value;
+        const password = document.querySelector('[name="password"]').value;
+
+        const res = await fetch("http://localhost:3000/api/login",{
+        method:"POST",
+        headers:{
+        "Content-Type":"application/json"
+        },
+        body: JSON.stringify({email,password})
+        });
+
+        const data = await res.json();
+
+        localStorage.setItem("user",JSON.stringify(data.user));
+
+        window.location.reload();
+
     }
 
     function simulateLogout() {
@@ -360,6 +375,26 @@
             }, 500); 
         });
     });
+
+    async function login(){
+
+        const email = document.querySelector('[name="email"]').value;
+        const password = document.querySelector('[name="password"]').value;
+
+        const res = await fetch("http://localhost:3000/api/login",{
+        method:"POST",
+        headers:{
+        "Content-Type":"application/json"
+        },
+        body: JSON.stringify({email,password})
+        });
+
+        const data = await res.json();
+
+        localStorage.setItem("user",JSON.stringify(data.user));
+
+        location.reload();
+    }
 </script>
 
 </body>

@@ -41,7 +41,7 @@
 <body>
     <div class="glass-card">
         <h2 class="title">SECURE PAYMENT</h2>
-        <form onsubmit="event.preventDefault(); alert('Transaction Successful. Welcome to Vyra.'); window.location.href='index.html';">
+        <form onsubmit="event.preventDefault(); checkout();">
             <input type="text" class="input-field" placeholder="Cardholder Name" required>
             <input type="text" class="input-field" placeholder="Card Number" maxlength="16" required>
             <div class="row">
@@ -53,4 +53,23 @@
         <a href="javascript:history.back()" style="color: var(--gold); font-size: 11px; text-decoration: none; margin-top: 20px; display: block; letter-spacing: 1px;">CANCEL TRANSACTION</a>
     </div>
 </body>
+<script>
+    async function checkout(){
+        const user = JSON.parse(localStorage.getItem("user"));
+
+        await fetch("http://localhost:3000/api/checkout",{
+        method:"POST",
+        headers:{
+        "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+        user_id:user.id
+        })
+        });
+
+        alert("Payment successful");
+
+        window.location.href="index.html";
+    }
+</script>
 </html>

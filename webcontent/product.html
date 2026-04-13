@@ -168,16 +168,51 @@
     });
 
     // 6. Button Logic (Toast & Buy Now)
-    document.querySelector('.add-cart').addEventListener('click', () => {
-        const toast = document.getElementById('luxury-toast');
-        toast.classList.add('show');
-        setTimeout(() => { toast.classList.remove('show'); }, 4000);
-    });
+    document.querySelector(".add-cart").onclick = async ()=>{
+
+        const user = JSON.parse(localStorage.getItem("user"));
+
+        await fetch("http://localhost:3000/api/cart",{
+        method:"POST",
+        headers:{
+        "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+        user_id:user.id,
+        product_id:1
+        })
+        });
+
+        alert("Added to cart");
+
+    }
 
     document.querySelector('.buy-now').addEventListener('click', () => {
         document.body.classList.remove('page-loaded');
         setTimeout(() => { window.location.href = 'transactions.html'; }, 500);
     });
+
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    document.querySelector(".add-cart").onclick = async ()=>{
+
+        await fetch("http://localhost:3000/api/cart",{
+        method:"POST",
+        headers:{
+        "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+        user_id:user.id,
+        product_id:1
+        })
+        });
+
+        alert("Added to cart");
+    }
+
+    document.querySelector(".buy-now").onclick = ()=>{
+        window.location.href="transactions.html";
+    }
 </script>
 
 </body>
