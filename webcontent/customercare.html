@@ -1,245 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" href="/static/logo.png">
-<title>Vyra | Customer Care</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/static/logo.png">
+    <title>Vyra | Client Care Boutique</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Montserrat:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Montserrat:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<style>
-    :root {
-        --gold: #cfaa6a;
-        --gold-light: #e6d1a8;
-        --gold-glow: rgba(207, 170, 106, 0.3);
-        --text-light: #f4f4f4;
-    }
+    <style>
+        :root {
+            --gold: #cfaa6a;
+            --gold-light: #e6d1a8;
+            --gold-glow: rgba(207, 170, 106, 0.2);
+            --glass: rgba(10, 10, 10, 0.85);
+            --border: rgba(207, 170, 106, 0.15);
+        }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; cursor: none !important; }
 
-    /* --- Cinematic Page Transition --- */
-    #page-transition {
-        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-        background-color: #050505; z-index: 999999; pointer-events: none;
-        opacity: 1; transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-    }
-    body.page-loaded #page-transition { opacity: 0; }
+        body {
+            background: #050505;
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("/static/story.png");
+            background-size: cover; background-position: center; background-attachment: fixed;
+            color: #f4f4f4; overflow-x: hidden;
+        }
 
-    /* --- Custom Cursor --- */
-    body, a, button { cursor: none !important; }
-    #custom-cursor-dot {
-        position: fixed; top: 0; left: 0; width: 6px; height: 6px;
-        background-color: var(--gold); border-radius: 50%;
-        pointer-events: none; z-index: 10000;
-    }
-    #custom-cursor-ring {
-        position: fixed; top: 0; left: 0; width: 34px; height: 34px;
-        border: 1px solid rgba(207, 170, 106, 0.6); border-radius: 50%;
-        pointer-events: none; z-index: 9999; transition: background-color 0.3s ease;
-    }
-    .sparkle {
-        position: fixed; top: 0; left: 0; width: 5px; height: 5px;
-        background-color: #ffffff; box-shadow: 0 0 10px #e6d1a8, 0 0 20px #cfaa6a, 0 0 30px #cfaa6a;
-        border-radius: 50%; pointer-events: none; z-index: 9998; will-change: transform, opacity;
-    }
+        /* --- Identical Navigation Bar --- */
+        .top-nav {
+            position: fixed; top: 0; width: 100%; padding: 25px 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+            backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+        }
 
-    /* --- Background --- */
-    body {
-        min-height: 100vh;
-        background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url("/static/story.png");
-        background-size: cover; background-position: center; background-attachment: fixed;
-        color: var(--text-light); display: flex; flex-direction: column; overflow-x: hidden;
-    }
+        .nav-link-custom {
+            color: var(--gold); text-decoration: none; font-size: 11px;
+            letter-spacing: 2px; text-transform: uppercase; transition: 0.3s;
+        }
+        .nav-link-custom:hover { color: white; }
 
-    /* --- Navigation --- */
-    nav {
-        position: absolute; top: 30px; left: 0; width: 100%; padding: 0 60px;
-        display: flex; justify-content: space-between; align-items: center; z-index: 10;
-    }
-    .brand-logo { font-family: 'Playfair Display', serif; font-size: 24px; letter-spacing: 4px; color: var(--gold); text-decoration: none; }
-    .nav-btn {
-        color: var(--gold); font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
-        text-decoration: none; border: 1px solid var(--gold-glow); padding: 10px 24px;
-        border-radius: 2px; transition: all 0.3s ease;
-    }
-    .nav-btn:hover { background: var(--gold); color: #000; border-color: var(--gold); }
+        /* --- Custom Cursor --- */
+        #custom-cursor-dot { position: fixed; top: 0; left: 0; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 10000; }
+        #custom-cursor-ring { position: fixed; top: 0; left: 0; width: 34px; height: 34px; border: 1px solid var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; }
 
-    /* --- Care Container & Card --- */
-    .care-container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 140px 20px 80px; }
-    
-    .glass-card {
-        max-width: 1000px; width: 100%;
-        background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-        border: 1px solid var(--gold-glow); border-radius: 4px; padding: 50px;
-        box-shadow: 0 30px 60px rgba(0,0,0,0.9);
-    }
+        /* --- Layout --- */
+        .care-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 140px 20px 80px; }
 
-    /* --- Typography --- */
-    .title-primary { font-family: 'Cormorant Garamond', serif; font-size: 46px; color: var(--gold); letter-spacing: 3px; margin-bottom: 5px; }
-    .title-secondary { font-family: 'Playfair Display', serif; font-size: 12px; color: var(--gold-light); letter-spacing: 4px; text-transform: uppercase; opacity: 0.7; margin-bottom: 40px; }
-    .section-title { font-family: 'Playfair Display', serif; color: var(--gold); letter-spacing: 2px; margin-bottom: 25px; font-size: 22px; border-bottom: 1px solid var(--gold-glow); padding-bottom: 10px; }
-    .policy-text { font-size: 14px; line-height: 1.8; color: #d0d0d0; margin-bottom: 20px; font-weight: 300; text-align: justify;}
-    .policy-subtitle { color: var(--gold-light); font-size: 14px; letter-spacing: 1px; margin-bottom: 8px; font-weight: 500;}
+        .glass-card {
+            max-width: 1100px; width: 100%;
+            background: var(--glass); backdrop-filter: blur(25px);
+            border: 1px solid var(--border); border-radius: 2px;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.9); display: flex; flex-wrap: wrap;
+        }
 
-    /* --- Tabs Navigation --- */
-    .nav-pills .nav-link { color: var(--text-light); border-radius: 2px; margin-bottom: 10px; letter-spacing: 2px; font-size: 13px; text-transform: uppercase; transition: 0.3s; border: 1px solid transparent; opacity: 0.7;}
-    .nav-pills .nav-link:hover { color: var(--gold); opacity: 1;}
-    .nav-pills .nav-link.active { background-color: transparent; color: var(--gold); border-color: var(--gold); box-shadow: inset 0 0 15px rgba(207,170,106,0.1); opacity: 1;}
+        .sidebar { background: rgba(0,0,0,0.3); padding: 50px 30px; }
+        .content-area { padding: 50px; }
 
-    /* --- Forms --- */
-    .form-control { width: 100%; padding: 12px 15px; margin-bottom: 20px; background: transparent; border: 1px solid var(--gold-glow); color: var(--text-light); font-size: 13px; letter-spacing: 1px; border-radius: 2px; transition: 0.3s; }
-    .form-control:focus { border-color: var(--gold); box-shadow: 0 0 12px var(--gold-glow); background: transparent; color: var(--gold); outline: none;}
-    
-    .gold-btn { padding: 14px 35px; background: linear-gradient(to right, var(--gold), var(--gold-light), var(--gold)); border: none; color: #000; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; border-radius: 2px; cursor: pointer; }
-    .gold-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(207,170,106,0.4); }
+        /* --- Typography --- */
+        .brand-title { font-family: 'Playfair Display', serif; font-size: 32px; letter-spacing: 8px; color: var(--gold); text-align: center; margin-bottom: 40px; }
+        .section-header { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-style: italic; color: var(--gold); margin-bottom: 10px; }
+        .sub-header { font-size: 11px; letter-spacing: 3px; color: rgba(255,255,255,0.4); text-transform: uppercase; margin-bottom: 40px; }
 
-</style>
+        /* --- Identity Inputs (Floating Labels) --- */
+        .input-group-custom { position: relative; margin-bottom: 25px; }
+        .care-input { width: 100%; padding: 12px 0; background: transparent; border: none; border-bottom: 1px solid var(--border); color: white; font-size: 13px; outline: none; transition: 0.3s; }
+        .care-input:focus { border-bottom-color: var(--gold); }
+        .input-group-custom label { position: absolute; top: 12px; left: 0; color: rgba(255,255,255,0.4); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; pointer-events: none; }
+        .care-input:focus + label, .care-input:not(:placeholder-shown) + label { top: -15px; color: var(--gold); font-size: 10px; }
+
+        /* --- Sidebar Nav --- */
+        .nav-pills .nav-link { color: rgba(255,255,255,0.6) !important; border-radius: 0 !important; margin-bottom: 10px; padding: 15px !important; font-size: 12px; letter-spacing: 2px; text-align: left; border: 1px solid transparent !important; text-transform: uppercase; }
+        .nav-pills .nav-link.active { background: transparent !important; color: var(--gold) !important; border: 1px solid var(--gold) !important; }
+
+        .gold-btn { width: 100%; padding: 16px; background: var(--gold); border: none; color: black; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; cursor: pointer; transition: 0.4s; }
+        .gold-btn:hover { background: white; transform: translateY(-2px); }
+
+        .policy-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.7); margin-bottom: 25px; font-weight: 300; }
+    </style>
 </head>
-
 <body>
 
-<div id="page-transition"></div>
-
-<nav>
-    <a href="index.html" class="brand-logo">VYRA</a>
-    <a href="index.html" class="nav-btn">
-        <i class="fas fa-arrow-left me-2"></i> Home
-    </a>
+<nav class="top-nav">
+    <a href="shop.html" class="nav-link-custom"><i class="fas fa-chevron-left me-2"></i> The Boutique</a>
+    <div style="letter-spacing: 8px; color: var(--gold); font-family: 'Playfair Display'; font-weight: 600;">VYRA</div>
+    <a href="account.html" class="nav-link-custom">My Portal <i class="fas fa-user ms-2"></i></a>
 </nav>
 
-<div class="care-container">
+<div class="care-wrapper">
     <div class="glass-card">
-        
-        <div class="text-center">
-            <h1 class="title-primary">AT YOUR SERVICE</h1>
-            <div class="title-secondary">Maison Vyra Client Care</div>
+        <div class="col-md-3 sidebar border-end border-warning border-opacity-10">
+            <div class="brand-title" style="font-size: 22px;">CARE</div>
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
+                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#v-pills-contact">Concierge</button>
+                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-shipping">Acquisitions</button>
+                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-privacy">Privacy</button>
+            </div>
         </div>
 
-        <div class="row mt-5">
-            
-            <div class="col-md-3 border-end border-warning border-opacity-25 pe-4 mb-4 mb-md-0">
-                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <button class="nav-link active text-start" id="v-pills-contact-tab" data-bs-toggle="pill" data-bs-target="#v-pills-contact" type="button" role="tab">Contact Us</button>
-                    <button class="nav-link text-start" id="v-pills-shipping-tab" data-bs-toggle="pill" data-bs-target="#v-pills-shipping" type="button" role="tab">Shipping & Returns</button>
-                    <button class="nav-link text-start" id="v-pills-privacy-tab" data-bs-toggle="pill" data-bs-target="#v-pills-privacy" type="button" role="tab">Privacy Policy</button>
-                </div>
-            </div>
+        <div class="col-md-9 content-area">
+            <div class="tab-content">
+                
+                <div class="tab-pane fade show active" id="v-pills-contact">
+                    <h1 class="section-header">At Your Service</h1>
+                    <p class="sub-header">Direct Access to Maison Vyra Concierge</p>
 
-            <div class="col-md-9 ps-md-5">
-                <div class="tab-content" id="v-pills-tabContent">
-                    
-                    <div class="tab-pane fade show active" id="v-pills-contact" role="tabpanel">
-                        <h3 class="section-title">Get In Touch</h3>
-                        <p class="policy-text mb-4">Our fragrance concierges are available to assist you with bespoke recommendations, order inquiries, and styling advice.</p>
-                        
+                    <form id="contactForm" onsubmit="event.preventDefault(); sendMsg();">
                         <div class="row">
-                            <div class="col-lg-7 mb-4 mb-lg-0">
-                                <form onsubmit="event.preventDefault(); sendMsg();">
-                                    <div class="row">
-                                        <div class="col-md-6"><input type="text" class="form-control" placeholder="First Name" required></div>
-                                        <div class="col-md-6"><input type="text" class="form-control" placeholder="Last Name" required></div>
-                                    </div>
-                                    <input type="email" class="form-control" placeholder="Email Address" required>
-                                    <input type="text" class="form-control" placeholder="Order Number (Optional)">
-                                    <textarea class="form-control" rows="4" placeholder="How may we assist you?" required></textarea>
-                                    <button type="submit" class="gold-btn">Send Message</button>
-                                </form>
+                            <div class="col-md-6 input-group-custom">
+                                <input type="text" id="contactName" class="care-input" placeholder=" " required>
+                                <label>Full Name</label>
                             </div>
-                            <div class="col-lg-5 ps-lg-4">
-                                <div class="mb-4">
-                                    <div class="policy-subtitle"><i class="fas fa-envelope me-2 text-warning"></i> EMAIL</div>
-                                    <div class="policy-text">concierge@vyraparfums.com<br>Expect a response within 24 hours.</div>
-                                </div>
-                                <div>
-                                    <div class="policy-subtitle"><i class="fas fa-map-marker-alt me-2 text-warning"></i> ATELIER</div>
-                                    <div class="policy-text">Maison Vyra<br>123 Luxury Avenue<br>Paris, France 75001</div>
-                                </div>
+                            <div class="col-md-6 input-group-custom">
+                                <input type="email" id="contactEmail" class="care-input" placeholder=" " required>
+                                <label>Email Address</label>
                             </div>
                         </div>
+                        <div class="input-group-custom">
+                            <textarea id="contactMessage" class="care-input" rows="4" placeholder=" " required></textarea>
+                            <label>How may we assist you?</label>
+                        </div>
+                        <button type="submit" class="gold-btn" style="width: auto; padding: 12px 60px;">Send Inquiry</button>
+                    </form>
+
+                    <div class="mt-5 pt-5 border-top border-warning border-opacity-10 d-flex gap-5">
+                        <div>
+                            <p style="font-size: 10px; color: var(--gold); letter-spacing: 2px;">EMAIL</p>
+                            <p style="font-size: 13px;">concierge@vyraparfums.com</p>
+                        </div>
+                        <div>
+                            <p style="font-size: 10px; color: var(--gold); letter-spacing: 2px;">ATELIER</p>
+                            <p style="font-size: 13px;">123 Luxury Ave, Paris FR</p>
+                        </div>
                     </div>
-
-                    <div class="tab-pane fade" id="v-pills-shipping" role="tabpanel">
-                        <h3 class="section-title">Shipping & Returns</h3>
-                        
-                        <div class="policy-subtitle mt-4">COMPLIMENTARY SHIPPING</div>
-                        <p class="policy-text">Maison Vyra offers complimentary standard shipping on all orders globally. Each fragrance is meticulously hand-packaged in our signature black and gold gifting presentation to ensure safe transit.</p>
-                        
-                        <div class="policy-subtitle mt-4">DELIVERY TIMEFRAMES</div>
-                        <p class="policy-text">Standard Delivery: 3–5 Business Days<br>Express Delivery: 1–2 Business Days (Additional charges apply at checkout)</p>
-                        
-                        <div class="policy-subtitle mt-4">RETURN POLICY</div>
-                        <p class="policy-text">We accept returns of unopened, unused items in their original cellophane wrapping within 30 days of delivery. Due to the personal nature of our products and hygiene standards, we cannot accept returns on bottles that have been unsealed or sprayed. To initiate a return, please utilize the Contact form to request a prepaid return label.</p>
-                    </div>
-
-                    <div class="tab-pane fade" id="v-pills-privacy" role="tabpanel">
-                        <h3 class="section-title">Privacy Policy</h3>
-                        
-                        <p class="policy-text">At Maison Vyra, protecting the privacy and security of our esteemed clients is of paramount importance. This brief outlines how we handle your data.</p>
-                        
-                        <div class="policy-subtitle mt-4">INFORMATION COLLECTION</div>
-                        <p class="policy-text">We collect necessary information such as your name, billing address, shipping address, payment information, email address, and phone number solely to fulfill your order and provide an exceptional bespoke experience.</p>
-                        
-                        <div class="policy-subtitle mt-4">DATA SECURITY</div>
-                        <p class="policy-text">Your payment data is encrypted using high-level SSL technology. We do not store your credit card details on our servers after a transaction is complete.</p>
-
-                        <div class="policy-subtitle mt-4">COOKIE POLICY</div>
-                        <p class="policy-text">We utilize cookies to tailor your browsing experience, remember your cart items, and understand client preferences. You may adjust your browser settings to decline cookies, though this may impact site functionality.</p>
-                    </div>
-
                 </div>
+
+                <div class="tab-pane fade" id="v-pills-shipping">
+                    <h1 class="section-header">Acquisitions</h1>
+                    <p class="sub-header">Shipping & Heritage Returns</p>
+                    <p class="policy-text">Maison Vyra offers complimentary global transit. Each essence is housed in our signature gold-embossed vessel and protected by artisanal packaging.</p>
+                    <h6 style="color:var(--gold); font-size:12px; letter-spacing:2px;">TIMEFRAMES</h6>
+                    <p class="policy-text">Continental: 3-5 Cycles<br>Global Express: 1-2 Cycles</p>
+                </div>
+
+                <div class="tab-pane fade" id="v-pills-privacy">
+                    <h1 class="section-header">Privacy</h1>
+                    <p class="sub-header">Data Ethics & Identity Protection</p>
+                    <p class="policy-text">Your identity is your essence. We utilize high-level SSL encryption for all transactions and never store payment data within our boutique servers.</p>
+                </div>
+
             </div>
         </div>
-
     </div>
 </div>
-
-<footer style="background-color: #050505; border-top: 1px solid rgba(207, 170, 106, 0.2); padding: 70px 0 20px; position: relative; z-index: 5;">
-    <div class="container">
-        <div class="row mb-5 text-start">
-            <div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
-                <h4 style="font-family: 'Playfair Display', serif; color: #cfaa6a; letter-spacing: 4px; margin-bottom: 20px;">VYRA</h4>
-                <p style="color: #a0a0a0; font-size: 13px; line-height: 1.8; padding-right: 20px;">Bridging the gap between ancient perfumery traditions and modern avant-garde elegance. Crafted from the world's most elusive botanicals to create liquid memories.</p>
-            </div>
-            <div class="col-lg-2 col-md-6 mb-5 mb-lg-0">
-                <h6 style="color: #cfaa6a; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; font-size: 13px;">Explore</h6>
-                <ul class="list-unstyled">
-                    <li class="mb-3"><a href="shop.html" class="text-decoration-none" style="color: #a0a0a0; font-size: 13px; transition: 0.3s;" onmouseover="this.style.color='#cfaa6a'" onmouseout="this.style.color='#a0a0a0'">Shop Collection</a></li>
-                    <li class="mb-3"><a href="about.html" class="text-decoration-none" style="color: #a0a0a0; font-size: 13px; transition: 0.3s;" onmouseover="this.style.color='#cfaa6a'" onmouseout="this.style.color='#a0a0a0'">Our Heritage</a></li>
-                    <li class="mb-3"><a href="account.html" class="text-decoration-none" style="color: #a0a0a0; font-size: 13px; transition: 0.3s;" onmouseover="this.style.color='#cfaa6a'" onmouseout="this.style.color='#a0a0a0'">My Account</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-5 mb-md-0">
-                <h6 style="color: #cfaa6a; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; font-size: 13px;">Customer Care</h6>
-                <ul class="list-unstyled">
-                    <li class="mb-3"><a href="customercare.html?tab=contact" class="text-decoration-none" style="color: #a0a0a0; font-size: 13px; transition: 0.3s;" onmouseover="this.style.color='#cfaa6a'" onmouseout="this.style.color='#a0a0a0'">Contact Us</a></li>
-                    <li class="mb-3"><a href="customercare.html?tab=shipping" class="text-decoration-none" style="color: #a0a0a0; font-size: 13px; transition: 0.3s;" onmouseover="this.style.color='#cfaa6a'" onmouseout="this.style.color='#a0a0a0'">Shipping & Returns</a></li>
-                    <li class="mb-3"><a href="customercare.html?tab=privacy" class="text-decoration-none" style="color: #a0a0a0; font-size: 13px; transition: 0.3s;" onmouseover="this.style.color='#cfaa6a'" onmouseout="this.style.color='#a0a0a0'">Privacy Policy</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <h6 style="color: #cfaa6a; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; font-size: 13px;">Newsletter</h6>
-                <p style="color: #a0a0a0; font-size: 13px; line-height: 1.8;">Subscribe to receive updates, access to exclusive deals, and behind-the-scenes content.</p>
-                <form class="d-flex mt-3" onsubmit="event.preventDefault(); alert('Thank you for subscribing to Maison Vyra!');">
-                    <input type="email" class="form-control" placeholder="Enter your email address" style="margin-bottom: 0; border-radius: 2px 0 0 2px;" required>
-                    <button type="submit" style="background: #cfaa6a; border: 1px solid #cfaa6a; color: #000; padding: 0 18px; border-radius: 0 2px 2px 0; cursor: pointer; transition: 0.3s;" onmouseover="this.style.background='#e6d1a8'" onmouseout="this.style.background='#cfaa6a'">
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
-                </form>
-            </div>
-        </div>
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center pt-4 border-top" style="border-color: rgba(255,255,255,0.05) !important;">
-            <p style="color: #a0a0a0; font-size: 12px; margin-bottom: 15px; letter-spacing: 1px;">&copy; 2026 Maison Vyra. All Rights Reserved.</p>
-            <div class="social-icons">
-                <a href="#" style="color: #cfaa6a; font-size: 16px; margin-left: 20px; transition: 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#cfaa6a'"><i class="fab fa-instagram"></i></a>
-                <a href="#" style="color: #cfaa6a; font-size: 16px; margin-left: 20px; transition: 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#cfaa6a'"><i class="fab fa-tiktok"></i></a>
-                <a href="#" style="color: #cfaa6a; font-size: 16px; margin-left: 20px; transition: 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#cfaa6a'"><i class="fab fa-youtube"></i></a>
-            </div>
-        </div>
-    </div>
-</footer>
 
 <div id="custom-cursor-dot"></div>
 <div id="custom-cursor-ring"></div>
@@ -247,81 +162,36 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script>
-    // --- Smart Tab Router (Directly opens the right tab from Footer links) ---
-    document.addEventListener("DOMContentLoaded", function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const tabMap = {
-            'contact': '#v-pills-contact-tab',
-            'shipping': '#v-pills-shipping-tab',
-            'privacy': '#v-pills-privacy-tab'
-        };
-        const requestedTab = urlParams.get('tab');
-        
-        if (requestedTab && tabMap[requestedTab]) {
-            const triggerEl = document.querySelector(tabMap[requestedTab]);
-            const tab = new bootstrap.Tab(triggerEl);
-            tab.show();
-        }
-    });
-
-    // --- Cinematic Transition ---
+    // --- Identical Global Transitions ---
     window.addEventListener('pageshow', () => { document.body.classList.add('page-loaded'); });
-    document.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            if (!href || href.startsWith('#') || href.startsWith('javascript')) return;
-            e.preventDefault();
-            document.body.classList.remove('page-loaded');
-            setTimeout(() => { window.location.href = href; }, 500); 
-        });
-    });
-
-    // --- Custom Cursor & Sparkles ---
+    
+    // --- Identical Global Cursor ---
     gsap.set(["#custom-cursor-dot", "#custom-cursor-ring"], {xPercent: -50, yPercent: -50});
     document.addEventListener('mousemove', (e) => {
-        if (typeof gsap !== 'undefined') {
-            gsap.to("#custom-cursor-dot", { x: e.clientX, y: e.clientY, duration: 0 });
-            gsap.to("#custom-cursor-ring", { x: e.clientX, y: e.clientY, duration: 0.15, ease: "power2.out" });
-            let sparkleCount = Math.floor(Math.random() * 3) + 1;
-            for(let i = 0; i < sparkleCount; i++) createSparkle(e.clientX, e.clientY);
-        }
+        gsap.to("#custom-cursor-dot", { x: e.clientX, y: e.clientY, duration: 0 });
+        gsap.to("#custom-cursor-ring", { x: e.clientX, y: e.clientY, duration: 0.15 });
     });
 
-    const interactables = document.querySelectorAll('a, button');
-    interactables.forEach(el => {
-        el.addEventListener('mouseenter', () => { gsap.to('#custom-cursor-ring', { scale: 1.8, backgroundColor: 'rgba(207, 170, 106, 0.15)', duration: 0.3 }); });
-        el.addEventListener('mouseleave', () => { gsap.to('#custom-cursor-ring', { scale: 1, backgroundColor: 'transparent', duration: 0.3 }); });
-    });
-
-    function createSparkle(mouseX, mouseY) {
-        const sparkle = document.createElement('div');
-        sparkle.classList.add('sparkle');
-        document.body.appendChild(sparkle);
-        const startX = mouseX + (Math.random() * 30 - 15), startY = mouseY + (Math.random() * 30 - 15);
-        gsap.set(sparkle, { x: startX, y: startY, scale: Math.random() * 1 + 0.5, opacity: 1 });
-        gsap.to(sparkle, {
-            y: startY + (Math.random() * 100 + 30), x: startX + (Math.random() * 80 - 40),  
-            opacity: 0, scale: 0, duration: Math.random() * 1.5 + 0.5, ease: "power1.out",
-            onComplete: () => sparkle.remove()
-        });
-    }
-
+    // --- Dynamic Contact Function ---
     async function sendMsg(){
+        const name = document.getElementById('contactName').value;
+        const email = document.getElementById('contactEmail').value;
+        const message = document.getElementById('contactMessage').value;
 
-        await fetch("http://localhost:3000/api/contact",{
-        method:"POST",
-        headers:{
-        "Content-Type":"application/json"
-        },
-        body: JSON.stringify({
-        name:"Customer",
-        email:"test@test.com",
-        message:"Help"
-        })
-        });
+        try {
+            const res = await fetch("http://localhost:3000/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email, message })
+            });
 
-        alert("Message sent");
-
+            if(res.ok) {
+                alert("Inquiry received. A concierge will reach out shortly.");
+                document.getElementById('contactForm').reset();
+            }
+        } catch(err) {
+            console.error(err);
+        }
     }
 </script>
 

@@ -1,401 +1,366 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>VYRA | Account</title>
-<link rel="icon" type="image/png" href="/static/logo.png">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>VYRA | My Essence Portal</title>
+    <link rel="icon" type="image/png" href="/static/logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { 
+            --gold: #cfaa6a; 
+            --gold-light: #e6d1a8; 
+            --gold-glow: rgba(207, 170, 106, 0.2); 
+            --glass: rgba(10, 10, 10, 0.85);
+            --border: rgba(207, 170, 106, 0.15);
+        }
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        body { 
+            background: #050505; 
+            color: #f4f4f4; 
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
 
-<style>
-:root {
-    --gold: #cfaa6a;
-    --gold-light: #e6d1a8;
-    --gold-glow: rgba(207, 170, 106, 0.3);
-    --maroon-dark: #0a0a0a;
-    --text-light: #f4f4f4;
-}
+        /* Essential Navigation Bar */
+        .top-nav {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            padding: 25px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        .nav-back {
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
 
-/* Background */
-.account-bg {
-    min-height: 100vh;
-    background: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url("/static/story.png");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 100px 20px 60px;
-}
+        .nav-back:hover { color: white; }
 
-/* Glass Card */
-.glass-card {
-    background: rgba(15,15,15,0.85);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--gold-glow);
-    border-radius: 6px;
-    padding: 45px;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-    width: 100%;
-}
+        .account-bg { 
+            min-height: 100vh; 
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("/static/story.png"); 
+            background-size: cover; 
+            background-position: center; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 80px 20px; 
+        }
 
-.auth-card { max-width: 420px; }
-.dashboard-card { max-width: 900px; }
+        /* Refined Glassmorphism */
+        .glass-card { 
+            background: var(--glass); 
+            backdrop-filter: blur(25px); 
+            border: 1px solid var(--border); 
+            border-radius: 2px; 
+            padding: 50px; 
+            box-shadow: 0 40px 100px rgba(0,0,0,0.9); 
+            width: 100%; 
+            max-width: 450px; 
+            transition: all 0.5s ease;
+        }
 
-/* Typography */
-.brand-title { text-align: center; font-family: 'Playfair Display', serif; font-size: 36px; letter-spacing: 6px; color: var(--gold); margin-bottom: 5px; }
-.brand-sub { text-align: center; font-size: 12px; letter-spacing: 3px; color: var(--gold); opacity: 0.7; margin-bottom: 35px; }
-.section-title { font-family: 'Playfair Display', serif; color: var(--gold); letter-spacing: 3px; margin-bottom: 25px; font-size: 20px; text-transform: uppercase; border-bottom: 1px solid var(--gold-glow); padding-bottom: 15px;}
+        .dashboard-card { max-width: 1100px; display: none; padding: 0; overflow: hidden; }
 
-/* Inputs */
-.form-control, .auth-input {
-    width: 100%;
-    padding: 13px 15px;
-    margin-bottom: 18px;
-    background: transparent;
-    border: 1px solid var(--gold-glow);
-    color: var(--text-light);
-    font-size: 14px;
-    letter-spacing: 1px;
-    outline: none;
-    transition: 0.3s;
-    border-radius: 2px;
-}
-.form-control:focus, .auth-input:focus {
-    border-color: var(--gold);
-    box-shadow: 0 0 12px var(--gold-glow);
-    background: transparent;
-    color: var(--gold);
-}
+        .brand-title { 
+            text-align: center; 
+            font-family: 'Playfair Display', serif; 
+            font-size: 38px; 
+            letter-spacing: 10px; 
+            color: var(--gold); 
+            margin-bottom: 40px; 
+        }
 
-/* Buttons */
-.gold-btn {
-    width: 100%;
-    padding: 14px;
-    background: linear-gradient(to right, var(--gold), var(--gold-light), var(--gold));
-    border: none;
-    color: #000;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    transition: 0.3s;
-    border-radius: 2px;
-    cursor: pointer;
-}
-.gold-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(207,170,106,0.4); }
+        /* Identity Elements: Floating Inputs */
+        .input-group-custom { position: relative; margin-bottom: 25px; }
+        
+        .auth-input { 
+            width: 100%; 
+            padding: 12px 0; 
+            background: transparent; 
+            border: none; 
+            border-bottom: 1px solid var(--border); 
+            color: white; 
+            font-size: 14px; 
+            outline: none; 
+            transition: 0.3s;
+        }
 
-.outline-btn {
-    width: 100%;
-    padding: 14px;
-    background: transparent;
-    border: 1px solid var(--gold);
-    color: var(--gold);
-    font-weight: 500;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    transition: 0.3s;
-    border-radius: 2px;
-    cursor: pointer;
-}
-.outline-btn:hover { background: var(--gold); color: #000; box-shadow: 0 10px 25px rgba(207,170,106,0.4); }
+        .auth-input:focus { border-bottom-color: var(--gold); }
 
-/* Dashboard Tabs Navigation */
-.nav-pills .nav-link {
-    color: var(--text-light);
-    border-radius: 2px;
-    margin-bottom: 10px;
-    letter-spacing: 2px;
-    font-size: 13px;
-    text-transform: uppercase;
-    transition: 0.3s;
-    border: 1px solid transparent;
-}
-.nav-pills .nav-link:hover { color: var(--gold); }
-.nav-pills .nav-link.active {
-    background-color: transparent;
-    color: var(--gold);
-    border-color: var(--gold);
-    box-shadow: inset 0 0 15px rgba(207,170,106,0.1);
-}
+        .input-group-custom label {
+            position: absolute;
+            top: 12px;
+            left: 0;
+            color: rgba(255,255,255,0.4);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            pointer-events: none;
+        }
 
-/* Info Rows & Order Items */
-.info-row { display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-.info-label { opacity: 0.6; letter-spacing: 1px; font-size: 13px; color: var(--text-light); }
-.info-value { letter-spacing: 1px; font-size: 14px; color: var(--gold); }
+        .auth-input:focus + label, .auth-input:not(:placeholder-shown) + label {
+            top: -15px;
+            color: var(--gold);
+            font-size: 10px;
+        }
 
-.order-item { padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;}
-.order-title { font-weight: 500; letter-spacing: 1px; color: var(--text-light); }
-.order-meta { font-size: 12px; opacity: 0.6; letter-spacing: 1px; margin-top: 5px; color: var(--gold-light); }
-</style>
+        .gold-btn { 
+            width: 100%; 
+            padding: 16px; 
+            background: var(--gold); 
+            border: none; 
+            color: black; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 3px; 
+            cursor: pointer; 
+            transition: 0.4s; 
+            text-decoration: none; 
+            display: inline-block;
+            text-align: center;
+        }
+
+        .gold-btn:hover { background: white; transform: scale(1.02); }
+
+        /* Sidebar Navigation Refined */
+        .sidebar { background: rgba(0,0,0,0.3); padding: 40px 20px; }
+
+        .nav-pills .nav-link { 
+            color: rgba(255,255,255,0.6) !important; 
+            border-radius: 0 !important; 
+            margin-bottom: 10px;
+            padding: 12px 20px !important; 
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-align: left;
+            border: 1px solid transparent !important;
+        }
+
+        .nav-pills .nav-link.active { 
+            background: transparent !important; 
+            color: var(--gold) !important; 
+            border: 1px solid var(--gold) !important;
+        }
+
+        .cart-img {
+            width: 70px;
+            height: 90px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+            margin-right: 20px;
+        }
+    </style>
 </head>
-
 <body>
-<div id="page-transition">
-<nav style="position: absolute; top: 30px; left: 0; width: 100%; padding: 0 60px; display: flex; justify-content: space-between; align-items: center; z-index: 10;">
-    
-    <a href="index.html" style="font-family: 'Playfair Display', serif; font-size: 24px; letter-spacing: 4px; color: var(--gold); text-decoration: none;">VYRA</a>
-    
-    <a href="index.html" style="color: var(--gold); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; border: 1px solid var(--gold-glow); padding: 10px 24px; border-radius: 2px; transition: all 0.3s ease;" 
-       onmouseover="this.style.background='var(--gold)'; this.style.color='#000'; this.style.borderColor='var(--gold)';" 
-       onmouseout="this.style.background='transparent'; this.style.color='var(--gold)'; this.style.borderColor='var(--gold-glow)';">
-        <i class="fas fa-arrow-left me-2"></i> Home
-    </a>
-</nav>
+
+<nav class="top-nav">
+    <a href="shop.html" class="nav-back"><i class="fas fa-chevron-left me-2"></i> Return to Shop</a>
+    <div style="letter-spacing: 5px; color: var(--gold); font-family: 'Playfair Display';">MAISON VYRA</div>
+    <div style="width: 100px;"></div> </nav>
 
 <div class="account-bg">
-
-    <div class="glass-card auth-card" id="auth-section">
+    <div class="glass-card" id="auth-section">
         <div class="brand-title">VYRA</div>
-        <div class="brand-sub">ACCESS YOUR ESSENCE</div>
-
-        <h5 class="text-center mb-4" id="formTitle" style="color: var(--gold); letter-spacing: 2px;">LOGIN</h5>
-
-        <form onsubmit="event.preventDefault(); login();">
-            <div id="nameField" style="display: none;">
-                <input type="text" name="fullName" class="auth-input" placeholder="Full Name">
+        <form id="authForm">
+            <div id="nameField" style="display: none;" class="input-group-custom">
+                <input type="text" id="regName" class="auth-input" placeholder=" ">
+                <label>Full Name</label>
             </div>
-            
-            <input type="email" name="email" class="auth-input" placeholder="Email Address" required>
-            <input type="password" name="password" class="auth-input" placeholder="Password" required>
-            
-            <button type="submit" class="gold-btn" id="authSubmitBtn">Enter</button>
+            <div class="input-group-custom">
+                <input type="email" id="email" class="auth-input" placeholder=" " required>
+                <label>Email Address</label>
+            </div>
+            <div class="input-group-custom">
+                <input type="password" id="password" class="auth-input" placeholder=" " required>
+                <label>Secret Password</label>
+            </div>
+            <button type="submit" class="gold-btn" id="authSubmitBtn">Enter Boutique</button>
         </form>
-
-        <div class="text-center mt-4" style="font-size: 13px; letter-spacing: 1px; color: var(--text-light);">
-            <span id="toggleText">Don’t have an account? </span>
-            <span onclick="toggleAuthMode()" style="color: var(--gold); cursor: pointer; font-weight: 600;">Sign Up</span>
-        </div>
+        <p class="text-center mt-5" style="font-size:11px; letter-spacing: 1px;">
+            <span id="toggleText">NOT A MEMBER?</span> 
+            <span onclick="toggleAuthMode()" id="authToggleLink" style="color:var(--gold); cursor:pointer; margin-left: 10px; font-weight: 600;">CREATE IDENTITY</span>
+        </p>
     </div>
 
-
-    <div class="glass-card dashboard-card" id="dashboard-section" style="display: none;">
-        
-        <div class="row">
-            <div class="col-md-3 border-end border-warning border-opacity-25 pe-4">
-                <div class="mb-5">
-                    <p style="font-size: 12px; letter-spacing: 2px; color: var(--text-light); opacity: 0.6; margin-bottom: 0;">WELCOME BACK,</p>
-                    <h4 style="font-family: 'Playfair Display', serif; color: var(--gold);">John Doe</h4>
-                </div>
-
-                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <button class="nav-link active text-start" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab">My Profile</button>
-                    <button class="nav-link text-start" id="v-pills-edit-tab" data-bs-toggle="pill" data-bs-target="#v-pills-edit" type="button" role="tab">Edit Details</button>
-                    <button class="nav-link text-start" id="v-pills-orders-tab" data-bs-toggle="pill" data-bs-target="#v-pills-orders" type="button" role="tab">Order History</button>
-                    <button class="nav-link text-start" id="v-pills-cart-tab" data-bs-toggle="pill" data-bs-target="#v-pills-cart" type="button" role="tab">My Cart</button>
-                </div>
-
-                <div class="mt-5">
-                    <button onclick="simulateLogout()" class="outline-btn" style="padding: 10px; font-size: 12px;">Sign Out</button>
+    <div class="glass-card dashboard-card" id="dashboard-section">
+        <div class="row g-0">
+            <div class="col-md-3 sidebar border-end border-warning border-opacity-10">
+                <h6 class="text-center mb-5" style="color:var(--gold); letter-spacing: 3px;">PORTAL</h6>
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
+                    <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#v-pills-profile"><i class="far fa-user me-3"></i> Identity</button>
+                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-cart" onclick="loadUserCart()"><i class="fas fa-shopping-bag me-3"></i> Collection</button>
+                    <button class="nav-link text-danger mt-5" onclick="logout()"><i class="fas fa-sign-out-alt me-3"></i> Exit</button>
                 </div>
             </div>
-
-            <div class="col-md-9 ps-md-5 mt-4 mt-md-0">
-                <div class="tab-content" id="v-pills-tabContent">
-                    
-                    <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel">
-                        <div class="section-title">Account Overview</div>
-                        <div class="info-row">
-                            <div class="info-label">Full Name</div>
-                            <div class="info-value">John Doe</div>
-                        </div>
-                        <div class="info-row">
-                            <div class="info-label">Email Address</div>
-                            <div class="info-value">john.doe@example.com</div>
-                        </div>
-                        <div class="info-row">
-                            <div class="info-label">Phone Number</div>
-                            <div class="info-value">+1 234 567 8900</div>
-                        </div>
-                        <div class="info-row">
-                            <div class="info-label">Shipping Address</div>
-                            <div class="info-value">123 Luxury Avenue, Maison District, NY</div>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane fade" id="v-pills-edit" role="tabpanel">
-                        <div class="section-title">Update Information</div>
-                        <form onsubmit="event.preventDefault(); alert('Settings Saved! (Simulation)');">
+            <div class="col-md-9 p-5">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="v-pills-profile">
+                        <h2 style="font-family:'Playfair Display'; color:var(--gold); margin-bottom:10px;" id="welcomeName">User</h2>
+                        <p style="font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 40px; letter-spacing: 1px;">CURATE YOUR PERSONAL DETAILS</p>
+                        
+                        <form id="profileForm">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <label class="info-label mb-2">Full Name</label>
-                                    <input type="text" class="form-control" value="John Doe" required>
+                                <div class="col-md-6 input-group-custom">
+                                    <input type="text" id="editName" class="auth-input" placeholder=" ">
+                                    <label>Display Name</label>
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="info-label mb-2">Phone Number</label>
-                                    <input type="text" class="form-control" value="+1 234 567 8900">
+                                <div class="col-md-6 input-group-custom">
+                                    <input type="text" id="editPhone" class="auth-input" placeholder=" ">
+                                    <label>Contact Number</label>
+                                </div>
+                                <div class="col-12 input-group-custom">
+                                    <input type="text" id="editAddress" class="auth-input" placeholder=" ">
+                                    <label>Shipping Residence</label>
+                                </div>
+                                <div class="col-md-6 input-group-custom">
+                                    <input type="text" id="editCity" class="auth-input" placeholder=" ">
+                                    <label>City / State</label>
+                                </div>
+                                <div class="col-md-6 input-group-custom">
+                                    <input type="text" id="editZip" class="auth-input" placeholder=" ">
+                                    <label>Postal Code</label>
                                 </div>
                             </div>
-                            <label class="info-label mb-2 mt-2">Shipping Address</label>
-                            <textarea class="form-control" rows="3">123 Luxury Avenue, Maison District, NY</textarea>
-                            
-                            <button type="submit" class="gold-btn mt-3" style="width: auto; padding: 12px 30px;">Save Changes</button>
+                            <button type="submit" class="gold-btn mt-4" style="width:auto; padding:12px 50px;">Update Identity</button>
                         </form>
                     </div>
 
-                    <div class="tab-pane fade" id="v-pills-orders" role="tabpanel">
-                        <div class="section-title">Order History</div>
-                        <div class="order-item">
-                            <div>
-                                <div class="order-title">Oud Mystique – 100ml</div>
-                                <div class="order-meta">Order ID: #VY1023 | Placed: Oct 12, 2023</div>
-                            </div>
-                            <div class="text-end">
-                                <span style="color: #28a745; font-size: 13px; letter-spacing: 1px;">DELIVERED</span>
-                                <div style="color: var(--gold); margin-top: 5px;">₹9,999</div>
-                            </div>
-                        </div>
-                        <div class="order-item">
-                            <div>
-                                <div class="order-title">Amber Desire – 100ml</div>
-                                <div class="order-meta">Order ID: #VY1025 | Placed: Nov 05, 2023</div>
-                            </div>
-                            <div class="text-end">
-                                <span style="color: var(--gold-light); font-size: 13px; letter-spacing: 1px;">PROCESSING</span>
-                                <div style="color: var(--gold); margin-top: 5px;">₹3,999</div>
-                            </div>
-                        </div>
+                    <div class="tab-pane fade" id="v-pills-cart">
+                        <h2 style="font-family:'Playfair Display'; color:var(--gold); margin-bottom:10px;">Your Collection</h2>
+                        <p style="font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 40px; letter-spacing: 1px;">PENDING ACQUISITIONS</p>
+                        <div id="cart-list"></div>
                     </div>
-
-                    <div class="tab-pane fade" id="v-pills-cart" role="tabpanel">
-                        <div class="section-title">Your Cart</div>
-                        <p style="color: var(--text-light); opacity: 0.8; font-size: 14px;">You have 1 item in your cart.</p>
-                        
-                        <div class="order-item mt-4 border-top border-warning border-opacity-25">
-                            <div class="d-flex align-items-center">
-                                <img src="/static/exclusive.png" alt="Cart Item" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid var(--gold); margin-right: 15px;">
-                                <div>
-                                    <div class="order-title">Vyra's Exclusive</div>
-                                    <div class="order-meta">Qty: 1 | 100ml</div>
-                                </div>
-                            </div>
-                            <div style="color: var(--gold);">₹9,999</div>
-                        </div>
-                        
-                        <div class="text-end mt-4">
-                            <a href="cart.html" class="gold-btn text-decoration-none" style="display: inline-block; width: auto; padding: 12px 30px;">Proceed to Checkout</a>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
-
     </div>
+</div>
 
-</div>
-</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
-    // --- Evaluator Testing Functions ---
-    async function login(){
-
-        const email = document.querySelector('[name="email"]').value;
-        const password = document.querySelector('[name="password"]').value;
-
-        const res = await fetch("http://localhost:3000/api/login",{
-        method:"POST",
-        headers:{
-        "Content-Type":"application/json"
-        },
-        body: JSON.stringify({email,password})
-        });
-
-        const data = await res.json();
-
-        localStorage.setItem("user",JSON.stringify(data.user));
-
-        window.location.reload();
-
-    }
-
-    function simulateLogout() {
-        // Hides Dashboard, Shows Login
-        document.getElementById("dashboard-section").style.display = "none";
-        document.getElementById("auth-section").style.display = "block";
-    }
-
-    // --- Standard UI Toggle Logic ---
+    // Logic remains identical to your working version but updated with refined UI calls
     let isLoginMode = true;
 
     function toggleAuthMode() {
-        const title = document.getElementById("formTitle");
-        const submitBtn = document.getElementById("authSubmitBtn");
-        const toggleText = document.getElementById("toggleText");
-        const nameField = document.getElementById("nameField");
-        const authToggleLink = document.querySelector(".text-center span[onclick]");
-
-        if (isLoginMode) {
-            title.innerText = "CREATE ACCOUNT";
-            submitBtn.innerText = "Register";
-            toggleText.innerText = "Already have an account? ";
-            authToggleLink.innerText = "Login";
-            nameField.style.display = "block";
-            document.querySelector('input[name="fullName"]').setAttribute("required", "true");
-        } else {
-            title.innerText = "LOGIN";
-            submitBtn.innerText = "Enter";
-            toggleText.innerText = "Don’t have an account? ";
-            authToggleLink.innerText = "Sign Up";
-            nameField.style.display = "none";
-            document.querySelector('input[name="fullName"]').removeAttribute("required");
-        }
         isLoginMode = !isLoginMode;
+        document.getElementById("authSubmitBtn").innerText = isLoginMode ? "Enter Boutique" : "Create Identity";
+        document.getElementById("nameField").style.display = isLoginMode ? "none" : "block";
+        document.getElementById("toggleText").innerText = isLoginMode ? "NOT A MEMBER?" : "ALREADY RECOGNIZED?";
+        document.getElementById("authToggleLink").innerText = isLoginMode ? "CREATE IDENTITY" : "SIGN IN";
     }
 
-    // 1. Fade IN when the page loads
-    window.addEventListener('pageshow', () => {
-        // Adds the class to fade out the black screen
-        document.body.classList.add('page-loaded');
+    document.getElementById("authForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const endpoint = isLoginMode ? "/api/login" : "/api/register";
+        const body = {
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value,
+            fullName: document.getElementById("regName").value
+        };
+
+        try {
+            const res = await fetch(`http://localhost:3000${endpoint}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+            const data = await res.json();
+            if (res.ok) {
+                if (isLoginMode) {
+                    localStorage.setItem("user", JSON.stringify(data.user));
+                    localStorage.setItem("jwtToken", data.token);
+                    window.location.reload();
+                } else {
+                    alert("Identity Established."); toggleAuthMode();
+                }
+            } else { alert(data.message); }
+        } catch (err) { console.error(err); }
     });
 
-    // 2. Fade OUT when a link is clicked
-    document.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            
-            // Skip the animation for empty links, page anchors, or the "javascript:history.back()" button
-            if (!href || href.startsWith('#') || href.startsWith('javascript')) return;
-            
-            // Stop the browser from instantly loading the next page
-            e.preventDefault();
-            
-            // Bring the black screen back
-            document.body.classList.remove('page-loaded');
-            
-            // Wait exactly 500 milliseconds for the fade to finish, then go to the new page!
-            setTimeout(() => {
-                window.location.href = href;
-            }, 500); 
+    document.getElementById("profileForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const token = localStorage.getItem("jwtToken");
+        const body = {
+            fullName: document.getElementById("editName").value,
+            phone: document.getElementById("editPhone").value,
+            address: document.getElementById("editAddress").value,
+            city: document.getElementById("editCity").value,
+            postal_code: document.getElementById("editZip").value
+        };
+
+        const res = await fetch("http://localhost:3000/api/update-profile", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+            body: JSON.stringify(body)
         });
+        
+        if (res.ok) {
+            const data = await res.json();
+            localStorage.setItem("user", JSON.stringify(data.user));
+            alert("Identity Updated.");
+            window.location.reload();
+        }
     });
 
-    async function login(){
-
-        const email = document.querySelector('[name="email"]').value;
-        const password = document.querySelector('[name="password"]').value;
-
-        const res = await fetch("http://localhost:3000/api/login",{
-        method:"POST",
-        headers:{
-        "Content-Type":"application/json"
-        },
-        body: JSON.stringify({email,password})
-        });
-
-        const data = await res.json();
-
-        localStorage.setItem("user",JSON.stringify(data.user));
-
-        location.reload();
+    async function loadUserCart() {
+        const token = localStorage.getItem("jwtToken");
+        const list = document.getElementById("cart-list");
+        try {
+            const res = await fetch("http://localhost:3000/api/cart", {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            const items = await res.json();
+            list.innerHTML = items.length ? '' : '<p style="color:gray; font-size:13px;">No items in your collection.</p>';
+            
+            items.forEach(item => {
+                const cleanPath = item.image_url.startsWith('/') ? item.image_url : '/' + item.image_url;
+                list.innerHTML += `
+                <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-warning border-opacity-10 pb-3">
+                    <div class="d-flex align-items-center">
+                        <img src="http://localhost:3000${cleanPath}" class="cart-img">
+                        <div>
+                            <span style="color:white; display:block; font-size:14px; letter-spacing:1px;">${item.name.toUpperCase()}</span>
+                            <small style="color:var(--gold); font-size:10px;">QUANTITY: ${item.quantity}</small>
+                        </div>
+                    </div>
+                    <span style="color:white; font-size:14px;">₹${item.price * item.quantity}</span>
+                </div>`;
+            });
+            if(items.length) list.innerHTML += `<a href="transactions.html" class="gold-btn mt-4">Begin Transaction</a>`;
+        } catch (e) { console.error(e); }
     }
+
+    function logout() { localStorage.clear(); window.location.href = "account.html"; }
+
+    window.onload = () => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (user) {
+            document.getElementById("auth-section").style.display = "none";
+            document.getElementById("dashboard-section").style.display = "block";
+            document.getElementById("welcomeName").innerText = user.full_name.toUpperCase();
+            
+            document.getElementById("editName").value = user.full_name || '';
+            document.getElementById("editPhone").value = user.phone || '';
+            document.getElementById("editAddress").value = user.address || '';
+            document.getElementById("editCity").value = user.city || '';
+            document.getElementById("editZip").value = user.postal_code || '';
+            
+            loadUserCart();
+        }
+    };
 </script>
-
 </body>
 </html>

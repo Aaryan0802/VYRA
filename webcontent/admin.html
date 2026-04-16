@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VYRA | Grand Atelier Dashboard</title>
+    <link rel="icon" type="image/png" href="/static/logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --gold: #cfaa6a; --gold-light: #e6d1a8; --glass: rgba(10, 10, 10, 0.9); --border: rgba(207, 170, 106, 0.15); }
+        * { cursor: none !important; margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        
+        body { background: #050505; background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("/static/story.png"); background-size: cover; background-attachment: fixed; color: #f4f4f4; overflow-x: hidden; }
+        
+        /* Custom Cursor */
+        #custom-cursor-dot { position: fixed; top: 0; left: 0; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 10000; }
+        #custom-cursor-ring { position: fixed; top: 0; left: 0; width: 34px; height: 34px; border: 1px solid var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; transition: background-color 0.3s ease; }
+
+        /* Sidebar */
+        .sidebar { height: 100vh; background: var(--glass); backdrop-filter: blur(20px); border-right: 1px solid var(--border); position: fixed; width: 260px; padding: 40px 20px; z-index: 100; }
+        .main-content { margin-left: 260px; padding: 60px; min-height: 100vh; }
+        
+        /* Typography */
+        .admin-title { font-family: 'Playfair Display', serif; color: var(--gold); margin-bottom: 40px; font-size: 36px; letter-spacing: 2px; }
+        
+        /* Cards & Tables */
+        .stat-card { background: var(--glass); border: 1px solid var(--border); padding: 30px; border-radius: 2px; text-align: center; transition: 0.3s; }
+        .stat-card:hover { border-color: var(--gold); transform: translateY(-5px); }
+        .stat-card h2 { color: var(--gold); font-family: 'Playfair Display', serif; margin-top: 10px; }
+        .stat-card span { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6; }
+        
+        .vyra-table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
+        .vyra-table th { color: var(--gold); text-transform: uppercase; font-size: 10px; letter-spacing: 2px; padding: 15px; border-bottom: 1px solid var(--border); }
+        .vyra-table td { background: rgba(255,255,255,0.02); padding: 15px; font-size: 13px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); vertical-align: middle; }
+        
+        /* Navigation Links */
+        .nav-link { color: rgba(255,255,255,0.5); padding: 15px 20px; letter-spacing: 2px; font-size: 12px; text-transform: uppercase; transition: 0.3s; border-left: 2px solid transparent; cursor: pointer !important; }
+        .nav-link:hover, .nav-link.active { color: var(--gold); background: rgba(207,170,106,0.05); border-left-color: var(--gold); }
+        
+        /* Inputs & Buttons */
+        .admin-input { background: transparent; border: 1px solid var(--border); color: white; padding: 10px 15px; font-size: 13px; width: 100%; outline: none; transition: 0.3s; }
+        .admin-input:focus { border-color: var(--gold); }
+        .gold-btn { background: var(--gold); color: black; border: none; padding: 10px 20px; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; }
+        .gold-btn:hover { background: white; transform: translateY(-2px); }
+        
+        .status-select { background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 5px; font-size: 11px; text-transform: uppercase; outline: none; }
+        .status-select option { background: #000; color: #fff; }
+
+        /* Section Toggling */
+        .admin-section { display: none; animation: fadeIn 0.5s ease; }
+        .admin-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div style="letter-spacing: 6px; color: var(--gold); font-family: 'Playfair Display'; font-size: 20px; text-align: center; margin-bottom: 50px;">VYRA ATELIER</div>
+    <nav class="nav flex-column">
+        <a class="nav-link active" onclick="switchTab('insights', this)"><i class="fas fa-chart-line me-3"></i> Insights</a>
+        <a class="nav-link" onclick="switchTab('inventory', this)"><i class="fas fa-box me-3"></i> Inventory</a>
+        <a class="nav-link" onclick="switchTab('acquisitions', this)"><i class="fas fa-shopping-cart me-3"></i> Acquisitions</a>
+        <a class="nav-link" onclick="switchTab('clients', this)"><i class="fas fa-users me-3"></i> Clients</a>
+        <a class="nav-link mt-5 text-danger" href="index.html" style="border-left-color: transparent;"><i class="fas fa-sign-out-alt me-3"></i> Lock Atelier</a>
+    </nav>
+</div>
+
+<div class="main-content">
+    
+    <div id="insights" class="admin-section active">
+        <h1 class="admin-title">Boutique Insights</h1>
+        <div class="row g-4 mb-5">
+            <div class="col-md-4"><div class="stat-card"><span>Gross Revenue</span><h2 id="totalRevenue">₹0.00</h2></div></div>
+            <div class="col-md-4"><div class="stat-card"><span>Total Acquisitions</span><h2 id="orderCount">0</h2></div></div>
+            <div class="col-md-4"><div class="stat-card"><span>VIP Clients</span><h2 id="userCount">0</h2></div></div>
+        </div>
+        <h4 style="color: var(--gold); font-family: 'Playfair Display'; margin-bottom: 20px;">Live Pulse (Recent Activity)</h4>
+        <table class="vyra-table">
+            <thead>
+                <tr><th>Order ID</th><th>Client</th><th>Amount</th><th>Status</th><th>Gateway ID</th></tr>
+            </thead>
+            <tbody id="livePulseBody"></tbody>
+        </table>
+    </div>
+
+    <div id="inventory" class="admin-section">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="admin-title mb-0">Essence Inventory</h1>
+            <button class="gold-btn" data-bs-toggle="modal" data-bs-target="#addProductModal">+ Formulate New</button>
+        </div>
+        <table class="vyra-table">
+            <thead>
+                <tr><th>ID</th><th>Image</th><th>Name & Family</th><th>Pricing</th><th>Stock Level</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="inventoryBody"></tbody>
+        </table>
+    </div>
+
+    <div id="acquisitions" class="admin-section">
+        <h1 class="admin-title">Acquisition Logistics</h1>
+        <table class="vyra-table">
+            <thead>
+                <tr><th>Order ID</th><th>Date Initiated</th><th>Client</th><th>Total</th><th>Transit Status</th></tr>
+            </thead>
+            <tbody id="acquisitionsBody"></tbody>
+        </table>
+    </div>
+
+    <div id="clients" class="admin-section">
+        <h1 class="admin-title">Client Registry</h1>
+        <table class="vyra-table">
+            <thead>
+                <tr><th>Client ID</th><th>Full Identity</th><th>Contact Route</th><th>Location</th><th>Privilege</th></tr>
+            </thead>
+            <tbody id="clientsBody"></tbody>
+        </table>
+    </div>
+
+</div>
+
+<div class="modal fade" id="addProductModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content" style="background: rgba(10,10,10,0.95); border: 1px solid var(--gold); backdrop-filter: blur(20px);">
+      <div class="modal-header border-bottom border-warning border-opacity-25">
+        <h5 class="modal-title" style="color: var(--gold); font-family: 'Playfair Display';">Formulate Essence</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4">
+        <form id="addProductForm">
+            <div class="row g-3">
+                <div class="col-md-6"><label style="color:var(--gold); font-size:10px;">NAME</label><input type="text" id="pName" class="admin-input" required></div>
+                <div class="col-md-6"><label style="color:var(--gold); font-size:10px;">PRICE (₹)</label><input type="number" id="pPrice" class="admin-input" required></div>
+                <div class="col-md-4">
+                    <label style="color:var(--gold); font-size:10px;">FAMILY</label>
+                    <select id="pCat" class="admin-input"><option value="Woody">Woody</option><option value="Floral">Floral</option><option value="Citrus">Citrus</option></select>
+                </div>
+                <div class="col-md-4">
+                    <label style="color:var(--gold); font-size:10px;">IDENTITY</label>
+                    <select id="pGender" class="admin-input"><option value="Male">Masculine</option><option value="Female">Feminine</option><option value="Unisex">Unisex</option></select>
+                </div>
+                <div class="col-md-4"><label style="color:var(--gold); font-size:10px;">INITIAL STOCK</label><input type="number" id="pStock" class="admin-input" value="50"></div>
+                <div class="col-12"><label style="color:var(--gold); font-size:10px;">IMAGE FILE (Relative Path)</label><input type="text" id="pImage" class="admin-input" placeholder="/uploads/image.jpg" required></div>
+                <div class="col-12"><label style="color:var(--gold); font-size:10px;">OLFACTORY NOTES</label><textarea id="pNotes" class="admin-input" rows="3"></textarea></div>
+            </div>
+            <div class="text-end mt-4"><button type="submit" class="gold-btn">Seal Formulation</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="custom-cursor-dot"></div>
+<div id="custom-cursor-ring"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+    // --- Cursor Logic ---
+    gsap.set(["#custom-cursor-dot", "#custom-cursor-ring"], {xPercent: -50, yPercent: -50});
+    document.addEventListener('mousemove', (e) => {
+        gsap.to("#custom-cursor-dot", { x: e.clientX, y: e.clientY, duration: 0 });
+        gsap.to("#custom-cursor-ring", { x: e.clientX, y: e.clientY, duration: 0.15 });
+    });
+
+    const token = localStorage.getItem("jwtToken");
+    if (!token) window.location.href = "account.html";
+
+    // --- Tab Switching Logic ---
+    function switchTab(tabId, element) {
+        document.querySelectorAll('.admin-section').forEach(sec => sec.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+        element.classList.add('active');
+        
+        if(tabId === 'insights') loadInsights();
+        if(tabId === 'inventory') loadInventory();
+        if(tabId === 'acquisitions') loadAllAcquisitions();
+        if(tabId === 'clients') loadClients();
+    }
+
+    // --- Data Loading Functions ---
+    async function loadInsights() {
+        try {
+            const res = await fetch("http://localhost:3000/api/admin/stats", { headers: { "Authorization": `Bearer ${token}` } });
+            if(!res.ok) throw new Error();
+            const data = await res.json();
+            
+            document.getElementById('totalRevenue').innerText = `₹${parseFloat(data.revenue).toLocaleString()}`;
+            document.getElementById('orderCount').innerText = data.orderCount;
+            document.getElementById('userCount').innerText = data.userCount;
+
+            const tbody = document.getElementById('livePulseBody');
+            tbody.innerHTML = '';
+            data.recentOrders.forEach(order => {
+                tbody.innerHTML += `<tr>
+                    <td>#${order.id}</td><td>${order.full_name}</td><td>₹${order.total_amount}</td>
+                    <td><span style="color:var(--gold); font-size:10px; letter-spacing:1px;">${order.status.toUpperCase()}</span></td>
+                    <td style="font-family:monospace; opacity:0.5;">${order.razorpay_payment_id || 'N/A'}</td>
+                </tr>`;
+            });
+        } catch (e) { window.location.href = "index.html"; }
+    }
+
+    async function loadInventory() {
+        try {
+            const res = await fetch("http://localhost:3000/api/products"); // Reusing public route for catalog
+            const products = await res.json();
+            const tbody = document.getElementById('inventoryBody');
+            tbody.innerHTML = '';
+            products.forEach(p => {
+                const imgPath = p.image_url.startsWith('/') ? p.image_url : '/' + p.image_url;
+                tbody.innerHTML += `<tr>
+                    <td>#${p.id}</td>
+                    <td><img src="http://localhost:3000${imgPath}" style="width:40px; height:40px; object-fit:cover; border:1px solid var(--gold);"></td>
+                    <td><strong style="color:white;">${p.name}</strong><br><span style="font-size:10px; opacity:0.6;">${p.gender} | ${p.category}</span></td>
+                    <td>₹${p.price}</td>
+                    <td>${p.stock} Units</td>
+                    <td><button class="gold-btn" style="padding: 5px 10px; background: transparent; color: var(--gold); border: 1px solid var(--gold);">Edit</button></td>
+                </tr>`;
+            });
+        } catch(e) { console.error(e); }
+    }
+
+    // You will need to build the backend routes for these two functions (/api/admin/orders and /api/admin/users)
+    async function loadAllAcquisitions() {
+        try {
+            const res = await fetch("http://localhost:3000/api/admin/orders", {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            const orders = await res.json();
+            const tbody = document.getElementById('acquisitionsBody');
+            tbody.innerHTML = '';
+            
+            orders.forEach(o => {
+                const date = new Date(o.created_at).toLocaleDateString();
+                tbody.innerHTML += `<tr>
+                    <td>#${o.id}</td>
+                    <td style="opacity: 0.6;">${date}</td>
+                    <td>${o.full_name}</td>
+                    <td>₹${o.total_amount}</td>
+                    <td><span style="color: var(--gold); font-size: 10px; letter-spacing: 1px;">${o.status.toUpperCase()}</span></td>
+                </tr>`;
+            });
+        } catch (e) { console.error("Error loading acquisitions:", e); }
+    }
+
+    async function loadClients() {
+        try {
+            const res = await fetch("http://localhost:3000/api/admin/users", {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            const users = await res.json();
+            const tbody = document.getElementById('clientsBody');
+            tbody.innerHTML = '';
+            
+            users.forEach(u => {
+                tbody.innerHTML += `<tr>
+                    <td>#${u.id}</td>
+                    <td>${u.full_name}</td>
+                    <td>${u.email} <br> <span style="font-size: 10px; opacity: 0.5;">${u.phone || 'No Phone'}</span></td>
+                    <td style="opacity: 0.7;">${u.city || 'Unknown'}</td>
+                    <td><span class="badge ${u.role === 'admin' ? 'bg-warning text-dark' : 'bg-secondary'}">${u.role.toUpperCase()}</span></td>
+                </tr>`;
+            });
+        } catch (e) { console.error("Error loading clients:", e); }
+    }
+
+    document.getElementById("addProductForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
+        // Construct the product data
+        const productData = {
+            name: document.getElementById("pName").value,
+            price: document.getElementById("pPrice").value,
+            category: document.getElementById("pCat").value,
+            gender: document.getElementById("pGender").value,
+            stock: document.getElementById("pStock").value,
+            image_url: document.getElementById("pImage").value,
+            notes: document.getElementById("pNotes").value
+        };
+
+        try {
+            const res = await fetch("http://localhost:3000/api/products", {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` 
+                },
+                body: JSON.stringify(productData)
+            });
+
+            if (res.ok) {
+                alert("New Essence Successfully Formulated!");
+                // Close the modal and reload the inventory tab
+                document.querySelector('#addProductModal .btn-close').click();
+                document.getElementById("addProductForm").reset();
+                loadInventory(); 
+            } else {
+                const errorData = await res.json();
+                alert("Error: " + errorData.message);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    });
+
+    // Initialize
+    loadInsights();
+</script>
+</body>
+</html>

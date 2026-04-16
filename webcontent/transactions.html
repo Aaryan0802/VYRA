@@ -3,73 +3,211 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VYRA | Secure Checkout</title>
+<title>VYRA | Secure Acquisition</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-    :root { --gold: #cfaa6a; --gold-glow: rgba(207, 170, 106, 0.3); --text-light: #f4f4f4; }
+    :root { 
+        --gold: #cfaa6a; 
+        --gold-light: #e6d1a8; 
+        --gold-glow: rgba(207, 170, 106, 0.2); 
+        --glass: rgba(10, 10, 10, 0.85);
+        --border: rgba(207, 170, 106, 0.15);
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; cursor: none !important; }
 
     body {
         min-height: 100vh;
-        background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url("/static/story.png");
+        background: #050505;
+        background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("/static/story.png");
         background-size: cover; background-position: center; background-attachment: fixed;
-        color: var(--text-light); display: flex; align-items: center; justify-content: center;
+        color: #f4f4f4; overflow-x: hidden;
     }
+
+    /* --- Identical Global Navigation --- */
+    .top-nav {
+        position: fixed; top: 0; width: 100%; padding: 25px 50px;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+        backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+    }
+
+    .nav-link-custom {
+        color: var(--gold); text-decoration: none; font-size: 11px;
+        letter-spacing: 2px; text-transform: uppercase; transition: 0.3s;
+    }
+    .nav-link-custom:hover { color: white; }
+
+    /* --- Custom Cursor --- */
+    #custom-cursor-dot { position: fixed; top: 0; left: 0; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 10000; }
+    #custom-cursor-ring { position: fixed; top: 0; left: 0; width: 34px; height: 34px; border: 1px solid var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; }
+
+    /* --- Checkout Layout --- */
+    .checkout-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 140px 20px 80px; }
 
     .glass-card {
-        max-width: 500px; width: 90%;
-        background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(15px);
-        border: 1px solid var(--gold-glow); border-radius: 4px; padding: 40px;
-        box-shadow: 0 30px 60px rgba(0,0,0,0.9); text-align: center;
+        max-width: 900px; width: 100%;
+        background: var(--glass); backdrop-filter: blur(25px);
+        border: 1px solid var(--border); border-radius: 2px;
+        box-shadow: 0 50px 100px rgba(0,0,0,0.9); display: flex; flex-wrap: wrap;
     }
 
-    .title { font-family: 'Playfair Display', serif; color: var(--gold); letter-spacing: 3px; margin-bottom: 30px; }
-    .input-field { 
-        width: 100%; padding: 12px; margin-bottom: 15px; background: transparent; 
-        border: 1px solid var(--gold-glow); color: #fff; border-radius: 2px;
+    /* Updated Form Side to Review Side */
+    .review-side { flex: 1 1 500px; padding: 60px; display: flex; flex-direction: column; justify-content: center; }
+    .summary-side { flex: 1 1 300px; background: rgba(0,0,0,0.3); padding: 50px; border-left: 1px solid var(--border); }
+
+    .title-main { font-family: 'Playfair Display', serif; font-size: 32px; letter-spacing: 8px; color: var(--gold); text-transform: uppercase; margin-bottom: 20px; }
+    
+    .gold-btn { 
+        width: 100%; padding: 20px; background: var(--gold); border: none; color: black; 
+        font-weight: 600; text-transform: uppercase; letter-spacing: 4px; 
+        cursor: pointer; transition: 0.4s; margin-top: 30px;
     }
-    .gold-btn {
-        width: 100%; padding: 14px; background: linear-gradient(to right, #cfaa6a, #e6d1a8, #cfaa6a);
-        border: none; color: #000; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
-    }
+    .gold-btn:hover { background: white; transform: translateY(-3px); box-shadow: 0 15px 30px rgba(207,170,106,0.2); }
+
+    .summary-item { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 13px; opacity: 0.8; letter-spacing: 1px; }
+    .total-row { border-top: 1px solid var(--gold); padding-top: 20px; margin-top: 20px; font-weight: 600; color: var(--gold); font-size: 18px; }
+
+    .review-notice { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.8; margin-top: 20px; letter-spacing: 1px; }
 </style>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
+
 <body>
+
+<nav class="top-nav">
+    <a href="account.html?tab=cart" class="nav-link-custom"><i class="fas fa-chevron-left me-2"></i> Return to Collection</a>
+    <div style="letter-spacing: 10px; color: var(--gold); font-family: 'Playfair Display'; font-weight: 600;">VYRA</div>
+    <div style="width: 100px;"></div>
+</nav>
+
+<div class="checkout-wrapper">
     <div class="glass-card">
-        <h2 class="title">SECURE PAYMENT</h2>
-        <form onsubmit="event.preventDefault(); checkout();">
-            <input type="text" class="input-field" placeholder="Cardholder Name" required>
-            <input type="text" class="input-field" placeholder="Card Number" maxlength="16" required>
-            <div class="row">
-                <div class="col-6"><input type="text" class="input-field" placeholder="MM/YY" required></div>
-                <div class="col-6"><input type="password" class="input-field" placeholder="CVV" maxlength="3" required></div>
+        <div class="review-side">
+            <div class="brand-label" style="font-size: 10px; letter-spacing: 4px; color: var(--gold); margin-bottom: 10px; text-transform: uppercase;">Final Verification</div>
+            <h2 class="title-main">Complete Acquisition</h2>
+            
+            <p class="review-notice">
+                By clicking the button below, you will initiate the secure gateway for your Maison Vyra acquisition. All transactions are handled via encrypted protocols to ensure your data remains your own essence.
+            </p>
+
+            <button onclick="checkout();" class="gold-btn">Secure Order & Pay</button>
+            
+            <div class="mt-4 d-flex align-items-center gap-3" style="opacity: 0.6;">
+                <i class="fas fa-shield-alt text-warning"></i>
+                <span style="font-size: 10px; letter-spacing: 1px; text-transform: uppercase;">SSL Encrypted Acquisition Protocol</span>
             </div>
-            <button type="submit" class="gold-btn">Complete Purchase</button>
-        </form>
-        <a href="javascript:history.back()" style="color: var(--gold); font-size: 11px; text-decoration: none; margin-top: 20px; display: block; letter-spacing: 1px;">CANCEL TRANSACTION</a>
+        </div>
+
+        <div class="summary-side">
+            <h5 style="color: var(--gold); letter-spacing: 3px; margin-bottom: 30px; font-family: 'Playfair Display';">YOUR SELECTION</h5>
+            <div id="summary-list">
+                </div>
+            <div class="summary-item mt-5">
+                <span>Logistic Transit</span>
+                <span>COMPLIMENTARY</span>
+            </div>
+            <div class="summary-item total-row">
+                <span>TOTAL</span>
+                <span id="total-price">₹0.00</span>
+            </div>
+        </div>
     </div>
-</body>
+</div>
+
+<div id="custom-cursor-dot"></div>
+<div id="custom-cursor-ring"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script>
-    async function checkout(){
-        const user = JSON.parse(localStorage.getItem("user"));
+    // --- Identical Global Cursor ---
+    gsap.set(["#custom-cursor-dot", "#custom-cursor-ring"], {xPercent: -50, yPercent: -50});
+    document.addEventListener('mousemove', (e) => {
+        gsap.to("#custom-cursor-dot", { x: e.clientX, y: e.clientY, duration: 0 });
+        gsap.to("#custom-cursor-ring", { x: e.clientX, y: e.clientY, duration: 0.15 });
+    });
 
-        await fetch("http://localhost:3000/api/checkout",{
-        method:"POST",
-        headers:{
-        "Content-Type":"application/json"
-        },
-        body: JSON.stringify({
-        user_id:user.id
-        })
-        });
+    // --- Load Summary Data ---
+    async function loadSummary() {
+        const token = localStorage.getItem("jwtToken");
+        try {
+            const res = await fetch("http://localhost:3000/api/cart", {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            const items = await res.json();
+            const list = document.getElementById('summary-list');
+            let total = 0;
 
-        alert("Payment successful");
+            list.innerHTML = '';
+            items.forEach(item => {
+                total += item.price * item.quantity;
+                list.innerHTML += `
+                    <div class="summary-item">
+                        <span>${item.name} (x${item.quantity})</span>
+                        <span>₹${item.price * item.quantity}</span>
+                    </div>
+                `;
+            });
+            document.getElementById('total-price').innerText = `₹${total}`;
+        } catch (e) { console.error(e); }
+    }
 
-        window.location.href="index.html";
+    loadSummary();
+
+    async function checkout() {
+        const token = localStorage.getItem("jwtToken");
+        if (!token) { window.location.href = "account.html"; return; }
+
+        try {
+            // 1. Request Order ID from Backend
+            const res = await fetch("http://localhost:3000/api/create-order", {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            const orderData = await res.json();
+            if (!res.ok) throw new Error(orderData.message);
+
+            // 2. Configure Razorpay Modal
+            const options = {
+                "key": orderData.key_id, 
+                "amount": orderData.amount,
+                "currency": "INR",
+                "name": "MAISON VYRA",
+                "description": "Exquisite Essence Acquisition",
+                "order_id": orderData.order_id,
+                "handler": async function (response) {
+                    alert("Acquisition Confirmed. Payment ID: " + response.razorpay_payment_id);
+                    
+                    // Finalize the order and clear cart
+                    await fetch("http://localhost:3000/api/checkout", {
+                        method: "POST",
+                        headers: { "Authorization": `Bearer ${token}` }
+                    });
+
+                    window.location.href = "index.html";
+                },
+                "prefill": {
+                    "name": JSON.parse(localStorage.getItem("user")).full_name,
+                    "email": JSON.parse(localStorage.getItem("user")).email
+                },
+                "theme": { "color": "#cfaa6a" } 
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+
+        } catch (error) {
+            alert("Acquisition Error: " + error.message);
+        }
     }
 </script>
+</body>
 </html>

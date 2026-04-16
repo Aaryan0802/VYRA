@@ -4,436 +4,290 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="/static/logo.png">
-<title>Vyra | Shop Collection</title>
+<title>Vyra | The Boutique</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:wght@500;600;700&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@500;600;700&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-/* --- VARIABLES & CORE SETUP --- */
+/* --- CORE BRAND COLORS --- */
 :root {
-    --gold: #cfaa6a; /* Sophisticated metallic gold */
+    --gold: #cfaa6a;
     --gold-light: #e6d1a8;
-    --gold-glow: rgba(207, 170, 106, 0.3);
-    --white: #ffffff;
+    --gold-glow: rgba(207, 170, 106, 0.2);
+    --glass: rgba(10, 10, 10, 0.8);
+    --border: rgba(207, 170, 106, 0.15);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Montserrat', sans-serif;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
 
 body {
     min-height: 100vh;
-    background:
-        linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)),
-        url("/static/story.png");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    color: var(--white);
-    display: flex;
-    flex-direction: column;
+    background: #050505;
+    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("/static/story.png");
+    background-size: cover; background-position: center; background-attachment: fixed;
+    color: #f4f4f4;
+    overflow-x: hidden;
 }
 
-/* --- NAVIGATION --- */
-nav {
-    position: absolute;
-    top: 30px;
-    left: 60px;
-    z-index: 10;
+/* --- IDENTICAL NAVIGATION BAR --- */
+.top-nav {
+    position: fixed; top: 0; width: 100%; padding: 25px 50px;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 1000; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+    backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
 }
 
-.logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 24px;
-    letter-spacing: 4px;
-    color: var(--gold);
-    text-decoration: none;
+.nav-link-custom {
+    color: var(--gold); text-decoration: none; font-size: 11px;
+    letter-spacing: 2px; text-transform: uppercase; transition: 0.3s;
 }
+.nav-link-custom:hover { color: white; }
 
-/* --- VIEW 1: GENDER SELECTION (HERO) --- */
+/* --- HERO SECTION: GENDER SELECTION --- */
 #gender-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
     text-align: center;
-    min-height: 80vh; /* Keeps it vertically centered */
-    animation: fadeIn 0.8s ease-in-out;
+    animation: fadeIn 1.2s ease;
 }
 
-#gender-section h1 {
+.brand-hero-title {
     font-family: 'Playfair Display', serif;
-    font-size: 70px;
-    letter-spacing: 8px;
-    color: var(--gold);
-    text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+    font-size: 80px; letter-spacing: 15px;
+    color: var(--gold); margin-bottom: 10px;
 }
 
-.tagline {
-    margin-top: 10px;
-    font-size: 22px;
-    font-style: italic;
-    color: var(--white);
-    font-family: 'Playfair Display', serif;
-    letter-spacing: 2px;
-}
-
-.gender-wrapper {
-    margin-top: 80px;
-    display: flex;
-    gap: 80px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.gender-card {
-    width: 260px;
-    height: 180px;
-    border: 1px solid var(--gold);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    letter-spacing: 5px;
-    background: rgba(0,0,0,0.6);
-    color: var(--white);
-    transition: 0.4s ease;
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    backdrop-filter: blur(5px);
-}
-
-.gender-card::before {
-    content: "";
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    top: -100%;
-    left: -100%;
-    background: linear-gradient(120deg, transparent 40%, rgba(207, 170, 106, 0.35), transparent 60%);
-    transform: rotate(25deg);
-    transition: 0.8s;
-}
-
-.gender-card:hover::before {
-    top: 100%;
-    left: 100%;
-}
-
-.gender-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 50px rgba(207, 170, 106, 0.25);
-    border-color: var(--gold-light);
-    color: var(--gold);
-}
-
-/* --- VIEW 2: CATEGORY GRID (HIDDEN BY DEFAULT) --- */
-#category-section {
-    display: none; /* Hidden initially */
-    width: 100%;
-    flex: 1;
-    animation: fadeIn 0.8s ease-in-out;
-}
-
-.collection-header-wrapper {
-    text-align: center;
-    padding: 100px 20px 40px;
-    position: relative;
-}
-
-.collection-title {
+.hero-tagline {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 52px;
-    font-style: italic;
-    letter-spacing: 3px;
-    font-weight: 400;
-    color: var(--white);
+    font-size: 24px; font-style: italic;
+    letter-spacing: 4px; opacity: 0.8; margin-bottom: 60px;
 }
 
-.collection-container {
-    width: 90%;
-    max-width: 1200px;
-    margin: auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    padding-bottom: 60px;
-}
+.gender-grid { display: flex; gap: 40px; }
 
-/* CATEGORY BOXES */
-.category-box {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(207, 170, 106, 0.2);
-    backdrop-filter: blur(8px);
-    border-radius: 6px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: 0.4s;
-}
-
-.category-box:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 10px 30px rgba(207, 170, 106, 0.2);
-    border-color: var(--gold);
-}
-
-.category-box img {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    filter: brightness(80%);
-    transition: 0.6s ease;
-}
-
-.category-box:hover img {
-    filter: brightness(100%);
-    transform: scale(1.05);
-}
-
-.category-content {
-    padding: 20px;
-    text-align: center;
-    border-bottom: 1px solid transparent;
-}
-
-.category-content h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    letter-spacing: 3px;
+.gender-btn {
+    width: 280px; padding: 60px 0;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(15px);
     color: var(--gold);
-}
-
-/* DROPDOWN PERFUMES */
-.perfume-list {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.5s ease;
-    background: rgba(0,0,0,0.8);
-}
-
-.perfume-item {
-    display: block;
-    padding: 18px 15px;
-    border-top: 1px solid rgba(207, 170, 106, 0.15);
-    font-size: 14px;
-    letter-spacing: 1px;
-    color: var(--white);
-    text-decoration: none;
-    transition: all 0.3s ease;
-    text-align: center;
-}
-
-.perfume-item:hover {
-    background: rgba(207, 170, 106, 0.1);
-    color: var(--gold);
-    padding-left: 20px;
-    text-align: left;
-}
-
-.category-box.active .perfume-list {
-    max-height: 300px;
-}
-
-/* --- BUTTONS & UTILITIES --- */
-.action-buttons {
-    text-align: center;
-    padding: 20px 0 60px 0;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-.gold-btn-outline {
-    color: var(--gold);
-    letter-spacing: 2px;
-    font-size: 13px;
-    padding: 12px 30px;
-    border: 1px solid var(--gold);
-    text-decoration: none;
-    transition: 0.4s ease;
-    display: inline-block;
-    cursor: pointer;
-    background: transparent;
+    font-size: 14px; letter-spacing: 6px;
+    cursor: pointer; transition: 0.5s;
     text-transform: uppercase;
 }
 
-.gold-btn-outline:hover {
-    background: var(--gold);
-    color: black;
-    box-shadow: 0 10px 25px rgba(207, 170, 106, 0.3);
+.gender-btn:hover {
+    border-color: var(--gold);
+    box-shadow: 0 0 30px var(--gold-glow);
+    transform: translateY(-5px);
+    color: white;
 }
 
+/* --- CATEGORY COLLECTION VIEW --- */
+#category-section {
+    display: none;
+    padding: 160px 50px 100px;
+    animation: fadeIn 0.8s ease;
+}
+
+.section-header { text-align: center; margin-bottom: 80px; }
+
+.collection-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px; letter-spacing: 3px;
+    color: var(--gold); margin-bottom: 10px;
+}
+
+.collection-container {
+    max-width: 1300px; margin: auto;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+}
+
+/* CATEGORY CARDS (Identical Card Style) */
+.category-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(10px);
+    transition: 0.5s;
+    overflow: hidden;
+}
+
+.category-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-10px);
+}
+
+.category-card img {
+    width: 100%; height: 350px;
+    object-fit: cover; opacity: 0.7;
+    transition: 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.category-card:hover img { opacity: 1; transform: scale(1.05); }
+
+.card-label {
+    padding: 30px; text-align: center;
+    background: rgba(0,0,0,0.5);
+}
+
+.card-label h3 {
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 4px; font-size: 18px; color: var(--gold);
+}
+
+/* DROPDOWN MENU */
+.perfume-dropdown {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.6s ease;
+    background: rgba(0,0,0,0.9);
+}
+
+.category-card.active .perfume-dropdown { max-height: 400px; }
+
+.perfume-link {
+    display: block; padding: 20px;
+    color: white; text-decoration: none;
+    font-size: 12px; letter-spacing: 2px;
+    text-transform: uppercase; text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    transition: 0.3s;
+}
+
+.perfume-link:hover { color: var(--gold); background: rgba(207,170,106,0.05); }
+
+/* --- NAVIGATION BUTTONS --- */
+.nav-footer {
+    position: fixed; bottom: 40px; left: 50%;
+    transform: translateX(-50%); display: flex; gap: 20px;
+}
+
+.btn-minimal {
+    background: var(--glass);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 12px 30px; font-size: 10px;
+    letter-spacing: 3px; text-transform: uppercase;
+    cursor: pointer; transition: 0.4s;
+}
+
+.btn-minimal:hover { background: var(--gold); color: black; }
+
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(15px); }
+    from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
+@media (max-width: 768px) {
+    .brand-hero-title { font-size: 40px; }
+    .gender-grid { flex-direction: column; }
+    .gender-btn { width: 80vw; }
+}
 </style>
 </head>
 
 <body>
-<div id="page-transition">
-<nav>
-    <a href="index.html" class="logo">VYRA</a>
+
+<nav class="top-nav">
+    <a href="index.html" class="nav-link-custom"><i class="fas fa-home me-2"></i> Main</a>
+    <div style="letter-spacing: 8px; color: var(--gold); font-family: 'Playfair Display'; font-weight: 600;">VYRA</div>
+    <a href="account.html?tab=cart" class="nav-link-custom">Collection <i class="fas fa-shopping-bag ms-2"></i></a>
 </nav>
 
 <div id="gender-section">
-    <h1>VYRA</h1>
-    <div class="tagline">Where Elegance Meets Essence</div>
+    <h1 class="brand-hero-title">VYRA</h1>
+    <p class="hero-tagline">Define Your Olfactory Identity</p>
 
-    <div class="gender-wrapper">
-        <div class="gender-card" onclick="showCategories('Male')">MALE</div>
-        <div class="gender-card" onclick="showCategories('Female')">FEMALE</div>
+    <div class="gender-grid">
+        <button class="gender-btn" onclick="showCategories('Male')">Masculine</button>
+        <button class="gender-btn" onclick="showCategories('Female')">Feminine</button>
     </div>
 </div>
 
 <div id="category-section">
-    
-    <div class="collection-header-wrapper">
-        <h1 id="dynamic-collection-title" class="collection-title">OUR FRAGRANCE COLLECTION</h1>
+    <div class="section-header">
+        <h1 id="dynamic-collection-title" class="collection-title">THE COLLECTION</h1>
+        <p style="font-size: 10px; letter-spacing: 4px; opacity: 0.5;">SELECT A FAMILY TO DISCOVER</p>
     </div>
 
     <div class="collection-container">
-
-        <div class="category-box" onclick="toggleBox(this)">
-            <img src="/static/woody.jpg" alt="Woody">
-            <div class="category-content">
-                <h3>WOODY</h3>
-            </div>
-            <div class="perfume-list">
-                <a href="product.html?item=woody" class="perfume-item">Cedar Noir</a>
-            </div>
         </div>
 
-        <div class="category-box" onclick="toggleBox(this)">
-            <img src="/static/floral.png" alt="Floral">
-            <div class="category-content">
-                <h3>FLORAL</h3>
-            </div>
-            <div class="perfume-list">
-                <a href="product.html?item=floral" class="perfume-item">Blooming Desire</a>
-            </div>
-        </div>
-
-        <div class="category-box" onclick="toggleBox(this)">
-            <img src="/static/citrus.png" alt="Citrus">
-            <div class="category-content">
-                <h3>CITRUS</h3>
-            </div>
-            <div class="perfume-list">
-                <a href="product.html?item=citrus" class="perfume-item">Lime Serenity</a>
-            </div>
-        </div>
-
-        <div class="category-box" onclick="toggleBox(this)">
-            <img src="/static/oreintal.png" alt="Oriental">
-            <div class="category-content">
-                <h3>ORIENTAL</h3>
-            </div>
-            <div class="perfume-list">
-                <a href="product.html?item=oriental" class="perfume-item">Midnight Saffron</a>
-            </div>
-        </div>
-
-        <div class="category-box" onclick="toggleBox(this)">
-            <img src="/static/aquatic.jpg" alt="Aquatic">
-            <div class="category-content">
-                <h3>AQUATIC</h3>
-            </div>
-            <div class="perfume-list">
-                <a href="product.html?item=aquatic" class="perfume-item">Blue Horizon</a>
-            </div>
-        </div>
-
-        <div class="category-box" onclick="toggleBox(this)">
-            <img src="/static/gourmand.jpg" alt="Gourmand">
-            <div class="category-content">
-                <h3>GOURMAND</h3>
-            </div>
-            <div class="perfume-list">
-                <a href="product.html?item=gourmand" class="perfume-item">Caramel Velvet</a>
-            </div>
-        </div>
-
+    <div class="nav-footer">
+        <button id="back-to-gender-btn" class="btn-minimal" onclick="showGenders()">
+            <i class="fas fa-arrow-left me-2"></i> Switch Identity
+        </button>
     </div>
 </div>
 
-<div class="action-buttons">
-    <button id="back-to-gender-btn" class="gold-btn-outline" style="display: none;" onclick="showGenders()">
-        ← CHANGE GENDER
-    </button>
-    
-    <a href="index.html" class="gold-btn-outline">← MAIN MENU</a>
-</div>
-</div>
 <script>
-    // Switches from View 1 (Gender) to View 2 (Categories)
-    function showCategories(gender) {
-        // 1. Update the title so it feels personalized (e.g., "OUR MALE COLLECTION")
-        document.getElementById('dynamic-collection-title').innerText = `OUR ${gender.toUpperCase()} COLLECTION`;
+let currentGender = 'Unisex';
 
-        // 2. Hide the gender boxes
-        document.getElementById('gender-section').style.display = 'none';
+function showCategories(gender) {
+    currentGender = gender; 
+    document.getElementById('dynamic-collection-title').innerText = `${gender.toUpperCase()} ESSENCES`;
+    document.getElementById('gender-section').style.display = 'none';
+    document.getElementById('category-section').style.display = 'block';
+    
+    loadShopCollection();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-        // 3. Show the category grid and the new 'Change Gender' button
-        document.getElementById('category-section').style.display = 'block';
-        document.getElementById('back-to-gender-btn').style.display = 'inline-block';
-        
-        // Ensure we scroll to the top of the collection
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+function showGenders() {
+    document.getElementById('category-section').style.display = 'none';
+    document.getElementById('gender-section').style.display = 'flex';
+}
 
-    // Switches back from View 2 to View 1
-    function showGenders() {
-        document.getElementById('category-section').style.display = 'none';
-        document.getElementById('back-to-gender-btn').style.display = 'none';
-        
-        document.getElementById('gender-section').style.display = 'flex';
-    }
+function toggleBox(element) {
+    const allBoxes = document.querySelectorAll('.category-card');
+    allBoxes.forEach(box => { if (box !== element) box.classList.remove('active'); });
+    element.classList.toggle("active");
+}
 
-    // Opens and closes the perfume dropdown inside the categories
-    function toggleBox(element) {
-        // Close other open boxes first (optional, for a cleaner accordion effect)
-        const allBoxes = document.querySelectorAll('.category-box');
-        allBoxes.forEach(box => {
-            if (box !== element) box.classList.remove('active');
+async function loadShopCollection() {
+    try {
+        const res = await fetch(`http://localhost:3000/api/products?gender=${currentGender}`);
+        const products = await res.json();
+        const container = document.querySelector('.collection-container');
+        container.innerHTML = ''; 
+
+        const categories = {};
+        products.forEach(product => {
+            if (!categories[product.category]) {
+                categories[product.category] = { image: product.image_url, perfumes: [] };
+            }
+            categories[product.category].perfumes.push(product);
         });
 
-        // Toggle the clicked box
-        element.classList.toggle("active");
-    }
+        for (const [categoryName, data] of Object.entries(categories)) {
+            const card = document.createElement('div');
+            card.className = 'category-card';
+            card.setAttribute('onclick', 'toggleBox(this)');
+            
+            let linksHTML = '';
+            data.perfumes.forEach(p => {
+                linksHTML += `<a href="product.html?id=${p.id}" class="perfume-link">${p.name}</a>`;
+            });
 
-    // 1. Fade IN when the page loads
-    window.addEventListener('pageshow', () => {
-        // Adds the class to fade out the black screen
-        document.body.classList.add('page-loaded');
-    });
+            card.innerHTML = `
+                <img src="http://localhost:3000${data.image}" alt="${categoryName}">
+                <div class="card-label">
+                    <h3>${categoryName.toUpperCase()}</h3>
+                </div>
+                <div class="perfume-dropdown">
+                    ${linksHTML}
+                </div>`;
+            container.appendChild(card);
+        }
+    } catch (error) { console.error("Error loading products:", error); }
+}
 
-    // 2. Fade OUT when a link is clicked
-    document.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            
-            // Skip the animation for empty links, page anchors, or the "javascript:history.back()" button
-            if (!href || href.startsWith('#') || href.startsWith('javascript')) return;
-            
-            // Stop the browser from instantly loading the next page
-            e.preventDefault();
-            
-            // Bring the black screen back
-            document.body.classList.remove('page-loaded');
-            
-            // Wait exactly 500 milliseconds for the fade to finish, then go to the new page!
-            setTimeout(() => {
-                window.location.href = href;
-            }, 500); 
-        });
-    });
+// Cinematic Fade-in on load
+window.addEventListener('load', () => {
+    document.body.style.opacity = '1';
+});
 </script>
 
 </body>
