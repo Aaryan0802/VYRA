@@ -146,10 +146,45 @@
     </div>
 </div>
 
+<div class="modal fade" id="editProductModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content" style="background: rgba(10,10,10,0.95); border: 1px solid var(--gold); backdrop-filter: blur(20px);">
+        <div class="modal-header border-bottom border-warning border-opacity-25">
+          <h5 class="modal-title" style="color: var(--gold); font-family: 'Playfair Display';">Edit Essence Formulation</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <form id="editProductForm">
+              <input type="hidden" id="editPid">
+              <div class="row g-3">
+                  <div class="col-md-6"><label style="color:var(--gold); font-size:10px;">NAME</label><input type="text" id="editPname" class="admin-input" required></div>
+                  <div class="col-md-6"><label style="color:var(--gold); font-size:10px;">PRICE (₹)</label><input type="number" id="editPprice" class="admin-input" required></div>
+                  <div class="col-md-4">
+                      <label style="color:var(--gold); font-size:10px;">FAMILY</label>
+                      <select id="editPcat" class="admin-input"><option value="Woody">Woody</option><option value="Floral">Floral</option><option value="Citrus">Citrus</option></select>
+                  </div>
+                  <div class="col-md-4">
+                      <label style="color:var(--gold); font-size:10px;">IDENTITY</label>
+                      <select id="editPgender" class="admin-input"><option value="Male">Masculine</option><option value="Female">Feminine</option><option value="Unisex">Unisex</option></select>
+                  </div>
+                  <div class="col-md-4"><label style="color:var(--gold); font-size:10px;">STOCK</label><input type="number" id="editPstock" class="admin-input"></div>
+                  <div class="col-12"><label style="color:var(--gold); font-size:10px;">IMAGE URL</label><input type="text" id="editPimage" class="admin-input" required></div>
+                  <div class="col-12"><label style="color:var(--gold); font-size:10px;">OLFACTORY NOTES</label><textarea id="editPnotes" class="admin-input" rows="3"></textarea></div>
+              </div>
+              <div class="text-end mt-4"><button type="submit" class="gold-btn">Update Formulation</button></div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     const token = localStorage.getItem("jwtToken");
     if (!token) window.location.href = "account.html";
+
+    // RESTORED: Store inventory globally so the edit modal can access it
+    let adminInventory = [];
 
     function switchTab(tabId, element) {
         document.querySelectorAll('.admin-section').forEach(sec => sec.classList.remove('active'));
@@ -182,18 +217,73 @@
     async function loadInventory() {
         try {
             const res = await fetch("/api/products");
-            const products = await res.json();
-            document.getElementById('inventoryBody').innerHTML = products.map(p => `
+            // RESTORED: Save to global array
+            adminInventory = await res.json(); 
+            
+            document.getElementById('inventoryBody').innerHTML = adminInventory.map(p => `
                 <tr>
                     <td>#${p.id}</td>
-                    <td><img src="${p.image_url}" style="width:40px; height:40px; border:1px solid var(--gold);"></td>
+                    <td><img src="${p.image_url}" style="width:40px; height:40px; object-fit:cover; border:1px solid var(--gold);"></td>
                     <td><strong>${p.name}</strong><br><small>${p.gender} | ${p.category}</small></td>
                     <td>₹${p.price}</td><td>${p.stock} Units</td>
-                    <td><button class="gold-btn" style="padding: 5px 10px; background: transparent; color: var(--gold); border: 1px solid var(--gold);">Edit</button></td>
+                    <td><button class="gold-btn" style="padding: 5px 10px; background: transparent; color: var(--gold); border: 1px solid var(--gold);" onclick="openEditModal(${p.id})">Edit</button></td>
                 </tr>
             `).join('');
         } catch(e) { console.error(e); }
     }
+
+    // RESTORED: Populate and Open Edit Modal
+    function openEditModal(productId) {
+        const product = adminInventory.find(p => p.id === productId);
+        if(!product) return;
+        
+        document.getElementById('editPid').value = product.id;
+        document.getElementById('editPname').value = product.name;
+        document.getElementById('editPprice').value = product.price;
+        document.getElementById('editPcat').value = product.category;
+        document.getElementById('editPgender').value = product.gender;
+        document.getElementById('editPstock').value = product.stock;
+        document.getElementById('editPimage').value = product.image_url;
+        document.getElementById('editPnotes').value = product.notes;
+        
+        new bootstrap.Modal(document.getElementById('editProductModal')).show();
+    }
+
+    // RESTORED: Submit Edit Changes
+    document.getElementById('editProductForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('editPid').value;
+        const body = {
+            name: document.getElementById('editPname').value,
+            price: document.getElementById('editPprice').value,
+            category: document.getElementById('editPcat').value,
+            gender: document.getElementById('editPgender').value,
+            stock: document.getElementById('editPstock').value,
+            image_url: document.getElementById('editPimage').value,
+            notes: document.getElementById('editPnotes').value
+        };
+
+        try {
+            const res = await fetch(`/api/products/${id}`, {
+                method: 'PUT',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` 
+                },
+                body: JSON.stringify(body)
+            });
+
+            if (res.ok) {
+                alert("Essence Updated Successfully.");
+                bootstrap.Modal.getInstance(document.getElementById('editProductModal')).hide();
+                loadInventory(); 
+            } else {
+                alert("Failed to update product.");
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    });
 
     async function loadAllAcquisitions() {
         try {
@@ -288,7 +378,6 @@
         } catch (e) { console.error(e); }
     }
 
-    // New product logic...
     document.getElementById('addProductForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const productData = {
