@@ -194,11 +194,10 @@
                 
                 // --- UPDATED HANDLER ---
                 "handler": async function (response) {
-                    // 1. Immediately trigger the Luxury Overlay
+                    // Show the luxury overlay immediately
                     document.getElementById('success-payment-id').innerText = response.razorpay_payment_id;
                     document.getElementById('luxury-success-overlay').classList.add('show');
                     
-                    // 2. Send the Payment ID to the backend silently
                     try {
                         await fetch("/api/checkout", {
                             method: "POST",
@@ -206,16 +205,16 @@
                                 "Content-Type": "application/json",
                                 "Authorization": `Bearer ${token}` 
                             },
-                            // WE ARE NOW SENDING THE ID!
                             body: JSON.stringify({
-                                razorpay_payment_id: response.razorpay_payment_id
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                // Use the order_id returned by your create-order API
+                                razorpay_order_id: response.razorpay_order_id 
                             })
                         });
                     } catch (e) {
-                        console.error("Failed to sync transaction with database:", e);
+                        console.error("Sync Error:", e);
                     }
 
-                    // 3. Wait 3 seconds for the cinematic effect, then route to the portal
                     setTimeout(() => {
                         window.location.href = "account.html?tab=orders";
                     }, 3000);

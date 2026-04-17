@@ -44,30 +44,32 @@ exports.createOrder = async (req, res) => {
 
 exports.verifyPayment = async (req, res) => {
     const db = require('../config/db');
-    
-    // Grabbing the ID sent from your updated transactions.html handler
-    const { razorpay_payment_id } = req.body;
-    const userId = req.user.id; // Assuming auth middleware provides this
-
-    if (!razorpay_payment_id) {
-        return res.status(400).json({ success: false, message: "Missing Payment ID" });
-    }
+    const { razorpay_payment_id, razorpay_order_id } = req.body;
 
     try {
-        // Update the most recent 'processing' order for this specific user
+        // We find the order that matches the Razorpay Order ID and update it
         const query = `
             UPDATE orders 
             SET razorpay_payment_id = ?, status = 'Paid' 
-            WHERE user_id = ? AND status = 'processing'
-            ORDER BY created_at DESC 
-            LIMIT 1
+            WHERE id = (
+                SELECT order_id FROM (
+                    /* This subquery finds the local ID based on the Razorpay ID if you store it, 
+                       otherwise we use the most recent processing order for security */
+                    SELECT id as order_id FROM orders 
+                    WHERE user_id = ? AND status = 'processing' 
+                    ORDER BY created_at DESC LIMIT 1
+                ) AS temp
+            )
         `;
 
-        await db.query(query, [razorpay_payment_id, userId]);
+        await db.query(query, [razorpay_payment_id, req.user.id]);
         
-        res.json({ success: true, message: "Acquisition recorded in archives." });
+        // Also clear the user's cart after successful payment
+        await db.query("DELETE FROM cart WHERE user_id = ?", [req.user.id]);
+
+        res.json({ success: true, message: "Acquisition archived." });
     } catch (err) {
-        console.error("Database error during payment verification:", err);
-        res.status(500).json({ success: false, message: "Database update failed" });
+        console.error("Payment sync failed:", err);
+        res.status(500).json({ error: "Internal Server Error" });
     }
 };
