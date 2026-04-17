@@ -205,10 +205,10 @@
 
             <div class="qty-selector">
                 <span style="font-size: 11px; letter-spacing: 1px; opacity: 0.6;">QUANTITY</span>
-                <div class="d-flex align-items-center gap-3" style="display: flex;">
-                    <button class="qty-btn" onclick="updateQty(-1)">-</button>
+                <div class="d-flex align-items-center gap-3">
+                    <button type="button" class="qty-btn" id="btn-decrease">-</button>
                     <span id="qty-val" style="width: 20px; text-align: center;">1</span>
-                    <button class="qty-btn" onclick="updateQty(1)">+</button>
+                    <button type="button" class="qty-btn" id="btn-increase">+</button>
                 </div>
             </div>
 
@@ -230,12 +230,21 @@
 </div>
 
 <script>
-    let quantity = 1;
+    // --- Secure Quantity Selector Logic ---
+    let selectedQuantity = 1;
+    const qtyDisplay = document.getElementById('qty-val');
 
-    function updateQty(val) {
-        quantity = Math.max(1, quantity + val);
-        document.getElementById('qty-val').innerText = quantity;
-    }
+    document.getElementById('btn-decrease').addEventListener('click', () => {
+        if (selectedQuantity > 1) {
+            selectedQuantity--;
+            qtyDisplay.innerText = selectedQuantity;
+        }
+    });
+
+    document.getElementById('btn-increase').addEventListener('click', () => {
+        selectedQuantity++;
+        qtyDisplay.innerText = selectedQuantity;
+    });
 
     async function loadReviews(productId) {
         try {
