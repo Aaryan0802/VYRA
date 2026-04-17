@@ -24,7 +24,6 @@
             overflow-x: hidden;
         }
 
-        /* Essential Navigation Bar */
         .top-nav {
             position: absolute; top: 0; width: 100%; padding: 25px 50px;
             display: flex; justify-content: space-between; align-items: center; z-index: 100;
@@ -39,45 +38,33 @@
             display: flex; justify-content: center; align-items: center; padding: 120px 20px 80px; 
         }
 
-        /* --- Custom Luxury Scrollbar --- */
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(207, 170, 106, 0.3); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
 
-        /* Glassmorphism & Fixed Layout */
         .glass-card { 
             background: var(--glass); border: 1px solid var(--border); 
             border-radius: 2px; padding: 50px; box-shadow: 0 40px 100px rgba(0,0,0,0.9); 
             width: 100%; max-width: 450px; transition: all 0.5s ease;
         }
 
-        /* LOCKED OUTER BOX */
         .dashboard-card { 
             max-width: 1100px; display: none; padding: 0; overflow: hidden; 
             height: 80vh; min-height: 600px; max-height: 900px;
         }
 
-        /* SCROLLABLE INNER SECTIONS */
-        .sidebar { 
-            background: rgba(0,0,0,0.5); padding: 50px 30px; 
-            height: 100%; overflow-y: auto;
-        }
-        
-        .dashboard-content {
-            height: 100%; padding: 50px; overflow-y: auto;
-        }
+        .sidebar { background: rgba(0,0,0,0.5); padding: 50px 30px; height: 100%; overflow-y: auto; }
+        .dashboard-content { height: 100%; padding: 50px; overflow-y: auto; }
 
         .brand-title { text-align: center; font-family: 'Playfair Display', serif; font-size: 38px; letter-spacing: 10px; color: var(--gold); margin-bottom: 40px; }
 
-        /* Floating Inputs */
         .input-group-custom { position: relative; margin-bottom: 25px; }
         .auth-input { width: 100%; padding: 12px 0; background: transparent; border: none; border-bottom: 1px solid var(--border); color: white; font-size: 14px; outline: none; transition: 0.3s; }
         .auth-input:focus { border-bottom-color: var(--gold); }
         .input-group-custom label { position: absolute; top: 12px; left: 0; color: rgba(255,255,255,0.4); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; pointer-events: none; }
         .auth-input:focus + label, .auth-input:not(:placeholder-shown) + label { top: -15px; color: var(--gold); font-size: 10px; }
 
-        /* Buttons */
         .btn-vyra {
             padding: 14px 35px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; font-size: 11px;
             transition: 0.4s; border: 1px solid var(--gold); text-decoration: none; display: inline-block; text-align: center;
@@ -90,10 +77,8 @@
         .gold-btn-full { width: 100%; padding: 16px; background: var(--gold); border: none; color: black; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; transition: 0.4s; text-decoration: none; display: inline-block; text-align: center;}
         .gold-btn-full:hover { background: white; transform: scale(1.02); }
 
-        /* --- PERFECTED SIDEBAR NAVIGATION --- */
         .nav-pills .nav-link { 
-            display: flex; align-items: center; 
-            white-space: nowrap; 
+            display: flex; align-items: center; white-space: nowrap; 
             color: rgba(255,255,255,0.6) !important; border-radius: 0 !important; margin-bottom: 15px;
             padding: 18px 25px !important; font-size: 11px; letter-spacing: 3px; text-align: left;
             border: 1px solid transparent !important; text-transform: uppercase; transition: 0.3s;
@@ -106,7 +91,6 @@
         .nav-pills .admin-btn { border-color: rgba(207, 170, 106, 0.4) !important; color: var(--gold) !important; }
         .nav-pills .admin-btn:hover { background: rgba(207, 170, 106, 0.1) !important; border-color: var(--gold) !important; }
 
-        /* Order & Cart Cards */
         .cart-img { width: 70px; height: 90px; object-fit: cover; border: 1px solid var(--border); margin-right: 20px; }
         .luxury-card { 
             background: rgba(10,10,10,0.6); border: 1px solid rgba(207,170,106,0.3); 
@@ -263,7 +247,6 @@
 <script>
     let isLoginMode = true;
 
-    // --- Authentication Logic ---
     function toggleAuthMode() {
         isLoginMode = !isLoginMode;
         document.getElementById("authSubmitBtn").innerText = isLoginMode ? "Enter Boutique" : "Create Identity";
@@ -325,7 +308,6 @@
         }
     });
 
-    // --- Cart Logic (With Quantity Selectors & Remove Option) ---
     async function loadUserCart() {
         const token = localStorage.getItem("jwtToken");
         const list = document.getElementById("cart-list");
@@ -357,15 +339,15 @@
                             <span style="color:white; display:block; font-size:16px; letter-spacing:2px; font-family:'Playfair Display';">${item.name.toUpperCase()}</span>
                             
                             <div class="d-flex align-items-center mt-2">
-                                <button onclick="updateCartQuantity(${prodId}, ${item.quantity - 1})" style="background:transparent; border:1px solid var(--border); color:white; width:25px; height:25px; cursor:pointer; transition:0.3s;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">-</button>
+                                <button type="button" onclick="updateCartQuantity(${prodId}, ${item.quantity - 1})" style="background:transparent; border:1px solid var(--border); color:white; width:25px; height:25px; cursor:pointer; transition:0.3s;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">-</button>
                                 <span style="margin: 0 15px; font-size: 12px; color: var(--gold);">${item.quantity}</span>
-                                <button onclick="updateCartQuantity(${prodId}, ${item.quantity + 1})" style="background:transparent; border:1px solid var(--border); color:white; width:25px; height:25px; cursor:pointer; transition:0.3s;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">+</button>
+                                <button type="button" onclick="updateCartQuantity(${prodId}, ${item.quantity + 1})" style="background:transparent; border:1px solid var(--border); color:white; width:25px; height:25px; cursor:pointer; transition:0.3s;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">+</button>
                             </div>
                         </div>
                     </div>
                     <div class="text-end">
                         <span style="color:var(--gold); font-size:18px; font-family:'Playfair Display'; display:block; margin-bottom: 5px;">₹${(item.price * item.quantity).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
-                        <button onclick="removeFromCart(${prodId})" style="background:transparent; border:none; color:rgba(255,255,255,0.4); font-size:9px; letter-spacing:2px; text-transform:uppercase; transition:0.3s;" onmouseover="this.style.color='#ff4444'" onmouseout="this.style.color='rgba(255,255,255,0.4)'"><i class="fas fa-times me-1"></i> Remove</button>
+                        <button type="button" onclick="removeFromCart(${prodId})" style="background:transparent; border:none; color:rgba(255,255,255,0.4); font-size:9px; letter-spacing:2px; text-transform:uppercase; transition:0.3s;" onmouseover="this.style.color='#ff4444'" onmouseout="this.style.color='rgba(255,255,255,0.4)'"><i class="fas fa-times me-1"></i> Remove</button>
                     </div>
                 </div>`;
             });
@@ -404,7 +386,6 @@
         } catch(e) { console.error("Error removing item:", e); }
     }
 
-    // --- Order History Logic ---
     async function loadOrderHistory() {
         const token = localStorage.getItem("jwtToken");
         const list = document.getElementById("orders-list");
@@ -459,7 +440,6 @@
         }
     }
 
-    // --- Reviews Logic ---
     async function openReviewModal() {
         try {
             const res = await fetch('/api/products');
@@ -512,7 +492,6 @@
 
     function logout() { localStorage.clear(); window.location.href = "account.html"; }
 
-    // --- Initialization ---
     window.onload = () => {
         const user = JSON.parse(localStorage.getItem("user"));
         if (user) {
