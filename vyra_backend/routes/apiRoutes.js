@@ -32,5 +32,6 @@ router.post('/checkout', auth.verifyToken, paymentController.verifyPayment);
 router.post('/create-order', auth.verifyToken, paymentController.createOrder);
 router.get('/reviews/:id', productController.getProductReviews);
 router.post('/reviews', productController.addReview);
+router.put('/products/:id', auth.verifyToken, auth.isAdmin, productController.updateProduct);
 
 module.exports = router;

@@ -72,3 +72,17 @@ exports.addReview = async (req, res) => {
         res.status(500).json({ error: "Failed to save impression" });
     }
 };
+
+exports.updateProduct = async (req, res) => {
+    const { id } = req.params;
+    const { name, price, category, gender, stock, image_url, notes } = req.body;
+    try {
+        await db.query(
+            "UPDATE products SET name=?, price=?, category=?, gender=?, stock=?, image_url=?, notes=? WHERE id=?",
+            [name, price, category, gender, stock, image_url, notes, id]
+        );
+        res.json({ message: "Product updated" });
+    } catch (err) {
+        res.status(500).json({ error: "Update failed" });
+    }
+};
