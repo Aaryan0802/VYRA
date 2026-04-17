@@ -127,3 +127,26 @@ exports.removeFromCart = async (req, res) => {
         res.status(500).json({ error: "Failed to remove item" });
     }
 };
+
+// Fetch only products the user has actually purchased
+exports.getPurchasedProducts = async (req, res) => {
+    const db = require('../config/db');
+    const userId = req.user.id;
+
+    try {
+        // Query joins orders and order_items to find exactly what this user bought
+        const query = `
+            SELECT DISTINCT p.id, p.name 
+            FROM order_items oi
+            JOIN orders o ON oi.order_id = o.id
+            JOIN products p ON oi.product_id = p.id
+            WHERE o.user_id = ? AND o.status != 'cancelled'
+        `;
+        
+        const [products] = await db.query(query, [userId]);
+        res.json(products);
+    } catch (err) {
+        console.error("Error fetching purchased products:", err);
+        res.status(500).json({ error: "Failed to verify acquisition history." });
+    }
+};

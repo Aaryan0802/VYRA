@@ -441,20 +441,31 @@
     }
 
     async function openReviewModal() {
+        const token = localStorage.getItem("jwtToken");
         try {
-            const res = await fetch('/api/products');
+            // Hit the new restricted endpoint instead of the public /api/products
+            const res = await fetch('/api/purchased-products', {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
             const products = await res.json();
             const select = document.getElementById('reviewProduct');
             
             select.innerHTML = '<option value="" disabled selected>Select an Essence</option>';
-            products.forEach(p => {
-                select.innerHTML += `<option value="${p.id}" style="color: black;">${p.name.toUpperCase()}</option>`;
-            });
+            
+            if (!products || products.length === 0) {
+                // If they haven't bought anything, lock the dropdown
+                select.innerHTML = '<option value="" disabled selected>No past acquisitions available to review</option>';
+            } else {
+                // Populate only with items they own
+                products.forEach(p => {
+                    select.innerHTML += `<option value="${p.id}" style="color: black;">${p.name.toUpperCase()}</option>`;
+                });
+            }
             
             new bootstrap.Modal(document.getElementById('reviewModal')).show();
         } catch(e) {
             console.error(e);
-            alert("Could not load the boutique collection.");
+            alert("Could not verify your collection history.");
         }
     }
 

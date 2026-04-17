@@ -24,8 +24,7 @@ router.put('/admin/orders/:id', auth.verifyToken, auth.isAdmin, adminController.
 router.get('/orders', auth.verifyToken, shopController.getUserOrders);
 router.put('/cart/:productId', auth.verifyToken, shopController.updateCartQuantity);
 router.delete('/cart/:productId', auth.verifyToken, shopController.removeFromCart);
-
-
+router.get('/purchased-products', auth.verifyToken, shopController.getPurchasedProducts);
 // Protected Customer Routes (Requires JWT)
 router.get('/cart', auth.verifyToken, shopController.getCart);
 router.put('/update-profile', auth.verifyToken, authController.updateProfile);
