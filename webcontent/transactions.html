@@ -123,7 +123,7 @@
     async function loadSummary() {
         const token = localStorage.getItem("jwtToken");
         try {
-            const res = await fetch("http://localhost:3000/api/cart", {
+            const res = await fetch("/api/cart", {
                 headers: { "Authorization": `Bearer ${token}` }
             });
             const items = await res.json();
@@ -152,7 +152,7 @@
 
         try {
             // 1. Request Order ID from Backend
-            const res = await fetch("http://localhost:3000/api/create-order", {
+            const res = await fetch("/api/create-order", {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json",
@@ -175,7 +175,7 @@
                     alert("Acquisition Confirmed. Payment ID: " + response.razorpay_payment_id);
                     
                     // Finalize the order and clear cart
-                    await fetch("http://localhost:3000/api/checkout", {
+                    await fetch("/api/checkout", {
                         method: "POST",
                         headers: { "Authorization": `Bearer ${token}` }
                     });

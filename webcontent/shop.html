@@ -144,7 +144,7 @@
     // --- Fetch Products ---
     async function loadCatalog() {
         try {
-            const res = await fetch("http://localhost:3000/api/products");
+            const res = await fetch("/api/products");
             const data = await res.json();
             
             allProducts = Array.isArray(data) ? data : [];
@@ -209,7 +209,7 @@
             const imgPath = data.image.startsWith('/') ? data.image : '/' + data.image;
 
             card.innerHTML = `
-                <img src="http://localhost:3000${imgPath}" alt="${categoryName}">
+                <img src="${imgPath}" alt="${categoryName}">
                 <div class="card-label">
                     <h3>${categoryName} ESSENCES</h3>
                 </div>

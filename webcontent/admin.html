@@ -172,7 +172,7 @@
     // --- Data Loading Functions ---
     async function loadInsights() {
         try {
-            const res = await fetch("http://localhost:3000/api/admin/stats", { headers: { "Authorization": `Bearer ${token}` } });
+            const res = await fetch("/api/admin/stats", { headers: { "Authorization": `Bearer ${token}` } });
             if(!res.ok) throw new Error();
             const data = await res.json();
             
@@ -194,7 +194,7 @@
 
     async function loadInventory() {
         try {
-            const res = await fetch("http://localhost:3000/api/products"); // Reusing public route for catalog
+            const res = await fetch("/api/products"); // Reusing public route for catalog
             const products = await res.json();
             const tbody = document.getElementById('inventoryBody');
             tbody.innerHTML = '';
@@ -202,7 +202,7 @@
                 const imgPath = p.image_url.startsWith('/') ? p.image_url : '/' + p.image_url;
                 tbody.innerHTML += `<tr>
                     <td>#${p.id}</td>
-                    <td><img src="http://localhost:3000${imgPath}" style="width:40px; height:40px; object-fit:cover; border:1px solid var(--gold);"></td>
+                    <td><img src="${imgPath}" style="width:40px; height:40px; object-fit:cover; border:1px solid var(--gold);"></td>
                     <td><strong style="color:white;">${p.name}</strong><br><span style="font-size:10px; opacity:0.6;">${p.gender} | ${p.category}</span></td>
                     <td>₹${p.price}</td>
                     <td>${p.stock} Units</td>
@@ -215,7 +215,7 @@
     // You will need to build the backend routes for these two functions (/api/admin/orders and /api/admin/users)
     async function loadAllAcquisitions() {
         try {
-            const res = await fetch("http://localhost:3000/api/admin/orders", {
+            const res = await fetch("/api/admin/orders", {
                 headers: { "Authorization": `Bearer ${token}` }
             });
             const orders = await res.json();
@@ -237,7 +237,7 @@
 
     async function loadClients() {
         try {
-            const res = await fetch("http://localhost:3000/api/admin/users", {
+            const res = await fetch("/api/admin/users", {
                 headers: { "Authorization": `Bearer ${token}` }
             });
             const users = await res.json();
@@ -271,7 +271,7 @@
         };
 
         try {
-            const res = await fetch("http://localhost:3000/api/products", {
+            const res = await fetch("/api/products", {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json",

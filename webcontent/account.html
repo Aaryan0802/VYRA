@@ -235,7 +235,7 @@
         };
 
         try {
-            const res = await fetch(`http://localhost:3000${endpoint}`, {
+            const res = await fetch(`${endpoint}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body)
@@ -264,7 +264,7 @@
             postal_code: document.getElementById("editZip").value
         };
 
-        const res = await fetch("http://localhost:3000/api/update-profile", {
+        const res = await fetch("/api/update-profile", {
             method: "PUT",
             headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
             body: JSON.stringify(body)
@@ -282,7 +282,7 @@
         const token = localStorage.getItem("jwtToken");
         const list = document.getElementById("cart-list");
         try {
-            const res = await fetch("http://localhost:3000/api/cart", {
+            const res = await fetch("/api/cart", {
                 headers: { "Authorization": `Bearer ${token}` }
             });
             const items = await res.json();
@@ -302,7 +302,7 @@
                 list.innerHTML += `
                 <div class="luxury-card d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
-                        <img src="http://localhost:3000${cleanPath}" class="cart-img">
+                        <img src="${cleanPath}" class="cart-img">
                         <div>
                             <span style="color:white; display:block; font-size:16px; letter-spacing:2px; font-family:'Playfair Display';">${item.name.toUpperCase()}</span>
                             <small style="color:rgba(255,255,255,0.4); font-size:10px; letter-spacing:2px; text-transform:uppercase;">Quantity: ${item.quantity}</small>
@@ -321,7 +321,7 @@
         list.innerHTML = '<p style="color:rgba(255,255,255,0.4); font-size:13px; letter-spacing:1px;">Accessing archives...</p>';
         
         try {
-            const res = await fetch("http://localhost:3000/api/orders", {
+            const res = await fetch("/api/orders", {
                 headers: { "Authorization": `Bearer ${token}` }
             });
             
