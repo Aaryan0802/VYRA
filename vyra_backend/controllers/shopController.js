@@ -1,18 +1,22 @@
 const db = require('../config/db');
 
-// Add or update item in cart securely
+// Add or update item in cart securely (FIXED: Now uses frontend quantity!)
 exports.addToCart = async (req, res) => {
     try {
-        const userId = req.user.id; // From JWT Auth Middleware
-        const { product_id } = req.body;
+        const userId = req.user.id; 
+        const { product_id, quantity } = req.body;
+        
+        // Use the quantity sent from frontend, default to 1 if missing
+        const qtyToAdd = quantity ? parseInt(quantity) : 1;
 
-        // Check if item already in cart
         const [existing] = await db.query('SELECT * FROM cart WHERE user_id = ? AND product_id = ?', [userId, product_id]);
 
         if (existing.length > 0) {
-            await db.query('UPDATE cart SET quantity = quantity + 1 WHERE id = ?', [existing[0].id]);
+            // Add the new quantity to the existing quantity
+            await db.query('UPDATE cart SET quantity = quantity + ? WHERE id = ?', [qtyToAdd, existing[0].id]);
         } else {
-            await db.query('INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, 1)', [userId, product_id]);
+            // Insert with the correct quantity
+            await db.query('INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?)', [userId, product_id, qtyToAdd]);
         }
         res.json({ message: "Cart updated successfully" });
     } catch (error) { res.status(500).json({ error: error.message }); }
@@ -21,8 +25,9 @@ exports.addToCart = async (req, res) => {
 exports.getCart = async (req, res) => {
     try {
         const userId = req.user.id;
+        // FIXED: Changed c.id to c.product_id so the frontend buttons target the correct item
         const [items] = await db.query(`
-            SELECT c.id, p.name, p.price, p.image_url, c.quantity 
+            SELECT c.product_id, p.name, p.price, p.image_url, c.quantity 
             FROM cart c 
             JOIN products p ON c.product_id = p.id 
             WHERE c.user_id = ?`, [userId]);
@@ -34,12 +39,11 @@ exports.getCart = async (req, res) => {
 
 // Secure Checkout & Server-Side Calculation
 exports.checkout = async (req, res) => {
-    const connection = await db.getConnection(); // Use transaction for multi-table safety
+    const connection = await db.getConnection(); 
     try {
         const userId = req.user.id;
         await connection.beginTransaction();
 
-        // 1. Get user's cart joined with live product prices
         const [cartItems] = await connection.query(`
             SELECT c.product_id, c.quantity, p.price 
             FROM cart c 
@@ -49,18 +53,15 @@ exports.checkout = async (req, res) => {
 
         if (cartItems.length === 0) return res.status(400).json({ message: "Cart is empty" });
 
-        // 2. Calculate Total Server-Side
         let totalAmount = 0;
         cartItems.forEach(item => { totalAmount += item.quantity * item.price; });
 
-        // 3. Create the Order record
         const [orderResult] = await connection.query(
             'INSERT INTO orders (user_id, total_amount, status) VALUES (?, ?, ?)',
             [userId, totalAmount, 'processing']
         );
         const orderId = orderResult.insertId;
 
-        // 4. Create Order Items (The Receipt) & Update Stock
         for (let item of cartItems) {
             await connection.query(
                 'INSERT INTO order_items (order_id, product_id, quantity, price_at_purchase) VALUES (?, ?, ?, ?)',
@@ -69,13 +70,12 @@ exports.checkout = async (req, res) => {
             await connection.query('UPDATE products SET stock = stock - ? WHERE id = ?', [item.quantity, item.product_id]);
         }
 
-        // 5. Clear the user's cart
         await connection.query('DELETE FROM cart WHERE user_id = ?', [userId]);
 
-        await connection.commit(); // Save everything
+        await connection.commit(); 
         res.json({ message: "Checkout successful", orderId, totalAmount });
     } catch (error) {
-        await connection.rollback(); // Undo if something fails
+        await connection.rollback(); 
         res.status(500).json({ error: error.message });
     } finally {
         connection.release();
@@ -84,9 +84,8 @@ exports.checkout = async (req, res) => {
 
 exports.getUserOrders = async (req, res) => {
     try {
-        const userId = req.user.id; // Comes from the verifyToken middleware
+        const userId = req.user.id; 
 
-        // Query the database for this specific user's orders, sorted newest first
         const [orders] = await db.query(
             'SELECT id, total_amount, status, razorpay_payment_id, created_at FROM orders WHERE user_id = ? ORDER BY created_at DESC', 
             [userId]
