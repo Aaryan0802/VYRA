@@ -33,3 +33,20 @@ exports.createProduct = async (req, res) => {
         res.status(201).json({ message: "Product created", id: result.insertId });
     } catch (error) { res.status(500).json({ error: error.message }); }
 };
+
+// Fetch reviews for a specific product
+exports.getProductReviews = (req, res) => {
+    // Assuming your db connection is required at the top of this file
+    const db = require('../config/db'); 
+    
+    const productId = req.params.id;
+    const query = 'SELECT reviewer_name, rating, comment FROM reviews WHERE product_id = ? ORDER BY created_at DESC';
+    
+    db.query(query, [productId], (err, results) => {
+        if (err) {
+            console.error("Error fetching reviews:", err);
+            return res.status(500).json({ error: "Failed to load impressions" });
+        }
+        res.json(results);
+    });
+};
