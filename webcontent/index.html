@@ -83,11 +83,11 @@
         }
         .btn-vyra:hover { background: var(--gold); color: #000; box-shadow: 0 10px 20px var(--gold-glow); }
 
-        /* --- OCCASION SECTION (NEW) --- */
+        /* --- OCCASION SECTION --- */
         .occasion-section { padding: 100px 0; background: #030303; border-bottom: 1px solid var(--border); }
         .occasion-title { text-align: center; font-family: 'Playfair Display', serif; font-size: 42px; color: white; letter-spacing: 2px; margin-bottom: 60px; }
         
-        .occasion-card { text-align: center; text-decoration: none; display: flex; flex-direction: column; align-items: center; transition: 0.4s; cursor: pointer; }
+        .occasion-card { text-align: center; display: flex; flex-direction: column; align-items: center; transition: 0.4s; }
         .occasion-card:hover { transform: translateY(-10px); }
         
         .occasion-img-wrapper { 
@@ -104,6 +104,13 @@
         .occasion-card:hover .occasion-name { color: var(--gold); }
         
         .occasion-desc { font-size: 10px; color: rgba(255,255,255,0.5); letter-spacing: 2px; text-transform: uppercase; }
+
+        .occ-link {
+            font-size: 10px; color: rgba(255,255,255,0.4); text-decoration: none; 
+            letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; 
+            margin-bottom: 10px; display: block;
+        }
+        .occ-link:hover { color: var(--gold); transform: translateY(-2px); }
 
         /* --- LINEAR SELECTION DIAL --- */
         .showcase-section { padding: 120px 0; background: #050505; }
@@ -202,44 +209,64 @@
             <h2 class="occasion-title">What are you wearing it for?</h2>
             
             <div class="row justify-content-center mt-5">
-                <div class="col-6 col-md-3 mb-5 d-flex justify-content-center">
-                    <a href="shop.html" class="occasion-card">
+                <div class="col-6 col-md-3 mb-5 d-flex flex-column align-items-center">
+                    <div class="occasion-card">
                         <div class="occasion-img-wrapper">
                             <img src="/static/occ_classic.png" alt="Classic Signature">
                         </div>
                         <div class="occasion-name">Classic / Signature</div>
-                        <div class="occasion-desc">Timeless & Unmistakable</div>
-                    </a>
+                        <div class="occasion-desc mb-4">Timeless & Unmistakable</div>
+                    </div>
+                    <div class="text-center w-100">
+                        <a href="product.html?id=1" class="occ-link">Cedar Noir</a>
+                        <a href="product.html?id=3" class="occ-link">Timber Reserve</a>
+                        <a href="product.html?id=25" class="occ-link">Blooming Desire</a>
+                    </div>
                 </div>
 
-                <div class="col-6 col-md-3 mb-5 d-flex justify-content-center">
-                    <a href="shop.html" class="occasion-card">
+                <div class="col-6 col-md-3 mb-5 d-flex flex-column align-items-center">
+                    <div class="occasion-card">
                         <div class="occasion-img-wrapper">
                             <img src="/static/occ_night.png" alt="Date Night Out">
                         </div>
                         <div class="occasion-name">Date / Night Out</div>
-                        <div class="occasion-desc">Deep & Seductive</div>
-                    </a>
+                        <div class="occasion-desc mb-4">Deep & Seductive</div>
+                    </div>
+                    <div class="text-center w-100">
+                        <a href="product.html?id=2" class="occ-link">Midnight Ember</a>
+                        <a href="product.html?id=14" class="occ-link">Smoked Saffron</a>
+                        <a href="product.html?id=32" class="occ-link">Velvet Cardamom</a>
+                    </div>
                 </div>
 
-                <div class="col-6 col-md-3 mb-5 d-flex justify-content-center">
-                    <a href="shop.html" class="occasion-card">
+                <div class="col-6 col-md-3 mb-5 d-flex flex-column align-items-center">
+                    <div class="occasion-card">
                         <div class="occasion-img-wrapper">
                             <img src="/static/occ_office.png" alt="Daily Office">
                         </div>
                         <div class="occasion-name">Daily / Office</div>
-                        <div class="occasion-desc">Crisp & Professional</div>
-                    </a>
+                        <div class="occasion-desc mb-4">Crisp & Professional</div>
+                    </div>
+                    <div class="text-center w-100">
+                        <a href="product.html?id=5" class="occ-link">Bergamot Breeze</a>
+                        <a href="product.html?id=7" class="occ-link">Lemon Zest Supreme</a>
+                        <a href="product.html?id=8" class="occ-link">Grapefruit Oasis</a>
+                    </div>
                 </div>
 
-                <div class="col-6 col-md-3 mb-5 d-flex justify-content-center">
-                    <a href="shop.html" class="occasion-card">
+                <div class="col-6 col-md-3 mb-5 d-flex flex-column align-items-center">
+                    <div class="occasion-card">
                         <div class="occasion-img-wrapper">
                             <img src="/static/occ_sport.png" alt="Sport">
                         </div>
                         <div class="occasion-name">Sport & Active</div>
-                        <div class="occasion-desc">Fresh & Energetic</div>
-                    </a>
+                        <div class="occasion-desc mb-4">Fresh & Energetic</div>
+                    </div>
+                    <div class="text-center w-100">
+                        <a href="product.html?id=9" class="occ-link">Oceanic Depths</a>
+                        <a href="product.html?id=11" class="occ-link">Sea Breeze Horizon</a>
+                        <a href="product.html?id=19" class="occ-link">Ginger Wood</a>
+                    </div>
                 </div>
             </div>
         </div>
