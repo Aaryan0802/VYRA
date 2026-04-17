@@ -98,19 +98,33 @@ exports.getUserOrders = async (req, res) => {
     }
 };
 
-// Remove an item from the user's cart
+// Function to update quantity
+exports.updateCartQuantity = async (req, res) => {
+    const db = require('../config/db');
+    const userId = req.user.id;
+    const productId = req.params.productId;
+    const { quantity } = req.body;
+
+    try {
+        await db.query("UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ?", [quantity, userId, productId]);
+        res.json({ success: true, message: "Quantity updated" });
+    } catch (err) {
+        console.error("Cart update error:", err);
+        res.status(500).json({ error: "Failed to update quantity" });
+    }
+};
+
+// Function to delete item completely
 exports.removeFromCart = async (req, res) => {
     const db = require('../config/db');
     const userId = req.user.id; 
     const productId = req.params.productId;
 
     try {
-        const query = "DELETE FROM cart WHERE user_id = ? AND product_id = ?";
-        await db.query(query, [userId, productId]);
-        
-        res.json({ success: true, message: "Item removed from collection." });
+        await db.query("DELETE FROM cart WHERE user_id = ? AND product_id = ?", [userId, productId]);
+        res.json({ success: true, message: "Item removed" });
     } catch (err) {
-        console.error("Error removing item from cart:", err);
-        res.status(500).json({ error: "Failed to update collection." });
+        console.error("Cart deletion error:", err);
+        res.status(500).json({ error: "Failed to remove item" });
     }
 };

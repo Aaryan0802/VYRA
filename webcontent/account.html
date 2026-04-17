@@ -263,6 +263,7 @@
 <script>
     let isLoginMode = true;
 
+    // --- Authentication Logic ---
     function toggleAuthMode() {
         isLoginMode = !isLoginMode;
         document.getElementById("authSubmitBtn").innerText = isLoginMode ? "Enter Boutique" : "Create Identity";
@@ -324,6 +325,7 @@
         }
     });
 
+    // --- Cart Logic (With Quantity Selectors & Remove Option) ---
     async function loadUserCart() {
         const token = localStorage.getItem("jwtToken");
         const list = document.getElementById("cart-list");
@@ -345,20 +347,25 @@
             list.innerHTML = '';
             items.forEach(item => {
                 const cleanPath = item.image_url.startsWith('/') ? item.image_url : '/' + item.image_url;
+                const prodId = item.product_id || item.id;
                 
-                // Added a Remove button section to the right side of the cart card
                 list.innerHTML += `
                 <div class="luxury-card d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
                         <img src="${cleanPath}" class="cart-img">
                         <div>
                             <span style="color:white; display:block; font-size:16px; letter-spacing:2px; font-family:'Playfair Display';">${item.name.toUpperCase()}</span>
-                            <small style="color:rgba(255,255,255,0.4); font-size:10px; letter-spacing:2px; text-transform:uppercase;">Quantity: ${item.quantity}</small>
+                            
+                            <div class="d-flex align-items-center mt-2">
+                                <button onclick="updateCartQuantity(${prodId}, ${item.quantity - 1})" style="background:transparent; border:1px solid var(--border); color:white; width:25px; height:25px; cursor:pointer; transition:0.3s;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">-</button>
+                                <span style="margin: 0 15px; font-size: 12px; color: var(--gold);">${item.quantity}</span>
+                                <button onclick="updateCartQuantity(${prodId}, ${item.quantity + 1})" style="background:transparent; border:1px solid var(--border); color:white; width:25px; height:25px; cursor:pointer; transition:0.3s;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">+</button>
+                            </div>
                         </div>
                     </div>
                     <div class="text-end">
-                        <span style="color:var(--gold); font-size:18px; font-family:'Playfair Display'; display:block; margin-bottom: 5px;">₹${parseFloat(item.price * item.quantity).toFixed(2)}</span>
-                        <button onclick="removeFromCart(${item.product_id || item.id})" style="background:transparent; border:none; color:rgba(255,255,255,0.4); font-size:9px; letter-spacing:2px; text-transform:uppercase; transition:0.3s;" onmouseover="this.style.color='#ff4444'" onmouseout="this.style.color='rgba(255,255,255,0.4)'"><i class="fas fa-times me-1"></i> Remove</button>
+                        <span style="color:var(--gold); font-size:18px; font-family:'Playfair Display'; display:block; margin-bottom: 5px;">₹${(item.price * item.quantity).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
+                        <button onclick="removeFromCart(${prodId})" style="background:transparent; border:none; color:rgba(255,255,255,0.4); font-size:9px; letter-spacing:2px; text-transform:uppercase; transition:0.3s;" onmouseover="this.style.color='#ff4444'" onmouseout="this.style.color='rgba(255,255,255,0.4)'"><i class="fas fa-times me-1"></i> Remove</button>
                     </div>
                 </div>`;
             });
@@ -366,7 +373,22 @@
         } catch (e) { console.error(e); }
     }
 
-    // --- NEW FUNCTION: Remove Item from Cart ---
+    async function updateCartQuantity(productId, newQty) {
+        if (newQty < 1) {
+            removeFromCart(productId); 
+            return;
+        }
+        const token = localStorage.getItem("jwtToken");
+        try {
+            const res = await fetch(`/api/cart/${productId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+                body: JSON.stringify({ quantity: newQty })
+            });
+            if (res.ok) loadUserCart(); 
+        } catch (e) { console.error("Error updating quantity:", e); }
+    }
+
     async function removeFromCart(productId) {
         const token = localStorage.getItem("jwtToken");
         try {
@@ -374,18 +396,15 @@
                 method: "DELETE",
                 headers: { "Authorization": `Bearer ${token}` }
             });
-            
             if(res.ok) {
-                // Instantly reloads the cart to show the item has been removed
                 loadUserCart(); 
             } else {
                 alert("Failed to remove item from collection.");
             }
-        } catch(e) {
-            console.error("Error removing item:", e);
-        }
+        } catch(e) { console.error("Error removing item:", e); }
     }
 
+    // --- Order History Logic ---
     async function loadOrderHistory() {
         const token = localStorage.getItem("jwtToken");
         const list = document.getElementById("orders-list");
@@ -424,7 +443,7 @@
                         <span style="color:rgba(255,255,255,0.4); font-size:11px; letter-spacing:1px;">${date}</span>
                     </div>
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <span style="color:white; font-size:24px; font-family:'Playfair Display';">₹${parseFloat(order.total_amount).toFixed(2)}</span>
+                        <span style="color:white; font-size:24px; font-family:'Playfair Display';">₹${parseFloat(order.total_amount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
                         <span style="font-size:9px; letter-spacing:2px; font-weight: 600; padding: 5px 12px; border-radius: 2px; ${pillStyle}">
                             ${statusText}
                         </span>
@@ -440,6 +459,7 @@
         }
     }
 
+    // --- Reviews Logic ---
     async function openReviewModal() {
         try {
             const res = await fetch('/api/products');
@@ -492,6 +512,7 @@
 
     function logout() { localStorage.clear(); window.location.href = "account.html"; }
 
+    // --- Initialization ---
     window.onload = () => {
         const user = JSON.parse(localStorage.getItem("user"));
         if (user) {
