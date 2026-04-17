@@ -35,18 +35,24 @@ exports.createProduct = async (req, res) => {
 };
 
 // Fetch reviews for a specific product
-exports.getProductReviews = (req, res) => {
-    // Assuming your db connection is required at the top of this file
-    const db = require('../config/db'); 
-    
-    const productId = req.params.id;
-    const query = 'SELECT reviewer_name, rating, comment FROM reviews WHERE product_id = ? ORDER BY created_at DESC';
-    
-    db.query(query, [productId], (err, results) => {
-        if (err) {
-            console.error("Error fetching reviews:", err);
-            return res.status(500).json({ error: "Failed to load impressions" });
-        }
+exports.getProductReviews = async (req, res) => {
+    try {
+        // It's safer to require the DB at the top of the file, 
+        // but if it's here, ensure it perfectly matches your other controllers.
+        const db = require('../config/db'); 
+        
+        const productId = req.params.id;
+        const query = 'SELECT reviewer_name, rating, comment FROM reviews WHERE product_id = ? ORDER BY created_at DESC';
+        
+        // Using modern await syntax 
+        const [results] = await db.query(query, [productId]);
+        
+        // Send the data back to the browser!
         res.json(results);
-    });
+
+    } catch (err) {
+        console.error("Error fetching reviews:", err);
+        // Ensure a response is ALWAYS sent, even if it crashes
+        res.status(500).json({ error: "Failed to load impressions" });
+    }
 };
