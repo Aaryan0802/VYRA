@@ -5,6 +5,7 @@ const authController = require('../controllers/authController');
 const productController = require('../controllers/productController');
 const shopController = require('../controllers/shopController');
 const paymentController = require('../controllers/paymentController');
+const contactController = require('../controllers/contactController');
 const auth = require('../middleware/auth');
 const adminController = require('../controllers/adminController');
 const upload = require('../middleware/upload');
@@ -25,6 +26,9 @@ router.get('/orders', auth.verifyToken, shopController.getUserOrders);
 router.put('/cart/:productId', auth.verifyToken, shopController.updateCartQuantity);
 router.delete('/cart/:productId', auth.verifyToken, shopController.removeFromCart);
 router.get('/purchased-products', auth.verifyToken, shopController.getPurchasedProducts);
+router.post('/contact', contactController.submitMessage);
+router.get('/admin/messages', auth.verifyToken, auth.isAdmin, contactController.getMessages);
+router.put('/admin/messages/:id', auth.verifyToken, auth.isAdmin, contactController.markAsRead);
 // Protected Customer Routes (Requires JWT)
 router.get('/cart', auth.verifyToken, shopController.getCart);
 router.put('/update-profile', auth.verifyToken, authController.updateProfile);

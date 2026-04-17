@@ -12,7 +12,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
         body { background: #050505; background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("/static/story.png"); background-size: cover; background-attachment: fixed; color: #f4f4f4; overflow-x: hidden; }
         
-        .sidebar { height: 100vh; background: var(--glass); backdrop-filter: blur(20px); border-right: 1px solid var(--border); position: fixed; width: 260px; padding: 40px 20px; z-index: 100; }
+        .sidebar { height: 100vh; background: var(--glass); backdrop-filter: blur(20px); border-right: 1px solid var(--border); position: fixed; width: 260px; padding: 40px 20px; z-index: 100; overflow-y: auto; }
         .main-content { margin-left: 260px; padding: 60px; min-height: 100vh; }
         
         .admin-title { font-family: 'Playfair Display', serif; color: var(--gold); margin-bottom: 40px; font-size: 36px; letter-spacing: 2px; }
@@ -38,6 +38,9 @@
         .admin-section { display: none; animation: fadeIn 0.5s ease; }
         .admin-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .msg-unread { border-left: 3px solid var(--gold) !important; }
+        .msg-resolved { opacity: 0.5; }
     </style>
 </head>
 <body>
@@ -49,6 +52,7 @@
         <a class="nav-link" onclick="switchTab('inventory', this)"><i class="fas fa-box me-3"></i> Inventory</a>
         <a class="nav-link" onclick="switchTab('acquisitions', this)"><i class="fas fa-shopping-cart me-3"></i> Acquisitions</a>
         <a class="nav-link" onclick="switchTab('clients', this)"><i class="fas fa-users me-3"></i> Clients</a>
+        <a class="nav-link" onclick="switchTab('concierge', this)"><i class="fas fa-envelope me-3"></i> Concierge</a>
         <a class="nav-link mt-5 text-danger" href="index.html"><i class="fas fa-sign-out-alt me-3"></i> Lock Atelier</a>
     </nav>
 </div>
@@ -102,6 +106,13 @@
             <tbody id="clientsBody"></tbody>
         </table>
     </div>
+
+    <div id="concierge" class="admin-section">
+        <h1 class="admin-title">Concierge Inquiries</h1>
+        <div id="messagesContainer" class="d-flex flex-column gap-3">
+            <p style="color:rgba(255,255,255,0.5); font-style: italic;">Loading inquiries...</p>
+        </div>
+    </div>
 </div>
 
 <div class="modal fade" id="addProductModal" tabindex="-1">
@@ -118,14 +129,7 @@
                   <div class="col-md-6"><label style="color:var(--gold); font-size:10px;">PRICE (₹)</label><input type="number" id="pPrice" class="admin-input" required></div>
                   <div class="col-md-4">
                       <label style="color:var(--gold); font-size:10px;">FAMILY</label>
-                      <select id="pCat" class="admin-input">
-                          <option value="Woody">Woody</option><option value="Floral">Floral</option>
-                          <option value="Citrus">Citrus</option><option value="Aquatic">Aquatic</option>
-                          <option value="Leather">Leather</option><option value="Spicy">Spicy</option>
-                          <option value="Fougere">Fougere</option><option value="Gourmand">Gourmand</option>
-                          <option value="Fruity">Fruity</option><option value="Powdery">Powdery</option>
-                          <option value="Chypre">Chypre</option>
-                      </select>
+                      <select id="pCat" class="admin-input"><option value="Woody">Woody</option><option value="Floral">Floral</option><option value="Citrus">Citrus</option></select>
                   </div>
                   <div class="col-md-4">
                       <label style="color:var(--gold); font-size:10px;">IDENTITY</label>
@@ -142,54 +146,11 @@
     </div>
 </div>
 
-<div class="modal fade" id="editProductModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content" style="background: rgba(10,10,10,0.95); border: 1px solid var(--gold); backdrop-filter: blur(20px);">
-        <div class="modal-header border-bottom border-warning border-opacity-25">
-          <h5 class="modal-title" style="color: var(--gold); font-family: 'Playfair Display';">Edit Essence Formulation</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body p-4">
-          <form id="editProductForm">
-              <input type="hidden" id="editPid">
-              <div class="row g-3">
-                  <div class="col-md-6"><label style="color:var(--gold); font-size:10px;">NAME</label><input type="text" id="editPname" class="admin-input" required></div>
-                  <div class="col-md-6"><label style="color:var(--gold); font-size:10px;">PRICE (₹)</label><input type="number" id="editPprice" class="admin-input" required></div>
-                  <div class="col-md-4">
-                      <label style="color:var(--gold); font-size:10px;">FAMILY</label>
-                      <select id="editPcat" class="admin-input">
-                          <option value="Woody">Woody</option><option value="Floral">Floral</option>
-                          <option value="Citrus">Citrus</option><option value="Aquatic">Aquatic</option>
-                          <option value="Leather">Leather</option><option value="Spicy">Spicy</option>
-                          <option value="Fougere">Fougere</option><option value="Gourmand">Gourmand</option>
-                          <option value="Fruity">Fruity</option><option value="Powdery">Powdery</option>
-                          <option value="Chypre">Chypre</option>
-                      </select>
-                  </div>
-                  <div class="col-md-4">
-                      <label style="color:var(--gold); font-size:10px;">IDENTITY</label>
-                      <select id="editPgender" class="admin-input"><option value="Male">Masculine</option><option value="Female">Feminine</option><option value="Unisex">Unisex</option></select>
-                  </div>
-                  <div class="col-md-4"><label style="color:var(--gold); font-size:10px;">STOCK</label><input type="number" id="editPstock" class="admin-input"></div>
-                  <div class="col-12"><label style="color:var(--gold); font-size:10px;">IMAGE URL</label><input type="text" id="editPimage" class="admin-input" required></div>
-                  <div class="col-12"><label style="color:var(--gold); font-size:10px;">OLFACTORY NOTES</label><textarea id="editPnotes" class="admin-input" rows="3"></textarea></div>
-              </div>
-              <div class="text-end mt-4"><button type="submit" class="gold-btn">Update Formulation</button></div>
-          </form>
-        </div>
-      </div>
-    </div>
-</div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     const token = localStorage.getItem("jwtToken");
     if (!token) window.location.href = "account.html";
 
-    // Store inventory globally so the edit modal can access it
-    let adminInventory = [];
-
-    // --- Tab Navigation ---
     function switchTab(tabId, element) {
         document.querySelectorAll('.admin-section').forEach(sec => sec.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
@@ -200,9 +161,9 @@
         if(tabId === 'inventory') loadInventory();
         if(tabId === 'acquisitions') loadAllAcquisitions();
         if(tabId === 'clients') loadClients();
+        if(tabId === 'concierge') loadConciergeMessages();
     }
 
-    // --- Load Dashboard Insights ---
     async function loadInsights() {
         try {
             const res = await fetch("/api/admin/stats", { headers: { "Authorization": `Bearer ${token}` } });
@@ -218,114 +179,22 @@
         } catch (e) { console.error(e); }
     }
 
-    // --- Load Inventory & Attach Edit Logic ---
     async function loadInventory() {
         try {
             const res = await fetch("/api/products");
-            adminInventory = await res.json();
-            document.getElementById('inventoryBody').innerHTML = adminInventory.map(p => `
+            const products = await res.json();
+            document.getElementById('inventoryBody').innerHTML = products.map(p => `
                 <tr>
                     <td>#${p.id}</td>
-                    <td><img src="${p.image_url}" style="width:40px; height:40px; border:1px solid var(--gold); object-fit: cover;"></td>
+                    <td><img src="${p.image_url}" style="width:40px; height:40px; border:1px solid var(--gold);"></td>
                     <td><strong>${p.name}</strong><br><small>${p.gender} | ${p.category}</small></td>
                     <td>₹${p.price}</td><td>${p.stock} Units</td>
-                    <td><button class="gold-btn" style="padding: 5px 10px; background: transparent; color: var(--gold); border: 1px solid var(--gold);" onclick="openEditModal(${p.id})">Edit</button></td>
+                    <td><button class="gold-btn" style="padding: 5px 10px; background: transparent; color: var(--gold); border: 1px solid var(--gold);">Edit</button></td>
                 </tr>
             `).join('');
         } catch(e) { console.error(e); }
     }
 
-    // --- Populate and Open Edit Modal ---
-    function openEditModal(productId) {
-        const product = adminInventory.find(p => p.id === productId);
-        if(!product) return;
-        
-        document.getElementById('editPid').value = product.id;
-        document.getElementById('editPname').value = product.name;
-        document.getElementById('editPprice').value = product.price;
-        document.getElementById('editPcat').value = product.category;
-        document.getElementById('editPgender').value = product.gender;
-        document.getElementById('editPstock').value = product.stock;
-        document.getElementById('editPimage').value = product.image_url;
-        document.getElementById('editPnotes').value = product.notes;
-        
-        new bootstrap.Modal(document.getElementById('editProductModal')).show();
-    }
-
-    // --- Submit Edit Changes ---
-    document.getElementById('editProductForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const id = document.getElementById('editPid').value;
-        const body = {
-            name: document.getElementById('editPname').value,
-            price: document.getElementById('editPprice').value,
-            category: document.getElementById('editPcat').value,
-            gender: document.getElementById('editPgender').value,
-            stock: document.getElementById('editPstock').value,
-            image_url: document.getElementById('editPimage').value,
-            notes: document.getElementById('editPnotes').value
-        };
-
-        try {
-            const res = await fetch(`/api/products/${id}`, {
-                method: 'PUT',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` 
-                },
-                body: JSON.stringify(body)
-            });
-
-            if (res.ok) {
-                alert("Essence Updated Successfully.");
-                bootstrap.Modal.getInstance(document.getElementById('editProductModal')).hide();
-                loadInventory(); // Refresh the table automatically
-            } else {
-                alert("Failed to update product.");
-            }
-        } catch (err) {
-            console.error(err);
-        }
-    });
-
-    // --- Submit New Formulation ---
-    document.getElementById('addProductForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const productData = {
-            name: document.getElementById("pName").value,
-            price: document.getElementById("pPrice").value,
-            category: document.getElementById("pCat").value,
-            gender: document.getElementById("pGender").value,
-            stock: document.getElementById("pStock").value,
-            image_url: document.getElementById("pImage").value,
-            notes: document.getElementById("pNotes").value
-        };
-
-        try {
-            const res = await fetch("/api/products", {
-                method: "POST",
-                headers: { 
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}` 
-                },
-                body: JSON.stringify(productData)
-            });
-
-            if (res.ok) {
-                alert("New Essence Successfully Formulated!");
-                document.querySelector('#addProductModal .btn-close').click();
-                document.getElementById("addProductForm").reset();
-                loadInventory(); 
-            } else {
-                const errorData = await res.json();
-                alert("Error: " + errorData.message);
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    });
-
-    // --- Acquisitions & Logistics ---
     async function loadAllAcquisitions() {
         try {
             const res = await fetch("/api/admin/orders", { headers: { "Authorization": `Bearer ${token}` } });
@@ -348,7 +217,6 @@
         } catch (e) { console.error(e); }
     }
 
-    // --- Update Transit Status ---
     async function updateOrderStatus(orderId, newStatus) {
         try {
             const res = await fetch(`/api/admin/orders/${orderId}`, {
@@ -359,20 +227,15 @@
                 },
                 body: JSON.stringify({ status: newStatus })
             });
-            
             const data = await res.json();
-
             if(res.ok) {
                 alert(`Acquisition #${orderId} moved to ${newStatus.toUpperCase()}`);
             } else {
                 alert("Error: " + data.message);
             }
-        } catch (e) { 
-            alert("Network Error: Could not reach the Atelier.");
-        }
+        } catch (e) { alert("Network Error"); }
     }
 
-    // --- Client Registry ---
     async function loadClients() {
         try {
             const res = await fetch("/api/admin/users", { headers: { "Authorization": `Bearer ${token}` } });
@@ -383,7 +246,78 @@
         } catch (e) { console.error(e); }
     }
 
-    // Boot up
+    // --- CONCIERGE LOGIC ---
+    async function loadConciergeMessages() {
+        try {
+            const res = await fetch("/api/admin/messages", { headers: { "Authorization": `Bearer ${token}` } });
+            const messages = await res.json();
+            const container = document.getElementById('messagesContainer');
+            
+            if (messages.length === 0) {
+                container.innerHTML = '<p style="color:rgba(255,255,255,0.5); font-style: italic;">No inquiries in the archive.</p>';
+                return;
+            }
+
+            container.innerHTML = messages.map(m => `
+                <div class="stat-card text-start ${m.status === 'unread' ? 'msg-unread' : 'msg-resolved'}" style="padding: 25px;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <strong style="font-size: 14px; letter-spacing: 1px;">${m.name}</strong> <br>
+                            <a href="mailto:${m.email}" style="color:var(--gold); font-size:12px; text-decoration:none;">${m.email}</a>
+                        </div>
+                        <div class="text-end">
+                            <span style="font-size: 10px; opacity: 0.5;">${new Date(m.created_at).toLocaleString()}</span><br>
+                            ${m.status === 'unread' ? `<button onclick="markResolved(${m.id})" class="gold-btn" style="padding: 5px 10px; margin-top: 5px;">Mark Resolved</button>` : `<span style="font-size:10px; color:var(--gold);">RESOLVED</span>`}
+                        </div>
+                    </div>
+                    <p style="font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.3); padding: 15px; border-radius: 2px;">
+                        "${m.message}"
+                    </p>
+                </div>
+            `).join('');
+        } catch (e) { console.error(e); }
+    }
+
+    async function markResolved(id) {
+        try {
+            const res = await fetch(`/api/admin/messages/${id}`, {
+                method: "PUT",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            if (res.ok) loadConciergeMessages();
+        } catch (e) { console.error(e); }
+    }
+
+    // New product logic...
+    document.getElementById('addProductForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const productData = {
+            name: document.getElementById("pName").value,
+            price: document.getElementById("pPrice").value,
+            category: document.getElementById("pCat").value,
+            gender: document.getElementById("pGender").value,
+            stock: document.getElementById("pStock").value,
+            image_url: document.getElementById("pImage").value,
+            notes: document.getElementById("pNotes").value
+        };
+        try {
+            const res = await fetch("/api/products", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+                body: JSON.stringify(productData)
+            });
+            if (res.ok) {
+                alert("New Essence Successfully Formulated!");
+                document.querySelector('#addProductModal .btn-close').click();
+                document.getElementById("addProductForm").reset();
+                loadInventory(); 
+            } else {
+                const errorData = await res.json();
+                alert("Error: " + errorData.message);
+            }
+        } catch (e) { console.error(e); }
+    });
+
     loadInsights();
 </script>
 </body>
