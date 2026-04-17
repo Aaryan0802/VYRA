@@ -206,6 +206,22 @@
     // --- Identical Global Transitions ---
     window.addEventListener('pageshow', () => { document.body.classList.add('page-loaded'); });
     
+    // --- Auto-Open Specific Tabs via URL ---
+    window.addEventListener('load', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetTab = urlParams.get('tab');
+        
+        if (targetTab === 'shipping') {
+            const shippingTab = new bootstrap.Tab(document.querySelector('[data-bs-target="#v-pills-shipping"]'));
+            shippingTab.show();
+        } else if (targetTab === 'terms') {
+            const termsTab = new bootstrap.Tab(document.querySelector('[data-bs-target="#v-pills-terms"]'));
+            termsTab.show();
+        } else if (targetTab === 'privacy') {
+            const privacyTab = new bootstrap.Tab(document.querySelector('[data-bs-target="#v-pills-privacy"]'));
+            privacyTab.show();
+        }
+    });
 
     // --- Dynamic Contact Function ---
     async function sendMsg(){
@@ -229,6 +245,5 @@
         }
     }
 </script>
-
 </body>
 </html>
