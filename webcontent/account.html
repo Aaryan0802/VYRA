@@ -13,8 +13,8 @@
             --gold: #cfaa6a; 
             --gold-light: #e6d1a8; 
             --gold-glow: rgba(207, 170, 106, 0.2); 
-            --glass: rgba(10, 10, 10, 0.85);
-            --border: rgba(207, 170, 106, 0.15);
+            --glass: rgba(10, 10, 10, 0.9);
+            --border: rgba(207, 170, 106, 0.25);
         }
 
         body { 
@@ -26,150 +26,87 @@
 
         /* Essential Navigation Bar */
         .top-nav {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            padding: 25px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
+            position: absolute; top: 0; width: 100%; padding: 25px 50px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 100;
         }
-
-        .nav-back {
-            color: var(--gold);
-            text-decoration: none;
-            font-size: 12px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
-
+        .nav-back { color: var(--gold); text-decoration: none; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; }
         .nav-back:hover { color: white; }
 
         .account-bg { 
             min-height: 100vh; 
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("/static/story.png"); 
-            background-size: cover; 
-            background-position: center; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            padding: 80px 20px; 
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)), url("/static/story.png"); 
+            background-size: cover; background-position: center; background-attachment: fixed;
+            display: flex; justify-content: center; align-items: center; padding: 120px 20px 80px; 
         }
 
-        /* Refined Glassmorphism */
+        /* Glassmorphism */
         .glass-card { 
-            background: var(--glass); 
-            backdrop-filter: blur(25px); 
-            border: 1px solid var(--border); 
-            border-radius: 2px; 
-            padding: 50px; 
-            box-shadow: 0 40px 100px rgba(0,0,0,0.9); 
-            width: 100%; 
-            max-width: 450px; 
-            transition: all 0.5s ease;
+            background: var(--glass); border: 1px solid var(--border); 
+            border-radius: 2px; padding: 50px; box-shadow: 0 40px 100px rgba(0,0,0,0.9); 
+            width: 100%; max-width: 450px; transition: all 0.5s ease;
         }
 
         .dashboard-card { max-width: 1100px; display: none; padding: 0; overflow: hidden; }
 
-        .brand-title { 
-            text-align: center; 
-            font-family: 'Playfair Display', serif; 
-            font-size: 38px; 
-            letter-spacing: 10px; 
-            color: var(--gold); 
-            margin-bottom: 40px; 
-        }
+        .brand-title { text-align: center; font-family: 'Playfair Display', serif; font-size: 38px; letter-spacing: 10px; color: var(--gold); margin-bottom: 40px; }
 
-        /* Identity Elements: Floating Inputs */
+        /* Floating Inputs */
         .input-group-custom { position: relative; margin-bottom: 25px; }
-        
-        .auth-input { 
-            width: 100%; 
-            padding: 12px 0; 
-            background: transparent; 
-            border: none; 
-            border-bottom: 1px solid var(--border); 
-            color: white; 
-            font-size: 14px; 
-            outline: none; 
-            transition: 0.3s;
-        }
-
+        .auth-input { width: 100%; padding: 12px 0; background: transparent; border: none; border-bottom: 1px solid var(--border); color: white; font-size: 14px; outline: none; transition: 0.3s; }
         .auth-input:focus { border-bottom-color: var(--gold); }
+        .input-group-custom label { position: absolute; top: 12px; left: 0; color: rgba(255,255,255,0.4); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; pointer-events: none; }
+        .auth-input:focus + label, .auth-input:not(:placeholder-shown) + label { top: -15px; color: var(--gold); font-size: 10px; }
 
-        .input-group-custom label {
-            position: absolute;
-            top: 12px;
-            left: 0;
-            color: rgba(255,255,255,0.4);
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
-            pointer-events: none;
+        /* Buttons */
+        .btn-vyra {
+            padding: 14px 35px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; font-size: 11px;
+            transition: 0.4s; border: 1px solid var(--gold); text-decoration: none; display: inline-block; text-align: center;
         }
+        .btn-fill { background: var(--gold); color: black; }
+        .btn-fill:hover { background: white; border-color: white; transform: scale(1.02); }
+        .btn-outline { background: transparent; color: var(--gold); }
+        .btn-outline:hover { background: var(--gold); color: black; }
 
-        .auth-input:focus + label, .auth-input:not(:placeholder-shown) + label {
-            top: -15px;
-            color: var(--gold);
-            font-size: 10px;
-        }
+        .gold-btn-full { width: 100%; padding: 16px; background: var(--gold); border: none; color: black; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; transition: 0.4s; text-decoration: none; display: inline-block; text-align: center;}
+        .gold-btn-full:hover { background: white; transform: scale(1.02); }
 
-        .gold-btn { 
-            width: 100%; 
-            padding: 16px; 
-            background: var(--gold); 
-            border: none; 
-            color: black; 
-            font-weight: 600; 
-            text-transform: uppercase; 
-            letter-spacing: 3px; 
-            cursor: pointer; 
-            transition: 0.4s; 
-            text-decoration: none; 
-            display: inline-block;
-            text-align: center;
-        }
-
-        .gold-btn:hover { background: white; transform: scale(1.02); }
-
-        /* Sidebar Navigation Refined */
-        .sidebar { background: rgba(0,0,0,0.3); padding: 40px 20px; }
-
+        /* --- PERFECTED SIDEBAR NAVIGATION --- */
+        .sidebar { background: rgba(0,0,0,0.5); padding: 50px 30px; }
         .nav-pills .nav-link { 
-            color: rgba(255,255,255,0.6) !important; 
-            border-radius: 0 !important; 
-            margin-bottom: 10px;
-            padding: 12px 20px !important; 
-            font-size: 13px;
-            letter-spacing: 1px;
-            text-align: left;
-            border: 1px solid transparent !important;
+            display: flex; align-items: center; /* Forces icon and text on same line */
+            white-space: nowrap; /* Prevents text from wrapping underneath */
+            color: rgba(255,255,255,0.6) !important; border-radius: 0 !important; margin-bottom: 15px;
+            padding: 18px 25px !important; font-size: 11px; letter-spacing: 3px; text-align: left;
+            border: 1px solid transparent !important; text-transform: uppercase; transition: 0.3s;
         }
+        
+        /* Standardizes the width of icons so text perfectly aligns vertically */
+        .nav-pills .nav-link i { width: 20px; text-align: center; margin-right: 15px; font-size: 14px; }
+        
+        .nav-pills .nav-link:hover { color: white !important; background: rgba(255,255,255,0.02) !important; }
+        .nav-pills .nav-link.active { background: transparent !important; color: var(--gold) !important; border: 1px solid var(--gold) !important; }
+        
+        /* Special styling for the dynamic Admin Button */
+        .nav-pills .admin-btn { border-color: rgba(207, 170, 106, 0.4) !important; color: var(--gold) !important; }
+        .nav-pills .admin-btn:hover { background: rgba(207, 170, 106, 0.1) !important; border-color: var(--gold) !important; }
 
-        .nav-pills .nav-link.active { 
-            background: transparent !important; 
-            color: var(--gold) !important; 
-            border: 1px solid var(--gold) !important;
+        /* Order & Cart Cards */
+        .cart-img { width: 70px; height: 90px; object-fit: cover; border: 1px solid var(--border); margin-right: 20px; }
+        .luxury-card { 
+            background: rgba(10,10,10,0.6); border: 1px solid rgba(207,170,106,0.3); 
+            padding: 30px; border-radius: 4px; margin-bottom: 25px; transition: 0.3s; 
         }
+        .luxury-card:hover { border-color: var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
-        .cart-img {
-            width: 70px;
-            height: 90px;
-            object-fit: cover;
-            border: 1px solid var(--border);
-            margin-right: 20px;
-        }
     </style>
 </head>
 <body>
 
 <nav class="top-nav">
     <a href="shop.html" class="nav-back"><i class="fas fa-chevron-left me-2"></i> Return to Shop</a>
-    <div style="letter-spacing: 5px; color: var(--gold); font-family: 'Playfair Display';">MAISON VYRA</div>
-    <div style="width: 100px;"></div> </nav>
+    <a href="index.html" style="letter-spacing: 8px; color: var(--gold); font-family: 'Playfair Display'; font-weight: 600; text-decoration: none;">VYRA</a>
+    <div style="width: 100px;"></div> 
+</nav>
 
 <div class="account-bg">
     <div class="glass-card" id="auth-section">
@@ -187,32 +124,41 @@
                 <input type="password" id="password" class="auth-input" placeholder=" " required>
                 <label>Secret Password</label>
             </div>
-            <button type="submit" class="gold-btn" id="authSubmitBtn">Enter Boutique</button>
+            <button type="submit" class="gold-btn-full" id="authSubmitBtn">Enter Boutique</button>
         </form>
         <p class="text-center mt-5" style="font-size:11px; letter-spacing: 1px;">
-            <span id="toggleText">NOT A MEMBER?</span> 
-            <span onclick="toggleAuthMode()" id="authToggleLink" style="color:var(--gold); cursor:pointer; margin-left: 10px; font-weight: 600;">CREATE IDENTITY</span>
+            <span id="toggleText" style="opacity: 0.6;">NOT A MEMBER?</span> 
+            <span onclick="toggleAuthMode()" id="authToggleLink" style="color:var(--gold); margin-left: 10px; font-weight: 600;">CREATE IDENTITY</span>
         </p>
     </div>
 
     <div class="glass-card dashboard-card" id="dashboard-section">
         <div class="row g-0">
-            <div class="col-md-3 sidebar border-end border-warning border-opacity-10">
-                <h6 class="text-center mb-5" style="color:var(--gold); letter-spacing: 3px;">PORTAL</h6>
+            <div class="col-md-4 col-lg-3 sidebar border-end border-warning border-opacity-10">
+                <h6 class="text-center mb-5" style="color:var(--gold); letter-spacing: 4px;">PORTAL</h6>
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
-                    <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#v-pills-profile"><i class="far fa-user me-3"></i> Identity</button>
-                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-cart" onclick="loadUserCart()"><i class="fas fa-shopping-bag me-3"></i> Collection</button>
-                    <button class="nav-link text-danger mt-5" onclick="logout()"><i class="fas fa-sign-out-alt me-3"></i> Exit</button>
+                    <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#v-pills-profile"><i class="far fa-id-card"></i> Identity</button>
+                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-cart" onclick="loadUserCart()"><i class="fas fa-shopping-bag"></i> Collection</button>
+                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-orders" onclick="loadOrderHistory()"><i class="fas fa-box-open"></i> Acquisitions</button>
+                    <button class="nav-link" onclick="window.location.href='customercare.html'"><i class="fas fa-concierge-bell"></i> Concierge</button>
+                    <button class="nav-link text-danger" style="margin-top: 30px;" onclick="logout()"><i class="fas fa-lock"></i> Lock Portal</button>
                 </div>
             </div>
-            <div class="col-md-9 p-5">
+            
+            <div class="col-md-8 col-lg-9 p-5">
                 <div class="tab-content">
+                    
                     <div class="tab-pane fade show active" id="v-pills-profile">
-                        <h2 style="font-family:'Playfair Display'; color:var(--gold); margin-bottom:10px;" id="welcomeName">User</h2>
-                        <p style="font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 40px; letter-spacing: 1px;">CURATE YOUR PERSONAL DETAILS</p>
+                        <div class="d-flex justify-content-between align-items-end mb-5">
+                            <div>
+                                <h2 style="font-family:'Playfair Display'; color:var(--gold); margin-bottom:5px;" id="welcomeName">User</h2>
+                                <p style="font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 2px; margin: 0;">CURATE YOUR PERSONAL DETAILS</p>
+                            </div>
+                            <a href="shop.html" class="btn-vyra btn-outline">Explore Boutique</a>
+                        </div>
                         
                         <form id="profileForm">
-                            <div class="row">
+                            <div class="row g-4">
                                 <div class="col-md-6 input-group-custom">
                                     <input type="text" id="editName" class="auth-input" placeholder=" ">
                                     <label>Display Name</label>
@@ -234,24 +180,41 @@
                                     <label>Postal Code</label>
                                 </div>
                             </div>
-                            <button type="submit" class="gold-btn mt-4" style="width:auto; padding:12px 50px;">Update Identity</button>
+                            <button type="submit" class="btn-vyra btn-outline mt-3">Update Identity</button>
                         </form>
                     </div>
 
                     <div class="tab-pane fade" id="v-pills-cart">
-                        <h2 style="font-family:'Playfair Display'; color:var(--gold); margin-bottom:10px;">Your Collection</h2>
-                        <p style="font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 40px; letter-spacing: 1px;">PENDING ACQUISITIONS</p>
+                        <div class="d-flex justify-content-between align-items-end mb-5">
+                            <div>
+                                <h2 style="font-family:'Playfair Display'; color:var(--gold); margin-bottom:5px;">Your Collection</h2>
+                                <p style="font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 2px; margin: 0; text-transform: uppercase;">Pending Acquisitions</p>
+                            </div>
+                        </div>
                         <div id="cart-list"></div>
                     </div>
+
+                    <div class="tab-pane fade" id="v-pills-orders">
+                        <div class="d-flex justify-content-between align-items-end mb-5">
+                            <div>
+                                <h2 style="font-family:'Playfair Display'; color:var(--gold); margin-bottom:5px;">Acquisition History</h2>
+                                <p style="font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 2px; margin: 0; text-transform: uppercase;">Past Maison Vyra Transactions</p>
+                            </div>
+                        </div>
+                        <div id="orders-list"></div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script>
-    // Logic remains identical to your working version but updated with refined UI calls
+
     let isLoginMode = true;
 
     function toggleAuthMode() {
@@ -284,7 +247,7 @@
                     localStorage.setItem("jwtToken", data.token);
                     window.location.reload();
                 } else {
-                    alert("Identity Established."); toggleAuthMode();
+                    alert("Identity Established. Please sign in."); toggleAuthMode();
                 }
             } else { alert(data.message); }
         } catch (err) { console.error(err); }
@@ -323,24 +286,87 @@
                 headers: { "Authorization": `Bearer ${token}` }
             });
             const items = await res.json();
-            list.innerHTML = items.length ? '' : '<p style="color:gray; font-size:13px;">No items in your collection.</p>';
             
+            if (!items.length) {
+                list.innerHTML = `
+                    <div class="text-center py-5">
+                        <p style="color:rgba(255,255,255,0.4); font-size:13px; margin-bottom: 20px;">Your collection is currently empty.</p>
+                        <a href="shop.html" class="btn-vyra btn-outline">Explore The Boutique</a>
+                    </div>`;
+                return;
+            }
+
+            list.innerHTML = '';
             items.forEach(item => {
                 const cleanPath = item.image_url.startsWith('/') ? item.image_url : '/' + item.image_url;
                 list.innerHTML += `
-                <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-warning border-opacity-10 pb-3">
+                <div class="luxury-card d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
                         <img src="http://localhost:3000${cleanPath}" class="cart-img">
                         <div>
-                            <span style="color:white; display:block; font-size:14px; letter-spacing:1px;">${item.name.toUpperCase()}</span>
-                            <small style="color:var(--gold); font-size:10px;">QUANTITY: ${item.quantity}</small>
+                            <span style="color:white; display:block; font-size:16px; letter-spacing:2px; font-family:'Playfair Display';">${item.name.toUpperCase()}</span>
+                            <small style="color:rgba(255,255,255,0.4); font-size:10px; letter-spacing:2px; text-transform:uppercase;">Quantity: ${item.quantity}</small>
                         </div>
                     </div>
-                    <span style="color:white; font-size:14px;">₹${item.price * item.quantity}</span>
+                    <span style="color:var(--gold); font-size:18px; font-family:'Playfair Display';">₹${parseFloat(item.price * item.quantity).toFixed(2)}</span>
                 </div>`;
             });
-            if(items.length) list.innerHTML += `<a href="transactions.html" class="gold-btn mt-4">Begin Transaction</a>`;
+            list.innerHTML += `<div class="text-end mt-4"><a href="transactions.html" class="btn-vyra btn-fill">Begin Transaction</a></div>`;
         } catch (e) { console.error(e); }
+    }
+
+    async function loadOrderHistory() {
+        const token = localStorage.getItem("jwtToken");
+        const list = document.getElementById("orders-list");
+        list.innerHTML = '<p style="color:rgba(255,255,255,0.4); font-size:13px; letter-spacing:1px;">Accessing archives...</p>';
+        
+        try {
+            const res = await fetch("http://localhost:3000/api/orders", {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            
+            if(!res.ok) throw new Error("Could not fetch archives.");
+            const orders = await res.json();
+            
+            if (!orders.length) {
+                list.innerHTML = `
+                    <div class="text-center py-5">
+                        <p style="color:rgba(255,255,255,0.4); font-size:13px; margin-bottom: 20px;">No past acquisitions found in the archives.</p>
+                        <a href="shop.html" class="btn-vyra btn-outline">Begin Your Collection</a>
+                    </div>`;
+                return;
+            }
+
+            list.innerHTML = '';
+            orders.forEach(order => {
+                const date = new Date(order.created_at).toLocaleDateString();
+                
+                let statusText = order.status.toUpperCase();
+                let pillStyle = "background: #ffc107; color: #000;"; 
+                if (order.status.toLowerCase() === 'delivered') pillStyle = "background: #4CAF50; color: #fff;"; 
+                if (order.status.toLowerCase() === 'shipped') pillStyle = "background: #64B5F6; color: #000;"; 
+
+                list.innerHTML += `
+                <div class="luxury-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom" style="border-color: rgba(255,255,255,0.05) !important;">
+                        <span style="color:var(--gold); font-size:11px; letter-spacing:2px; font-weight:600;">ORDER #${order.id}</span>
+                        <span style="color:rgba(255,255,255,0.4); font-size:11px; letter-spacing:1px;">${date}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <span style="color:white; font-size:24px; font-family:'Playfair Display';">₹${parseFloat(order.total_amount).toFixed(2)}</span>
+                        <span style="font-size:9px; letter-spacing:2px; font-weight: 600; padding: 5px 12px; border-radius: 2px; ${pillStyle}">
+                            ${statusText}
+                        </span>
+                    </div>
+                    <div style="font-size:10px; color:rgba(255,255,255,0.3); letter-spacing: 1px; font-family: monospace;">
+                        Gateway Reference: ${order.razorpay_payment_id || 'Awaiting Payment Confirmation'}
+                    </div>
+                </div>`;
+            });
+        } catch (e) { 
+            console.error(e);
+            list.innerHTML = '<p style="color:rgba(255,255,255,0.4); font-size:13px;">Failed to load order history. Ensure backend route is active.</p>';
+        }
     }
 
     function logout() { localStorage.clear(); window.location.href = "account.html"; }
@@ -358,7 +384,30 @@
             document.getElementById("editCity").value = user.city || '';
             document.getElementById("editZip").value = user.postal_code || '';
             
-            loadUserCart();
+            // Dynamic Admin Button Insertion with perfected spacing
+            if (user.role && user.role.toLowerCase() === 'admin') {
+                const tabList = document.getElementById('v-pills-tab');
+                const conciergeLink = tabList.children[3]; 
+                conciergeLink.insertAdjacentHTML('beforebegin', `
+                    <button class="nav-link admin-btn" onclick="window.location.href='admin.html'">
+                        <i class="fas fa-crown"></i> Grand Atelier
+                    </button>
+                `);
+            }
+
+            // Handle Direct Tab Linking
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetTab = urlParams.get('tab');
+            
+            if (targetTab === 'cart') {
+                const cartTab = new bootstrap.Tab(document.querySelector('[data-bs-target="#v-pills-cart"]'));
+                cartTab.show();
+                loadUserCart();
+            } else if (targetTab === 'orders') {
+                const ordersTab = new bootstrap.Tab(document.querySelector('[data-bs-target="#v-pills-orders"]'));
+                ordersTab.show();
+                loadOrderHistory();
+            }
         }
     };
 </script>

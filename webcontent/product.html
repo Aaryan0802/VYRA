@@ -152,7 +152,7 @@
 
 <nav class="top-nav">
     <a href="shop.html" class="nav-link-custom"><i class="fas fa-chevron-left me-2"></i> Boutique</a>
-    <div style="letter-spacing: 6px; color: var(--gold); font-family: 'Playfair Display'; font-weight: 600;">VYRA</div>
+    <a href="index.html" style="letter-spacing: 8px; color: var(--gold); font-family: 'Playfair Display'; font-weight: 600; text-decoration: none;">VYRA</a>
     <a href="account.html?tab=cart" class="nav-link-custom">My Collection <i class="fas fa-shopping-bag ms-2"></i></a>
 </nav>
 
@@ -252,9 +252,29 @@
         } catch (error) { console.error(error); }
     };
 
-    document.querySelector('.buy-now').onclick = () => {
-        document.body.classList.remove('page-loaded');
-        setTimeout(() => { window.location.href = 'transactions.html'; }, 500);
+    document.querySelector('.buy-now').onclick = async () => {
+        const token = localStorage.getItem("jwtToken"); 
+        if (!token) { window.location.href = "account.html"; return; }
+
+        const productId = new URLSearchParams(window.location.search).get('id'); 
+
+        try {
+            // 1. Add item to cart first
+            await fetch("http://localhost:3000/api/cart", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ product_id: productId, quantity: quantity }) 
+            });
+            
+            // 2. Transition smoothly to checkout
+            document.body.classList.remove('page-loaded');
+            setTimeout(() => { window.location.href = 'transactions.html'; }, 500);
+        } catch (error) { 
+            console.error("Failed to secure item for immediate checkout:", error); 
+        }
     };
 </script>
 

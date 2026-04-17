@@ -2,342 +2,291 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Vyra | Where Elegance Meets Essence</title>
+    <title>Maison Vyra | Where Elegance Meets Essence</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="/static/logo.png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Montserrat:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* --- BRAND FONT SYSTEM --- */
+        /* --- CORE IDENTITY --- */
         :root {
-            --font-serif: 'Playfair Display', serif;
-            --font-sans: 'Montserrat', sans-serif;
             --gold: #cfaa6a;
+            --gold-light: #e6d1a8;
+            --gold-glow: rgba(207, 170, 106, 0.2);
+            --glass: rgba(10, 10, 10, 0.85);
+            --border: rgba(207, 170, 106, 0.15);
         }
 
-        /* Applying global sans-serif for base text */
         body {
-            font-family: var(--font-sans);
-            background-color: #050505;
-            color: #ffffff;
+            font-family: 'Montserrat', sans-serif; background-color: #050505; color: #ffffff;
             overflow-x: hidden;
         }
 
-        /* 1. Hide default cursor */
-        body, a, button, .scent-node, .scroll-indicator {
-            cursor: none !important; 
+        /* --- GLOBAL NAVIGATION --- */
+        .top-nav {
+            position: fixed; top: 0; width: 100%; padding: 25px 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+            backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
         }
 
-        /* 2. Custom Cursor Dot */
-        #custom-cursor-dot {
-            position: fixed; top: 0; left: 0; width: 6px; height: 6px;
-            background-color: var(--gold); border-radius: 50%;
-            pointer-events: none; z-index: 10000; 
+        .nav-link-custom {
+            color: var(--gold); text-decoration: none; font-size: 11px;
+            letter-spacing: 2px; text-transform: uppercase; transition: 0.3s;
+        }
+        .nav-link-custom:hover { color: white; }
+
+        /* --- SPARKLE CURSOR EFFECT --- */
+        .sparkle { position: fixed; width: 4px; height: 4px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 9998; box-shadow: 0 0 10px var(--gold); }
+
+        /* --- HERO SECTION --- */
+        .hero-section {
+            height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url("/static/story.png") center/cover fixed;
+            position: relative;
         }
 
-        /* 3. Custom Cursor Ring */
-        #custom-cursor-ring {
-            position: fixed; top: 0; left: 0; width: 34px; height: 34px;
-            border: 1px solid rgba(207, 170, 106, 0.6); border-radius: 50%;
-            pointer-events: none; z-index: 9999; transition: background-color 0.3s ease;
+        .hero-crest { width: 150px; margin-bottom: 0px; opacity: 0.9; filter: drop-shadow(0 0 20px rgba(207, 170, 106, 0.3)); }
+       .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 6vw, 8rem); letter-spacing: 20px; color: var(--gold); text-transform: uppercase; line-height: 1;margin-top: -70px; margin-right: -20px; }
+        .hero-subtitle { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-style: italic; letter-spacing: 5px; color: rgba(255,255,255,0.6); margin-top: 25px; }
+
+        .scroll-indicator {
+            position: absolute; bottom: 50px; color: var(--gold); text-align: center;
+            font-size: 10px; letter-spacing: 3px; text-decoration: none; text-transform: uppercase;
+            animation: float 3s ease-in-out infinite; opacity: 0.7;
         }
 
-        /* 4. High-Intensity Sparkles */
-        .sparkle {
-            position: fixed; top: 0; left: 0; width: 5px; height: 5px;
-            background-color: #ffffff; box-shadow: 0 0 10px #e6d1a8, 0 0 20px #cfaa6a, 0 0 30px #cfaa6a; 
-            border-radius: 50%; pointer-events: none; z-index: 9998; will-change: transform, opacity;
+        /* --- REFINED HERITAGE SECTION --- */
+        .story-section { padding: 120px 0; background: #050505; position: relative; }
+        
+        .heritage-img { 
+            width: 100%; 
+            height: auto; 
+            max-height: 800px; 
+            object-fit: cover; 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8); 
+            border: 1px solid var(--border); 
+            border-radius: 2px;
+        }
+        
+        .overlap-card {
+            background: var(--glass); backdrop-filter: blur(25px); border: 1px solid var(--border);
+            padding: 70px 60px; position: relative; z-index: 2; margin-left: -100px;
         }
 
-        /* 5. Navigation & UI Font Overrides */
-        .navbar-brand { font-family: var(--font-serif); letter-spacing: 4px; }
-        .btn-features { font-family: var(--font-sans); letter-spacing: 2px; font-weight: 500; }
-        .offcanvas-title { font-family: var(--font-serif); }
-        .offcanvas-body ul li a { font-family: var(--font-sans); letter-spacing: 1px; font-weight: 300; }
+        .overlap-card h6 { color: var(--gold); font-size: 10px; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 15px; }
+        .overlap-card h2 { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 36px; letter-spacing: 3px; margin-bottom: 25px; }
+        .overlap-card p { font-size: 13px; line-height: 2; color: rgba(255,255,255,0.7); font-weight: 300; margin-bottom: 20px; text-align: justify; }
 
-        /* 6. Hero Section Typography */
-        .hero-title {
-            font-family: var(--font-serif);
-            font-size: clamp(4rem, 8vw, 6.5rem); 
-            color: var(--gold);
-            letter-spacing: 8px;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+        .btn-vyra {
+            display: inline-block; padding: 15px 35px; border: 1px solid var(--gold);
+            color: var(--gold); font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+            text-decoration: none; transition: 0.4s; margin-top: 15px;
         }
-        .hero-subtitle {
-            font-family: var(--font-serif);
-            font-size: clamp(1.2rem, 2vw, 1.8rem);
-            letter-spacing: 4px;
-            font-weight: 300;
-            font-style: italic; 
-            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        .btn-vyra:hover { background: var(--gold); color: #000; box-shadow: 0 10px 20px var(--gold-glow); }
+
+        /* --- LINEAR SELECTION DIAL --- */
+        .showcase-section { padding: 120px 0; background: #030303; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        
+        .dial-container { position: relative; padding-left: 40px; border-left: 1px solid rgba(207, 170, 106, 0.2); margin-top: 50px; }
+        .dial-indicator {
+            position: absolute; left: -2px; width: 3px; background: var(--gold);
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1); box-shadow: 0 0 10px var(--gold);
         }
+        
+        .dial-item {
+            font-family: 'Playfair Display', serif; font-size: 26px; color: rgba(255,255,255,0.3);
+            letter-spacing: 6px; text-transform: uppercase; padding: 25px 0; cursor: pointer;
+            transition: color 0.4s ease, transform 0.4s ease;
+        }
+        .dial-item.active { color: var(--gold); transform: translateX(10px); }
 
-        /* 7. Scent Wheel & Labels */
-        .scent-node-text { font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 2px; font-weight: 500; }
-        .main-title { font-family: var(--font-serif); color: var(--gold); letter-spacing: 10px; }
-        .subtitle { font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 4px; opacity: 0.7; }
-        .scroll-indicator span { font-family: var(--font-sans); }
+        .showcase-display { display: flex; align-items: center; gap: 50px; opacity: 1; transition: opacity 0.5s ease; }
+        .showcase-img { width: 320px; height: 420px; object-fit: cover; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+        
+        .showcase-text-area { max-width: 350px; }
+        .showcase-title { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 38px; letter-spacing: 4px; margin-bottom: 15px; }
+        .showcase-desc { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.8; margin-bottom: 30px; letter-spacing: 0.5px; }
 
-        /* 8. Footer Fonts */
-        footer p, footer li a { font-family: var(--font-sans); }
-        footer h4, footer h6 { font-family: var(--font-serif); }
-        .form-control { font-family: var(--font-sans); }
+        /* Animations */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+        
+        #page-transition { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #050505; z-index: 999999; pointer-events: none; opacity: 1; transition: opacity 0.8s ease; }
+        body.page-loaded #page-transition { opacity: 0; }
+
+        /* Responsive Fixes */
+        @media (max-width: 991px) {
+            .overlap-card { margin-left: 0; margin-top: -30px; padding: 40px 30px; }
+            .showcase-display { flex-direction: column; text-align: center; gap: 30px; margin-top: 50px; }
+            .dial-container { border-left: none; padding-left: 0; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 20px; display: flex; justify-content: center; gap: 20px; }
+            .dial-item { font-size: 16px; padding: 10px; }
+            .dial-item.active { transform: translateY(-5px); }
+            .dial-indicator { display: none; }
+        }
     </style>
 </head>
 
 <body>
     <div id="page-transition"></div>
 
-<nav class="navbar navbar-expand-lg fixed-top">
-    <div class="container-fluid">
-        <a class="navbar-brand text-decoration-none" href="shop.html" style="color: #cfaa6a;">VYRA</a>
-        <button class="btn btn-features" type="button" data-bs-toggle="offcanvas" data-bs-target="#sideMenu" style="color: #cfaa6a; border: 1px solid rgba(207, 170, 106, 0.3);">
-            <i class="fas fa-bars me-2"></i> MENU
-        </button>
-    </div>
-</nav>
+    <nav class="top-nav">
+        <a href="shop.html" class="nav-link-custom"><i class="fas fa-shopping-bag me-2"></i> The Boutique</a>
+        <div style="letter-spacing: 8px; color: var(--gold); font-family: 'Playfair Display'; font-weight: 600;">VYRA</div>
+        <a href="account.html" class="nav-link-custom">My Portal <i class="fas fa-user ms-2"></i></a>
+    </nav>
 
-<div class="offcanvas offcanvas-end" tabindex="-1" id="sideMenu" style="background-color: #050505;">
-    <div class="offcanvas-header border-bottom border-opacity-25" style="border-color: rgba(207, 170, 106, 0.25) !important;">
-        <h5 class="offcanvas-title" style="color: #cfaa6a; letter-spacing: 2px;">EXPLORE</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
-    </div>
-    <div class="offcanvas-body">
-        <ul class="list-unstyled mt-3">
-            <li class="py-3 border-bottom border-secondary border-opacity-25">
-                <a href="index.html" class="text-decoration-none text-white d-block">Home</a>
-            </li>
-            <li class="py-3 border-bottom border-secondary border-opacity-25">
-                <a href="shop.html" class="text-decoration-none text-white d-block">All Collections</a>
-            </li>
-            <li class="py-3 border-bottom border-secondary border-opacity-25">
-                <a href="about.html" class="text-decoration-none text-white d-block">Our Heritage</a>
-            </li>
-            <li class="py-3 border-bottom border-secondary border-opacity-25">
-                <a href="account.html" class="text-decoration-none text-white d-block">Account & Profile</a>
-            </li>
-            <li class="py-3 border-bottom border-secondary border-opacity-25">
-                <a href="account.html?tab=cart" class="text-decoration-none text-white d-block">Cart</a>
-            </li>
-        </ul>
-    </div>
-</div>
+    <header class="hero-section">
+        <img src="/static/logo.png" alt="Vyra Crest" class="hero-crest" style="width: 600px !important;margin-top: -60px; max-width: none;">
+        <h1 class="hero-title">VYRA</h1>
+        <h3 class="hero-subtitle">Where Elegance Meets Essence</h3>
+        
+        <a href="#heritage" class="scroll-indicator">
+            Discover<br><i class="fas fa-chevron-down mt-3"></i>
+        </a>
+    </header>
 
-<header class="hero-image-section d-flex align-items-center">
-    <div class="hero-top-gradient"></div>
-    <div class="container position-relative" style="z-index: 2;">
-        <div class="row">
-            <div class="col-lg-6 col-md-8 text-start">
-                <img src="/static/logo.png" alt="Vyra Logo" style="width: 750px !important; max-width: none !important; height: auto; filter: drop-shadow(0px 4px 15px rgba(0,0,0,0.6)); margin-top: -90px; margin-bottom: 20px; display: block;">
-                <h1 class="hero-title" style="margin-top: -150px !important; text-align: center !important; width: 100% !important;">VYRA</h1>
-                <h3 class="hero-subtitle mb-4" style="text-align: center !important; width: 100% !important;">Where Elegance Meets Essence</h3>
-            </div>
-        </div>
-    </div>
-    <a href="#explore" class="scroll-indicator text-decoration-none" style="color: #cfaa6a;">
-        <span class="small text-uppercase" style="letter-spacing:3px;">Scroll to Explore</span>
-        <i class="fas fa-chevron-down mt-2"></i>
-    </a>
-</header>
-
-<section class="brand-story-section">
-    <div class="story-overlay"></div>
-    <div class="container position-relative" style="z-index: 2;">
-        <div class="row align-items-center justify-content-between">
-            <div class="col-lg-5 col-md-6 mb-5 mb-md-0">
-                <div class="story-image-container">
-                    <img src="/static/story-hero.png" alt="Vyra Craftsmanship" class="img-fluid story-left-image">
+    <section id="heritage" class="story-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 z-1">
+                    <img src="/static/story-hero.png" alt="Maison Vyra Craftsmanship" class="heritage-img">
                 </div>
-            </div>
-            <div class="col-lg-6 col-md-6">
-                <div class="story-card" style="background: rgba(10, 10, 10, 0.85); border: 1px solid rgba(207, 170, 106, 0.2); padding: 50px;">
-                    <h2 class="serif-text mb-4" style="font-family: var(--font-serif); color: #cfaa6a; letter-spacing: 3px;">The Maison Vyra</h2>
-                    <p class="mb-3" style="font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.8; opacity: 0.9; font-weight: 300;">
-                        Born from a passion for the world's most elusive botanicals, Maison Vyra bridges the gap between ancient perfumery traditions and modern avant-garde elegance. 
-                    </p>
-                    <p class="mb-5" style="font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.8; opacity: 0.9; font-weight: 300;">
-                        Every bottle is a masterclass in patience, utilizing ethically sourced ouds, hand-picked damask roses, and pure ambergris. We do not just create fragrances; we craft liquid memories.
-                    </p>
-                    <a href="about.html" class="gold-btn text-decoration-none d-inline-block text-center w-100" style="font-family: var(--font-sans); font-weight: 500; letter-spacing: 2px;">
-                        Discover Our Heritage
-                    </a>
+                <div class="col-lg-6 z-2">
+                    <div class="overlap-card">
+                        <h6>Our Heritage</h6>
+                        <h2>The Maison Vyra</h2>
+                        <p>Born from a passion for the world's most elusive botanicals, Maison Vyra bridges the gap between ancient perfumery traditions and modern avant-garde elegance.</p>
+                        <p>Every flacon is a masterclass in patience, utilizing ethically sourced ouds, hand-picked damask roses, and pure ambergris. We do not just create fragrances; we craft liquid memories.</p>
+                        <a href="about.html" class="btn-vyra">Read The Manifesto</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<main id="explore" class="container text-center flex-grow-1 arch-section">
-    <h1 class="main-title">VYRA</h1>
-    <p class="subtitle">Where Elegance Meets Essence</p>
-    
-    <div class="showcase-wrapper">
-        <div class="arch-interactive-container">
-            <div class="static-arch-line"></div>
-            <div class="scent-wheel" id="collectionWheel">
-                <div class="scent-node" style="transform: rotate(-45deg);" onclick="selectCollection(0)">
-                    <div class="scent-node-text">Signature</div>
+    <section class="showcase-section">
+        <div class="container">
+            <div class="row align-items-center">
+                
+                <div class="col-lg-4">
+                    <div class="dial-container" id="dialTrack">
+                        <div class="dial-indicator" id="dialIndicator"></div>
+                        <div class="dial-item active" onclick="selectCollection(0, this)">Signature</div>
+                        <div class="dial-item" onclick="selectCollection(1, this)">Exclusives</div>
+                        <div class="dial-item" onclick="selectCollection(2, this)">Heritage</div>
+                    </div>
                 </div>
-                <div class="scent-node active" style="transform: rotate(0deg);" onclick="selectCollection(1)">
-                    <div class="scent-node-text">Exclusives</div>
+
+                <div class="col-lg-8">
+                    <div class="showcase-display" id="showcaseDisplay">
+                        <img id="displayImg" src="/static/exclusive.png" alt="Vyra Exclusives" class="showcase-img">
+                        <div class="showcase-text-area">
+                            <h3 id="displayTitle" class="showcase-title">Exclusives</h3>
+                            <p id="displayDesc" class="showcase-desc">Our most guarded formulas, crafted from the rarest botanicals found across the globe.</p>
+                            <a id="displayLink" href="product.html?item=exclusive" class="btn-vyra">Explore Collection</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="scent-node" style="transform: rotate(45deg);" onclick="selectCollection(2)">
-                    <div class="scent-node-text">Heritage</div>
-                </div>
+
             </div>
         </div>
+    </section>
 
-        <div class="collection-image-container">
-            <img id="collectionImg" src="/static/exclusive.png" alt="Vyra Exclusives">
-        </div>
+    <footer class="py-5" style="background: #000; text-align: center;">
+        <p style="letter-spacing: 6px; color: var(--gold); font-family: 'Playfair Display'; font-size: 16px;">MAISON VYRA PARIS</p>
+        <p style="font-size: 10px; opacity: 0.4; margin-top: 10px; letter-spacing: 2px;">&copy; 2026. ALL RIGHTS RESERVED.</p>
+    </footer>
 
-        <div class="glass-card" style="background: rgba(10, 10, 10, 0.8); border: 1px solid rgba(207, 170, 106, 0.2);">
-            <h3 id="activeCollectionName" style="font-family: var(--font-serif); color: #cfaa6a;" class="mb-2">Exclusives</h3>
-            <p id="activeCollectionDesc" class="small text-white opacity-75 mb-4" style="font-family: var(--font-sans);">
-                Our most guarded formulas, crafted from the rarest botanicals.
-            </p>
-            <a id="exploreBtn" href="product.html?item=exclusive" class="gold-btn text-decoration-none" style="font-family: var(--font-sans); letter-spacing: 1px;">
-                Explore Collection
-            </a>
-        </div>
-    </div>
-</main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        // --- Optimized Sparkle Effect ---
+        let lastSparkleTime = 0;
 
-<footer style="background-color: #050505; border-top: 1px solid rgba(207, 170, 106, 0.2); padding: 70px 0 20px; position: relative; z-index: 5;">
-    <div class="container">
-        <div class="row mb-5 text-start">
-            <div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
-                <h4 style="color: #cfaa6a; letter-spacing: 4px; margin-bottom: 20px;">VYRA</h4>
-                <p style="color: #a0a0a0; font-size: 13px; line-height: 1.8; padding-right: 20px; font-weight: 300;">
-                    Bridging the gap between ancient perfumery traditions and modern avant-garde elegance. Crafted from the world's most elusive botanicals to create liquid memories.
-                </p>
-            </div>
-            <div class="col-lg-2 col-md-6 mb-5 mb-lg-0">
-                <h6 style="color: #cfaa6a; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; font-size: 13px;">Explore</h6>
-                <ul class="list-unstyled">
-                    <li class="mb-3"><a href="shop.html" class="text-decoration-none" style="color: #a0a0a0; font-size: 13px; transition: 0.3s;">Shop Collection</a></li>
-                    <li class="mb-3"><a href="about.html" class="text-decoration-none" style="color: #a0a0a0; font-size: 13px; transition: 0.3s;">Our Heritage</a></li>
-                    <li class="mb-3"><a href="account.html" class="text-decoration-none" style="color: #a0a0a0; font-size: 13px; transition: 0.3s;">My Account</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-5 mb-md-0">
-                <h6 style="color: #cfaa6a; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; font-size: 13px;">Customer Care</h6>
-                <ul class="list-unstyled">
-                    <li class="mb-3"><a href="customercare.html?tab=contact" class="text-decoration-none" style="color: #a0a0a0; font-size: 13px;">Contact Us</a></li>
-                    <li class="mb-3"><a href="customercare.html?tab=shipping" class="text-decoration-none" style="color: #a0a0a0; font-size: 13px;">Shipping & Returns</a></li>
-                    <li class="mb-3"><a href="customercare.html?tab=privacy" class="text-decoration-none" style="color: #a0a0a0; font-size: 13px;">Privacy Policy</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <h6 style="color: #cfaa6a; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; font-size: 13px;">Newsletter</h6>
-                <p style="color: #a0a0a0; font-size: 13px; line-height: 1.8; font-weight: 300;">Subscribe to receive updates, access to exclusive deals, and behind-the-scenes content.</p>
-                <form class="d-flex mt-3">
-                    <input type="email" class="form-control" placeholder="Enter your email address" style="background: transparent; border: 1px solid rgba(207, 170, 106, 0.4); color: #fff; font-size: 13px; border-radius: 2px 0 0 2px; padding: 10px 15px;" required>
-                    <button type="submit" style="background: #cfaa6a; border: 1px solid #cfaa6a; color: #000; padding: 0 18px; border-radius: 0 2px 2px 0; cursor: pointer; transition: 0.3s;">
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
-                </form>
-            </div>
-        </div>
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center pt-4 border-top" style="border-color: rgba(255,255,255,0.05) !important;">
-            <p style="color: #a0a0a0; font-size: 12px; margin-bottom: 15px; letter-spacing: 1px; font-weight: 300;">
-                &copy; 2026 Maison Vyra. All Rights Reserved.
-            </p>
-            <div class="social-icons">
-                <a href="#" style="color: #cfaa6a; font-size: 16px; margin-left: 20px; transition: 0.3s;"><i class="fab fa-instagram"></i></a>
-                <a href="#" style="color: #cfaa6a; font-size: 16px; margin-left: 20px; transition: 0.3s;"><i class="fab fa-tiktok"></i></a>
-                <a href="#" style="color: #cfaa6a; font-size: 16px; margin-left: 20px; transition: 0.3s;"><i class="fab fa-youtube"></i></a>
-            </div>
-        </div>
-    </div>
-</footer>
+        document.addEventListener('mousemove', (e) => {
+            if (typeof gsap === 'undefined') return;
 
-<div id="custom-cursor-dot"></div>
-<div id="custom-cursor-ring"></div>
+            const now = Date.now();
+            // Create a sparkle every 25 milliseconds (ensures a thick trail without lagging)
+            if (now - lastSparkleTime > 25) {
+                createSparkle(e.clientX, e.clientY);
+                lastSparkleTime = now;
+            }
+        });
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-
-<script>
-    gsap.set(["#custom-cursor-dot", "#custom-cursor-ring"], {xPercent: -50, yPercent: -50});
-    document.addEventListener('mousemove', (e) => {
-        if (typeof gsap !== 'undefined') {
-            gsap.to("#custom-cursor-dot", { x: e.clientX, y: e.clientY, duration: 0 });
-            gsap.to("#custom-cursor-ring", { x: e.clientX, y: e.clientY, duration: 0.15, ease: "power2.out" });
-            let sparkleCount = Math.floor(Math.random() * 3) + 1;
-            for(let i = 0; i < sparkleCount; i++) { createSparkle(e.clientX, e.clientY); }
+        function createSparkle(mouseX, mouseY) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle'; // Uses your existing CSS class
+            document.body.appendChild(sparkle);
+            
+            // Spawn them closely around the cursor
+            const startX = mouseX + (Math.random() * 20 - 10);
+            const startY = mouseY + (Math.random() * 20 - 10);
+            
+            // GSAP Animation
+            gsap.set(sparkle, { x: startX, y: startY, scale: Math.random() * 1 + 0.5, opacity: 1 });
+            
+            gsap.to(sparkle, {
+                y: startY + (Math.random() * 80 + 30), // Float downwards
+                x: startX + (Math.random() * 60 - 30), // Drift gently sideways
+                opacity: 0, 
+                scale: 0, 
+                duration: Math.random() * 1 + 0.5, 
+                ease: "power1.out",
+                onComplete: () => sparkle.remove() // Crucial: removes element so browser memory doesn't leak
+            });
         }
-    });
 
-    const interactables = document.querySelectorAll('a, button, .scent-node, .scroll-indicator');
-    interactables.forEach(el => {
-        el.addEventListener('mouseenter', () => { gsap.to('#custom-cursor-ring', { scale: 1.8, backgroundColor: 'rgba(207, 170, 106, 0.15)', duration: 0.3 }); });
-        el.addEventListener('mouseleave', () => { gsap.to('#custom-cursor-ring', { scale: 1, backgroundColor: 'transparent', duration: 0.3 }); });
-    });
+        // --- Linear Selection Dial Logic ---
+        const collections = [
+            { name: "Signature", desc: "The daily embodiment of modern luxury and timeless elegance.", img: "/static/signature.png", link: "shop.html?cat=signature" },
+            { name: "Exclusives", desc: "Our most guarded formulas, crafted from the rarest botanicals.", img: "/static/exclusive.png", link: "shop.html?cat=exclusive" },
+            { name: "Heritage", desc: "Ouds and rich ambers honoring centuries of perfumery tradition.", img: "/static/heritage.png", link: "shop.html?cat=heritage" }
+        ];
 
-    function createSparkle(mouseX, mouseY) {
-        const sparkle = document.createElement('div');
-        sparkle.classList.add('sparkle');
-        document.body.appendChild(sparkle);
-        const startX = mouseX + (Math.random() * 30 - 15);
-        const startY = mouseY + (Math.random() * 30 - 15);
-        gsap.set(sparkle, { x: startX, y: startY, scale: Math.random() * 1 + 0.5, opacity: 1 });
-        gsap.to(sparkle, {
-            y: startY + (Math.random() * 100 + 30), 
-            x: startX + (Math.random() * 80 - 40),  
-            opacity: 0, scale: 0, duration: Math.random() * 1.5 + 0.5, ease: "power1.out",
-            onComplete: () => { sparkle.remove(); }
+        function selectCollection(index, element) {
+            document.querySelectorAll('.dial-item').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+
+            if(window.innerWidth > 991) {
+                const indicator = document.getElementById('dialIndicator');
+                indicator.style.top = element.offsetTop + 'px';
+                indicator.style.height = element.offsetHeight + 'px';
+            }
+
+            const display = document.getElementById('showcaseDisplay');
+            display.style.opacity = 0;
+
+            setTimeout(() => {
+                document.getElementById('displayImg').src = collections[index].img;
+                document.getElementById('displayTitle').innerText = collections[index].name;
+                document.getElementById('displayDesc').innerText = collections[index].desc;
+                document.getElementById('displayLink').href = collections[index].link;
+                
+                display.style.opacity = 1;
+            }, 300);
+        }
+
+        window.addEventListener('load', () => {
+            const dialItems = document.querySelectorAll('.dial-item');
+            if (dialItems.length > 1) {
+                selectCollection(1, dialItems[1]); // Defaults to Exclusives
+            }
         });
-    }
 
-    const collectionData = [
-        { name: "Signature", desc: "The daily embodiment of modern luxury and timeless elegance.", imageSrc: "/static/signature.png", rotation: 45, link: "product.html?item=signature" },
-        { name: "Exclusives", desc: "Our most guarded formulas, crafted from the rarest botanicals.", imageSrc: "/static/exclusive.png", rotation: 0, link: "product.html?item=exclusive" },
-        { name: "Heritage", desc: "Ouds and rich ambers honoring centuries of perfumery tradition.", imageSrc: "/static/heritage.png", rotation: -45, link: "product.html?item=heritage" }
-    ];
-
-    function selectCollection(index) {
-        const wheel = document.getElementById('collectionWheel');
-        const nodes = document.querySelectorAll('.scent-node');
-        const nameEl = document.getElementById('activeCollectionName');
-        const descEl = document.getElementById('activeCollectionDesc');
-        const imgEl = document.getElementById('collectionImg');
-        const exploreBtn = document.getElementById('exploreBtn');
-
-        wheel.style.transform = `rotate(${collectionData[index].rotation}deg)`;
-        nodes.forEach((node, i) => { node.classList.toggle('active', i === index); });
-
-        nameEl.style.opacity = 0;
-        descEl.style.opacity = 0;
-        imgEl.style.opacity = 0.4;
-
-        setTimeout(() => {
-            nameEl.innerText = collectionData[index].name;
-            descEl.innerText = collectionData[index].desc;
-            imgEl.src = collectionData[index].imageSrc;
-            exploreBtn.setAttribute('href', collectionData[index].link);
-            nameEl.style.opacity = 1;
-            descEl.style.opacity = 1;
-            imgEl.style.opacity = 1;
-        }, 400);
-    }
-
-    window.addEventListener('pageshow', () => { document.body.classList.add('page-loaded'); });
-
-    document.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            if (!href || href.startsWith('#') || href.startsWith('javascript')) return;
-            e.preventDefault();
-            document.body.classList.remove('page-loaded');
-            setTimeout(() => { window.location.href = href; }, 500); 
+        // --- Cinematic Page Transitions ---
+        window.addEventListener('pageshow', () => { document.body.classList.add('page-loaded'); });
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (!href || href.startsWith('#') || href.startsWith('javascript')) return;
+                e.preventDefault();
+                document.body.classList.remove('page-loaded');
+                setTimeout(() => { window.location.href = href; }, 500); 
+            });
         });
-    });
-</script>
-
+    </script>
 </body>
 </html>

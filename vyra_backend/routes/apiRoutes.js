@@ -20,6 +20,7 @@ router.post('/products', upload.single('product_image'), productController.creat
 router.get('/admin/stats', auth.verifyToken, auth.isAdmin, adminController.getStats);
 router.get('/admin/orders', auth.verifyToken, auth.isAdmin, adminController.getAllOrders);
 router.get('/admin/users', auth.verifyToken, auth.isAdmin, adminController.getAllUsers);
+router.get('/orders', auth.verifyToken, shopController.getUserOrders);
 
 
 // Protected Customer Routes (Requires JWT)

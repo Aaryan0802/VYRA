@@ -19,7 +19,7 @@
             --border: rgba(207, 170, 106, 0.15);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; cursor: none !important; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
 
         body {
             background: #050505;
@@ -41,10 +41,6 @@
             letter-spacing: 2px; text-transform: uppercase; transition: 0.3s;
         }
         .nav-link-custom:hover { color: white; }
-
-        /* --- Custom Cursor --- */
-        #custom-cursor-dot { position: fixed; top: 0; left: 0; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 10000; }
-        #custom-cursor-ring { position: fixed; top: 0; left: 0; width: 34px; height: 34px; border: 1px solid var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; }
 
         /* --- Layout --- */
         .editorial-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 140px 20px 80px; }
@@ -99,7 +95,7 @@
 
 <nav class="top-nav">
     <a href="shop.html" class="nav-link-custom"><i class="fas fa-shopping-bag me-2"></i> The Boutique</a>
-    <div style="letter-spacing: 8px; color: var(--gold); font-family: 'Playfair Display'; font-weight: 600;">VYRA</div>
+    <a href="index.html" style="letter-spacing: 8px; color: var(--gold); font-family: 'Playfair Display'; font-weight: 600; text-decoration: none;">VYRA</a>
     <a href="account.html" class="nav-link-custom">Join the Maison <i class="fas fa-user ms-2"></i></a>
 </nav>
 
@@ -128,21 +124,11 @@
     </div>
 </div>
 
-<div id="custom-cursor-dot"></div>
-<div id="custom-cursor-ring"></div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script>
     // --- Identical Global Transitions ---
     window.addEventListener('pageshow', () => { document.body.classList.add('page-loaded'); });
     
-    // --- Identical Global Cursor ---
-    gsap.set(["#custom-cursor-dot", "#custom-cursor-ring"], {xPercent: -50, yPercent: -50});
-    document.addEventListener('mousemove', (e) => {
-        gsap.to("#custom-cursor-dot", { x: e.clientX, y: e.clientY, duration: 0 });
-        gsap.to("#custom-cursor-ring", { x: e.clientX, y: e.clientY, duration: 0.15 });
-    });
-
     // --- Cinematic Link Navigation ---
     document.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', function(e) {

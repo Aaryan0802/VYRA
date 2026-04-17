@@ -81,3 +81,19 @@ exports.checkout = async (req, res) => {
         connection.release();
     }
 };
+
+exports.getUserOrders = async (req, res) => {
+    try {
+        const userId = req.user.id; // Comes from the verifyToken middleware
+
+        // Query the database for this specific user's orders, sorted newest first
+        const [orders] = await db.query(
+            'SELECT id, total_amount, status, razorpay_payment_id, created_at FROM orders WHERE user_id = ? ORDER BY created_at DESC', 
+            [userId]
+        );
+
+        res.json(orders);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
