@@ -209,11 +209,24 @@
         try {
             const res = await fetch(`/api/admin/orders/${orderId}`, {
                 method: "PUT",
-                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+                headers: { 
+                    "Content-Type": "application/json", 
+                    "Authorization": `Bearer ${token}` 
+                },
                 body: JSON.stringify({ status: newStatus })
             });
-            if(res.ok) alert(`Acquisition #${orderId} moved to ${newStatus.toUpperCase()}`);
-        } catch (e) { console.error(e); }
+            
+            const data = await res.json();
+
+            if(res.ok) {
+                alert(`Acquisition #${orderId} moved to ${newStatus.toUpperCase()}`);
+            } else {
+                // This will tell you EXACTLY why the backend rejected the change
+                alert("Error: " + data.message);
+            }
+        } catch (e) { 
+            alert("Network Error: Could not reach the Atelier.");
+        }
     }
 
     async function loadClients() {

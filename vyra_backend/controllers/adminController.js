@@ -25,14 +25,26 @@ exports.getStats = async (req, res) => {
 };
 
 // Update an order's status (Processing -> Shipped -> Delivered)
+// vyra_backend/controllers/adminController.js
+
 exports.updateOrderStatus = async (req, res) => {
-    const { id } = req.params;
-    const { status } = req.body;
+    const { id } = req.params; // Captures the :id from the URL
+    const { status } = req.body; // Captures the status from the JSON body
+    const db = require('../config/db');
+
     try {
-        await db.query("UPDATE orders SET status = ? WHERE id = ?", [status, id]);
-        res.json({ message: "Status updated successfully" });
+        const query = "UPDATE orders SET status = ? WHERE id = ?";
+        // Using await is CRITICAL to ensure the database saves before the response is sent
+        const [result] = await db.query(query, [status, id]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ success: false, message: "Order not found" });
+        }
+
+        res.json({ success: true, message: "Transit status archived." });
     } catch (err) {
-        res.status(500).json({ message: "Failed to update transit status" });
+        console.error("Database Update Error:", err);
+        res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };
 
