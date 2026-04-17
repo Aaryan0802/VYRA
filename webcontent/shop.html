@@ -135,7 +135,6 @@
         </div>
 </div>
 
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script>
 
@@ -184,8 +183,10 @@
         products.forEach(product => {
             const cat = product.category || 'Uncategorized';
             if (!categories[cat]) {
-                // Save the first product's image to represent the whole category card
-                categories[cat] = { image: product.image_url, perfumes: [] };
+                // Dynamically build the dedicated category image path
+                // This converts "Floral" to "category_floral.png"
+                const formattedCatName = cat.toLowerCase().replace(/\s+/g, '_');
+                categories[cat] = { image: `/uploads/category_${formattedCatName}.png`, perfumes: [] };
             }
             categories[cat].perfumes.push(product);
         });
@@ -206,6 +207,7 @@
                 `;
             });
 
+            // Make sure the image path is perfectly formatted
             const imgPath = data.image.startsWith('/') ? data.image : '/' + data.image;
 
             card.innerHTML = `
