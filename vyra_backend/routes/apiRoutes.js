@@ -27,7 +27,7 @@ router.get('/orders', auth.verifyToken, shopController.getUserOrders);
 router.get('/cart', auth.verifyToken, shopController.getCart);
 router.put('/update-profile', auth.verifyToken, authController.updateProfile);
 router.post('/cart', auth.verifyToken, shopController.addToCart);
-router.post('/checkout', auth.verifyToken, shopController.checkout);
+router.post('/checkout', auth.verifyToken, paymentController.verifyPayment);
 router.post('/create-order', auth.verifyToken, paymentController.createOrder);
 router.get('/reviews/:id', productController.getProductReviews);
 router.post('/reviews', productController.addReview);
