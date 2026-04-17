@@ -42,19 +42,27 @@
         }
         .nav-link-custom:hover { color: white; }
 
-        
+        /* --- Custom Luxury Scrollbar --- */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(207, 170, 106, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
         /* --- Layout --- */
         .care-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 140px 20px 80px; }
 
+        /* LOCKED OUTER BOX */
         .glass-card {
             max-width: 1100px; width: 100%;
             background: var(--glass); backdrop-filter: blur(25px);
             border: 1px solid var(--border); border-radius: 2px;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.9); display: flex; flex-wrap: wrap;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.9); overflow: hidden;
+            height: 80vh; min-height: 600px; max-height: 900px;
         }
 
-        .sidebar { background: rgba(0,0,0,0.3); padding: 50px 30px; }
-        .content-area { padding: 50px; }
+        /* SCROLLABLE INNER SECTIONS */
+        .sidebar { background: rgba(0,0,0,0.3); padding: 50px 30px; height: 100%; overflow-y: auto; }
+        .content-area { padding: 50px; height: 100%; overflow-y: auto; flex: 1; }
 
         /* --- Typography --- */
         .brand-title { font-family: 'Playfair Display', serif; font-size: 32px; letter-spacing: 8px; color: var(--gold); text-align: center; margin-bottom: 40px; }
@@ -69,7 +77,8 @@
         .care-input:focus + label, .care-input:not(:placeholder-shown) + label { top: -15px; color: var(--gold); font-size: 10px; }
 
         /* --- Sidebar Nav --- */
-        .nav-pills .nav-link { color: rgba(255,255,255,0.6) !important; border-radius: 0 !important; margin-bottom: 10px; padding: 15px !important; font-size: 12px; letter-spacing: 2px; text-align: left; border: 1px solid transparent !important; text-transform: uppercase; }
+        .nav-pills .nav-link { color: rgba(255,255,255,0.6) !important; border-radius: 0 !important; margin-bottom: 10px; padding: 18px 25px !important; font-size: 11px; letter-spacing: 3px; text-align: left; border: 1px solid transparent !important; text-transform: uppercase; transition: 0.3s; }
+        .nav-pills .nav-link:hover { color: white !important; background: rgba(255,255,255,0.02) !important; }
         .nav-pills .nav-link.active { background: transparent !important; color: var(--gold) !important; border: 1px solid var(--gold) !important; }
 
         .gold-btn { width: 100%; padding: 16px; background: var(--gold); border: none; color: black; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; cursor: pointer; transition: 0.4s; }
@@ -88,66 +97,86 @@
 
 <div class="care-wrapper">
     <div class="glass-card">
-        <div class="col-md-3 sidebar border-end border-warning border-opacity-10">
-            <div class="brand-title" style="font-size: 22px;">CARE</div>
-            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
-                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#v-pills-contact">Concierge</button>
-                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-shipping">Acquisitions</button>
-                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-privacy">Privacy</button>
+        <div class="row g-0 w-100 h-100">
+            <div class="col-md-4 col-lg-3 sidebar border-end border-warning border-opacity-10">
+                <div class="brand-title" style="font-size: 22px;">CARE</div>
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
+                    <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#v-pills-contact">Concierge</button>
+                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-shipping">Acquisitions</button>
+                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-privacy">Privacy</button>
+                </div>
             </div>
-        </div>
 
-        <div class="col-md-9 content-area">
-            <div class="tab-content">
-                
-                <div class="tab-pane fade show active" id="v-pills-contact">
-                    <h1 class="section-header">At Your Service</h1>
-                    <p class="sub-header">Direct Access to Maison Vyra Concierge</p>
+            <div class="col-md-8 col-lg-9 content-area">
+                <div class="tab-content">
+                    
+                    <div class="tab-pane fade show active" id="v-pills-contact">
+                        <h1 class="section-header">At Your Service</h1>
+                        <p class="sub-header">Direct Access to Maison Vyra Concierge</p>
 
-                    <form id="contactForm" onsubmit="event.preventDefault(); sendMsg();">
-                        <div class="row">
-                            <div class="col-md-6 input-group-custom">
-                                <input type="text" id="contactName" class="care-input" placeholder=" " required>
-                                <label>Full Name</label>
+                        <form id="contactForm" onsubmit="event.preventDefault(); sendMsg();">
+                            <div class="row">
+                                <div class="col-md-6 input-group-custom">
+                                    <input type="text" id="contactName" class="care-input" placeholder=" " required>
+                                    <label>Full Name</label>
+                                </div>
+                                <div class="col-md-6 input-group-custom">
+                                    <input type="email" id="contactEmail" class="care-input" placeholder=" " required>
+                                    <label>Email Address</label>
+                                </div>
                             </div>
-                            <div class="col-md-6 input-group-custom">
-                                <input type="email" id="contactEmail" class="care-input" placeholder=" " required>
-                                <label>Email Address</label>
+                            <div class="input-group-custom mt-2">
+                                <textarea id="contactMessage" class="care-input" rows="4" placeholder=" " required></textarea>
+                                <label>How may we assist you?</label>
                             </div>
-                        </div>
-                        <div class="input-group-custom">
-                            <textarea id="contactMessage" class="care-input" rows="4" placeholder=" " required></textarea>
-                            <label>How may we assist you?</label>
-                        </div>
-                        <button type="submit" class="gold-btn" style="width: auto; padding: 12px 60px;">Send Inquiry</button>
-                    </form>
+                            <button type="submit" class="gold-btn mt-3" style="width: auto; padding: 12px 60px;">Send Inquiry</button>
+                        </form>
 
-                    <div class="mt-5 pt-5 border-top border-warning border-opacity-10 d-flex gap-5">
-                        <div>
-                            <p style="font-size: 10px; color: var(--gold); letter-spacing: 2px;">EMAIL</p>
-                            <p style="font-size: 13px;">concierge@vyraparfums.com</p>
-                        </div>
-                        <div>
-                            <p style="font-size: 10px; color: var(--gold); letter-spacing: 2px;">ATELIER</p>
-                            <p style="font-size: 13px;">123 Luxury Ave, Paris FR</p>
+                        <div class="mt-5 pt-5 border-top border-warning border-opacity-10 d-flex gap-5">
+                            <div>
+                                <p style="font-size: 10px; color: var(--gold); letter-spacing: 2px;">EMAIL</p>
+                                <p style="font-size: 13px; color: rgba(255,255,255,0.7);">concierge@vyraparfums.com</p>
+                            </div>
+                            <div>
+                                <p style="font-size: 10px; color: var(--gold); letter-spacing: 2px;">ATELIER</p>
+                                <p style="font-size: 13px; color: rgba(255,255,255,0.7);">123 Luxury Ave, Paris FR</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="tab-pane fade" id="v-pills-shipping">
-                    <h1 class="section-header">Acquisitions</h1>
-                    <p class="sub-header">Shipping & Heritage Returns</p>
-                    <p class="policy-text">Maison Vyra offers complimentary global transit. Each essence is housed in our signature gold-embossed vessel and protected by artisanal packaging.</p>
-                    <h6 style="color:var(--gold); font-size:12px; letter-spacing:2px;">TIMEFRAMES</h6>
-                    <p class="policy-text">Continental: 3-5 Cycles<br>Global Express: 1-2 Cycles</p>
-                </div>
+                    <div class="tab-pane fade" id="v-pills-shipping">
+                        <h1 class="section-header">Acquisitions</h1>
+                        <p class="sub-header">Shipping & Heritage Returns</p>
+                        
+                        <p class="policy-text">Maison Vyra offers complimentary global transit for all acquisitions. Each essence is housed in our signature gold-embossed vessel, resting on a bed of black velvet, and meticulously protected by artisanal, temperature-controlled packaging.</p>
+                        
+                        <h6 style="color:var(--gold); font-size:12px; letter-spacing:2px; margin-top: 40px;">TIMEFRAMES</h6>
+                        <p class="policy-text">Continental Transit: 3-5 Business Cycles<br>Global Express: 1-2 Business Cycles (Subject to customs clearance)</p>
 
-                <div class="tab-pane fade" id="v-pills-privacy">
-                    <h1 class="section-header">Privacy</h1>
-                    <p class="sub-header">Data Ethics & Identity Protection</p>
-                    <p class="policy-text">Your identity is your essence. We utilize high-level SSL encryption for all transactions and never store payment data within our boutique servers.</p>
-                </div>
+                        <h6 style="color:var(--gold); font-size:12px; letter-spacing:2px; margin-top: 40px;">THE 14-DAY PROMISE</h6>
+                        <p class="policy-text">We understand that finding your signature scent is an intimate journey. Should an unopened, sealed acquisition not meet your expectations, Maison Vyra permits returns within 14 days of delivery. Due to the delicate and pure nature of our botanical extracts, opened flacons cannot be returned or exchanged under any circumstances.</p>
 
+                        <h6 style="color:var(--gold); font-size:12px; letter-spacing:2px; margin-top: 40px;">COMPLIMENTARY VIALS</h6>
+                        <p class="policy-text">To ensure perfect harmony with your skin chemistry, every full-sized order includes a complimentary 2ml discovery vial of the exact same essence. We encourage you to test the vial before breaking the seal on your primary flacon.</p>
+                    </div>
+
+                    <div class="tab-pane fade" id="v-pills-privacy">
+                        <h1 class="section-header">Privacy</h1>
+                        <p class="sub-header">Data Ethics & Identity Protection</p>
+                        
+                        <p class="policy-text">At Maison Vyra, your identity is your essence. We approach the safeguarding of your personal data with the exact same uncompromising rigor applied to our perfumery. We utilize high-level 256-bit SSL encryption for all digital transactions and intentionally do not store payment credentials on our boutique servers.</p>
+
+                        <h6 style="color:var(--gold); font-size:12px; letter-spacing:2px; margin-top: 40px;">INFORMATION WE GATHER</h6>
+                        <p class="policy-text">We collect only what is strictly necessary to curate your bespoke experience: your shipping residence, contact details, and acquisition history. This ensures our Concierge can assist you seamlessly during future visits to the boutique.</p>
+
+                        <h6 style="color:var(--gold); font-size:12px; letter-spacing:2px; margin-top: 40px;">OUR PLEDGE OF DISCRETION</h6>
+                        <p class="policy-text">Your preferences and contact details are treated as highly confidential. Maison Vyra absolutely forbids the sale, lease, or distribution of our client manifest to third-party marketing entities. Your data remains strictly within the Maison.</p>
+
+                        <h6 style="color:var(--gold); font-size:12px; letter-spacing:2px; margin-top: 40px;">THE RIGHT TO BE FORGOTTEN</h6>
+                        <p class="policy-text">In accordance with global privacy standards, you hold full sovereignty over your digital footprint. Should you wish to permanently erase your identity from the Vyra Archives, simply contact our Concierge team. Your records will be completely purged within 48 hours.</p>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
