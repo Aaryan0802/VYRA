@@ -83,6 +83,31 @@
     .success-subtitle { font-size: 12px; letter-spacing: 4px; color: rgba(255,255,255,0.6); text-transform: uppercase; }
     
     @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+    /* --- MOBILE OPTIMIZATION: GLOBAL NAV & FOOTER --- */
+        @media (max-width: 768px) {
+            .top-nav { padding: 15px 20px !important; flex-wrap: wrap; justify-content: center; gap: 10px; }
+            .top-nav > div:nth-child(2), .top-nav > a:nth-child(2) { order: -1; width: 100%; text-align: center; margin-bottom: 5px; font-size: 24px !important; }
+            .nav-link-custom { font-size: 9px !important; padding: 5px !important; background: rgba(255,255,255,0.05); border-radius: 20px; padding: 8px 15px !important;}
+            
+            footer { padding: 50px 20px 30px !important; }
+            footer > div { flex-direction: column !important; gap: 30px !important; text-align: center !important; }
+            footer p { padding-right: 0 !important; }
+            footer .text-lg-end, footer .text-lg-center { text-align: center !important; }
+            .btn-vyra { width: 100%; display: block; text-align: center; margin-bottom: 10px; }
+        }
+
+        /* --- MOBILE OPTIMIZATION: CHECKOUT --- */
+        @media (max-width: 768px) {
+            .checkout-wrapper { padding: 140px 15px 40px !important; }
+            .glass-card { flex-direction: column !important; }
+            .review-side { padding: 40px 20px !important; }
+            .summary-side { padding: 40px 20px !important; border-left: none !important; border-top: 1px solid var(--border); }
+            .title-main { font-size: 24px !important; text-align: center; }
+            .success-title { font-size: 28px !important; }
+            .success-icon { font-size: 40px !important; }
+            .review-notice { text-align: center; }
+        }
 </style>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>

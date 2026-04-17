@@ -85,6 +85,42 @@
         .gold-btn:hover { background: white; transform: translateY(-2px); }
 
         .policy-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.7); margin-bottom: 25px; font-weight: 300; }
+
+        /* --- MOBILE OPTIMIZATION: GLOBAL NAV & FOOTER --- */
+        @media (max-width: 768px) {
+            .top-nav { padding: 15px 20px !important; flex-wrap: wrap; justify-content: center; gap: 10px; }
+            .top-nav > div:nth-child(2), .top-nav > a:nth-child(2) { order: -1; width: 100%; text-align: center; margin-bottom: 5px; font-size: 24px !important; }
+            .nav-link-custom { font-size: 9px !important; padding: 5px !important; background: rgba(255,255,255,0.05); border-radius: 20px; padding: 8px 15px !important;}
+            
+            footer { padding: 50px 20px 30px !important; }
+            footer > div { flex-direction: column !important; gap: 30px !important; text-align: center !important; }
+            footer p { padding-right: 0 !important; }
+            footer .text-lg-end, footer .text-lg-center { text-align: center !important; }
+            .btn-vyra { width: 100%; display: block; text-align: center; margin-bottom: 10px; }
+        }
+
+        /* --- MOBILE OPTIMIZATION: DASHBOARDS --- */
+        @media (max-width: 768px) {
+            .account-bg, .care-wrapper { padding: 140px 10px 40px !important; }
+            .glass-card { padding: 25px 15px !important; height: auto !important; min-height: auto !important; max-height: none !important; overflow: visible !important; }
+            .row.g-0 { flex-direction: column !important; }
+            
+            /* Turns vertical sidebar into horizontal scrollable tabs */
+            .sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--border); padding: 20px 10px !important; height: auto !important; overflow-x: auto; }
+            .nav-pills { display: flex; flex-direction: row !important; flex-wrap: nowrap; gap: 10px; padding-bottom: 10px; }
+            .nav-pills .nav-link { margin-bottom: 0 !important; margin-top: 0 !important; padding: 12px 20px !important; white-space: nowrap; }
+            
+            .dashboard-content, .content-area { padding: 30px 10px !important; height: auto !important; overflow: visible !important; }
+            
+            /* Stacks the cart and order cards */
+            .luxury-card { flex-direction: column !important; text-align: center !important; padding: 20px !important; gap: 20px; }
+            .luxury-card .d-flex { flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 15px !important; }
+            .cart-img { margin-right: 0 !important; }
+            .luxury-card .text-end { text-align: center !important; }
+            .d-flex.justify-content-between.align-items-end { flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 15px !important; }
+            .section-header { font-size: 32px !important; text-align: center; }
+            .sub-header { text-align: center; }
+        }
     </style>
 </head>
 <body>

@@ -98,6 +98,29 @@
         }
         .luxury-card:hover { border-color: var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
+        /* --- MOBILE OPTIMIZATION: DASHBOARDS --- */
+        @media (max-width: 768px) {
+            .account-bg, .care-wrapper { padding: 140px 10px 40px !important; }
+            .glass-card { padding: 25px 15px !important; height: auto !important; min-height: auto !important; max-height: none !important; overflow: visible !important; }
+            .row.g-0 { flex-direction: column !important; }
+            
+            /* Turns vertical sidebar into horizontal scrollable tabs */
+            .sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--border); padding: 20px 10px !important; height: auto !important; overflow-x: auto; }
+            .nav-pills { display: flex; flex-direction: row !important; flex-wrap: nowrap; gap: 10px; padding-bottom: 10px; }
+            .nav-pills .nav-link { margin-bottom: 0 !important; margin-top: 0 !important; padding: 12px 20px !important; white-space: nowrap; }
+            
+            .dashboard-content, .content-area { padding: 30px 10px !important; height: auto !important; overflow: visible !important; }
+            
+            /* Stacks the cart and order cards */
+            .luxury-card { flex-direction: column !important; text-align: center !important; padding: 20px !important; gap: 20px; }
+            .luxury-card .d-flex { flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 15px !important; }
+            .cart-img { margin-right: 0 !important; }
+            .luxury-card .text-end { text-align: center !important; }
+            .d-flex.justify-content-between.align-items-end { flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 15px !important; }
+            .section-header { font-size: 32px !important; text-align: center; }
+            .sub-header { text-align: center; }
+        }
+
     </style>
 </head>
 <body>

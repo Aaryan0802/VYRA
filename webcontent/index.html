@@ -163,6 +163,35 @@
             .vyra-footer { text-align: center; }
             .footer-text { margin: 0 auto 30px; }
         }
+
+        /* --- MOBILE OPTIMIZATION: GLOBAL NAV & FOOTER --- */
+        @media (max-width: 768px) {
+            .top-nav { padding: 15px 20px !important; flex-wrap: wrap; justify-content: center; gap: 10px; }
+            .top-nav > div:nth-child(2), .top-nav > a:nth-child(2) { order: -1; width: 100%; text-align: center; margin-bottom: 5px; font-size: 24px !important; }
+            .nav-link-custom { font-size: 9px !important; padding: 5px !important; background: rgba(255,255,255,0.05); border-radius: 20px; padding: 8px 15px !important;}
+            
+            footer { padding: 50px 20px 30px !important; }
+            footer > div { flex-direction: column !important; gap: 30px !important; text-align: center !important; }
+            footer p { padding-right: 0 !important; }
+            footer .text-lg-end, footer .text-lg-center { text-align: center !important; }
+            .btn-vyra { width: 100%; display: block; text-align: center; margin-bottom: 10px; }
+        }
+
+        /* --- MOBILE OPTIMIZATION: INDEX --- */
+        @media (max-width: 768px) {
+            .hero-crest { width: 90% !important; max-width: 350px !important; margin-top: 0 !important; }
+            .hero-title { font-size: 3rem !important; letter-spacing: 8px !important; margin-right: 0 !important; margin-top: -20px !important; }
+            .hero-subtitle { font-size: 14px !important; text-align: center; padding: 0 20px; }
+            .heritage-img { height: 350px !important; }
+            .overlap-card { margin-left: 0 !important; margin-top: -40px !important; padding: 40px 20px !important; text-align: center; }
+            .showcase-display { flex-direction: column !important; }
+            .showcase-img { width: 100% !important; height: auto !important; }
+            .dial-container { border-left: none !important; border-bottom: 1px solid var(--border); display: flex; justify-content: space-around; padding-left: 0 !important; margin-top: 0 !important; }
+            .dial-indicator { display: none !important; }
+            .dial-item { font-size: 12px !important; padding: 10px 0 !important; }
+            .dial-item.active { transform: translateY(-5px) !important; }
+            .occasion-img-wrapper { width: 150px !important; height: 150px !important; }
+        }
     </style>
 </head>
 
