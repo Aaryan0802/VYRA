@@ -56,3 +56,19 @@ exports.getProductReviews = async (req, res) => {
         res.status(500).json({ error: "Failed to load impressions" });
     }
 };
+
+// Submit a new customer review
+exports.addReview = async (req, res) => {
+    try {
+        const db = require('../config/db'); 
+        const { product_id, reviewer_name, rating, comment } = req.body;
+        
+        const query = 'INSERT INTO reviews (product_id, reviewer_name, rating, comment) VALUES (?, ?, ?, ?)';
+        await db.query(query, [product_id, reviewer_name, rating, comment]);
+        
+        res.status(201).json({ message: "Review recorded successfully" });
+    } catch (err) {
+        console.error("Error adding review:", err);
+        res.status(500).json({ error: "Failed to save impression" });
+    }
+};
