@@ -205,14 +205,14 @@
 
     async function loadProduct() {
         try {
-            const res = await fetch("http://localhost:3000/api/products");
+            const res = await fetch("/api/products");
             const products = await res.json();
             const urlParams = new URLSearchParams(window.location.search);
             const productId = urlParams.get('id'); 
             const product = products.find(p => p.id == productId);
 
             if (product) {
-                document.getElementById('prod-img').src = "http://localhost:3000" + product.image_url; 
+                document.getElementById('prod-img').src = product.image_url; 
                 document.getElementById('prod-name').innerText = product.name.toUpperCase();
                 document.getElementById('prod-price').innerText = `₹${product.price}`;
                 document.getElementById('prod-notes').innerText = product.notes || "A secret blend of rare botanicals.";
@@ -235,7 +235,7 @@
         const productId = new URLSearchParams(window.location.search).get('id'); 
 
         try {
-            const res = await fetch("http://localhost:3000/api/cart", {
+            const res = await fetch("/api/cart", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
