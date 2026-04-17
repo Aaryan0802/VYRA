@@ -97,3 +97,20 @@ exports.getUserOrders = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+// Remove an item from the user's cart
+exports.removeFromCart = async (req, res) => {
+    const db = require('../config/db');
+    const userId = req.user.id; 
+    const productId = req.params.productId;
+
+    try {
+        const query = "DELETE FROM cart WHERE user_id = ? AND product_id = ?";
+        await db.query(query, [userId, productId]);
+        
+        res.json({ success: true, message: "Item removed from collection." });
+    } catch (err) {
+        console.error("Error removing item from cart:", err);
+        res.status(500).json({ error: "Failed to update collection." });
+    }
+};

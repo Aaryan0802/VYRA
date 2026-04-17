@@ -22,6 +22,7 @@ router.get('/admin/orders', auth.verifyToken, auth.isAdmin, adminController.getA
 router.get('/admin/users', auth.verifyToken, auth.isAdmin, adminController.getAllUsers);
 router.put('/admin/orders/:id', auth.verifyToken, auth.isAdmin, adminController.updateOrderStatus);
 router.get('/orders', auth.verifyToken, shopController.getUserOrders);
+router.delete('/cart/:productId', auth.verifyToken, shopController.removeFromCart);
 
 
 // Protected Customer Routes (Requires JWT)
