@@ -24,11 +24,12 @@ exports.getAllProducts = async (req, res) => {
 
 exports.createProduct = async (req, res) => {
     try {
-        const { name, price, category, notes, stock } = req.body;
+        // Added occasion
+        const { name, price, category, notes, stock, occasion } = req.body;
         const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
         const [result] = await db.query(
-            'INSERT INTO products (name, price, category, notes, stock, image_url) VALUES (?, ?, ?, ?, ?, ?)',
-            [name, price, category, notes, stock, imageUrl]
+            'INSERT INTO products (name, price, category, notes, stock, image_url, occasion) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            [name, price, category, notes, stock, imageUrl, occasion]
         );
         res.status(201).json({ message: "Product created", id: result.insertId });
     } catch (error) { res.status(500).json({ error: error.message }); }
@@ -75,11 +76,12 @@ exports.addReview = async (req, res) => {
 
 exports.updateProduct = async (req, res) => {
     const { id } = req.params;
-    const { name, price, category, gender, stock, image_url, notes } = req.body;
+    // Added occasion
+    const { name, price, category, gender, stock, image_url, notes, occasion } = req.body;
     try {
         await db.query(
-            "UPDATE products SET name=?, price=?, category=?, gender=?, stock=?, image_url=?, notes=? WHERE id=?",
-            [name, price, category, gender, stock, image_url, notes, id]
+            "UPDATE products SET name=?, price=?, category=?, gender=?, stock=?, image_url=?, notes=?, occasion=? WHERE id=?",
+            [name, price, category, gender, stock, image_url, notes, occasion, id]
         );
         res.json({ message: "Product updated" });
     } catch (err) {
