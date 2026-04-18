@@ -10,7 +10,6 @@ exports.createOrder = async (req, res) => {
     try {
         const userId = req.user.id;
         
-        // 1. Calculate total from the user's real cart in MySQL
         const [items] = await db.query(
             `SELECT c.quantity, p.price FROM cart c 
              JOIN products p ON c.product_id = p.id 
@@ -21,7 +20,6 @@ exports.createOrder = async (req, res) => {
 
         if (totalAmount <= 0) return res.status(400).json({ message: "Cart is empty" });
 
-        // 2. Create Razorpay Order (Amount must be in Paise)
         const options = {
             amount: totalAmount * 100, 
             currency: "INR",
@@ -30,7 +28,6 @@ exports.createOrder = async (req, res) => {
 
         const order = await razorpay.orders.create(options);
         
-        // Send order details + user info for the modal
         res.json({
             order_id: order.id,
             amount: order.amount,
@@ -43,24 +40,19 @@ exports.createOrder = async (req, res) => {
 };
 
 exports.verifyPayment = async (req, res) => {
-    const db = require('../config/db');
-    const connection = await db.getConnection(); // Use a transaction for safety
     const { razorpay_payment_id, razorpay_order_id } = req.body;
     const userId = req.user.id;
 
     try {
-        await connection.beginTransaction();
-
         // 1. Fetch the user's cart
-        const [cartItems] = await connection.query(`
+        const [cartItems] = await db.query(`
             SELECT c.product_id, c.quantity, p.price 
             FROM cart c 
             JOIN products p ON c.product_id = p.id 
             WHERE c.user_id = ?
         `, [userId]);
 
-        if (cartItems.length === 0) {
-            await connection.rollback();
+        if (!cartItems || cartItems.length === 0) {
             return res.status(400).json({ message: "Cart is empty" });
         }
 
@@ -69,7 +61,7 @@ exports.verifyPayment = async (req, res) => {
         cartItems.forEach(item => { totalAmount += item.quantity * item.price; });
 
         // 3. Create the actual Order in the database
-        const [orderResult] = await connection.query(
+        const [orderResult] = await db.query(
             'INSERT INTO orders (user_id, total_amount, status, razorpay_payment_id) VALUES (?, ?, ?, ?)',
             [userId, totalAmount, 'Paid', razorpay_payment_id]
         );
@@ -77,23 +69,19 @@ exports.verifyPayment = async (req, res) => {
 
         // 4. Move items from Cart to Order_Items and deduct Stock
         for (let item of cartItems) {
-            await connection.query(
+            await db.query(
                 'INSERT INTO order_items (order_id, product_id, quantity, price_at_purchase) VALUES (?, ?, ?, ?)',
                 [orderId, item.product_id, item.quantity, item.price]
             );
-            await connection.query('UPDATE products SET stock = stock - ? WHERE id = ?', [item.quantity, item.product_id]);
+            await db.query('UPDATE products SET stock = stock - ? WHERE id = ?', [item.quantity, item.product_id]);
         }
 
         // 5. Clear the Cart
-        await connection.query('DELETE FROM cart WHERE user_id = ?', [userId]);
+        await db.query('DELETE FROM cart WHERE user_id = ?', [userId]);
 
-        await connection.commit();
         res.json({ success: true, message: "Acquisition archived." });
     } catch (err) {
-        await connection.rollback();
         console.error("Payment sync failed:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-    } finally {
-        connection.release();
+        res.status(500).json({ error: err.message });
     }
 };
