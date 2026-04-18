@@ -1,3 +1,9 @@
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const db = require('../config/db'); // <-- This is the missing link!
+
+// Initialize Gemini with your hidden API key
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
 exports.handleChat = async (req, res) => {
     try {
         const userMessage = req.body.message;
