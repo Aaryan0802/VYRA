@@ -44,32 +44,56 @@ exports.createOrder = async (req, res) => {
 
 exports.verifyPayment = async (req, res) => {
     const db = require('../config/db');
+    const connection = await db.getConnection(); // Use a transaction for safety
     const { razorpay_payment_id, razorpay_order_id } = req.body;
+    const userId = req.user.id;
 
     try {
-        // We find the order that matches the Razorpay Order ID and update it
-        const query = `
-            UPDATE orders 
-            SET razorpay_payment_id = ?, status = 'Paid' 
-            WHERE id = (
-                SELECT order_id FROM (
-                    /* This subquery finds the local ID based on the Razorpay ID if you store it, 
-                       otherwise we use the most recent processing order for security */
-                    SELECT id as order_id FROM orders 
-                    WHERE user_id = ? AND status = 'processing' 
-                    ORDER BY created_at DESC LIMIT 1
-                ) AS temp
-            )
-        `;
+        await connection.beginTransaction();
 
-        await db.query(query, [razorpay_payment_id, req.user.id]);
-        
-        // Also clear the user's cart after successful payment
-        await db.query("DELETE FROM cart WHERE user_id = ?", [req.user.id]);
+        // 1. Fetch the user's cart
+        const [cartItems] = await connection.query(`
+            SELECT c.product_id, c.quantity, p.price 
+            FROM cart c 
+            JOIN products p ON c.product_id = p.id 
+            WHERE c.user_id = ?
+        `, [userId]);
 
+        if (cartItems.length === 0) {
+            await connection.rollback();
+            return res.status(400).json({ message: "Cart is empty" });
+        }
+
+        // 2. Calculate Final Total
+        let totalAmount = 0;
+        cartItems.forEach(item => { totalAmount += item.quantity * item.price; });
+
+        // 3. Create the actual Order in the database
+        const [orderResult] = await connection.query(
+            'INSERT INTO orders (user_id, total_amount, status, razorpay_payment_id) VALUES (?, ?, ?, ?)',
+            [userId, totalAmount, 'Paid', razorpay_payment_id]
+        );
+        const orderId = orderResult.insertId;
+
+        // 4. Move items from Cart to Order_Items and deduct Stock
+        for (let item of cartItems) {
+            await connection.query(
+                'INSERT INTO order_items (order_id, product_id, quantity, price_at_purchase) VALUES (?, ?, ?, ?)',
+                [orderId, item.product_id, item.quantity, item.price]
+            );
+            await connection.query('UPDATE products SET stock = stock - ? WHERE id = ?', [item.quantity, item.product_id]);
+        }
+
+        // 5. Clear the Cart
+        await connection.query('DELETE FROM cart WHERE user_id = ?', [userId]);
+
+        await connection.commit();
         res.json({ success: true, message: "Acquisition archived." });
     } catch (err) {
+        await connection.rollback();
         console.error("Payment sync failed:", err);
         res.status(500).json({ error: "Internal Server Error" });
+    } finally {
+        connection.release();
     }
 };
