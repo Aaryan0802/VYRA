@@ -10,24 +10,28 @@ exports.createOrder = async (req, res) => {
     try {
         const userId = req.user.id;
         
+        // 1. Calculate total from the user's real cart in MySQL
         const [items] = await db.query(
             `SELECT c.quantity, p.price FROM cart c 
              JOIN products p ON c.product_id = p.id 
              WHERE c.user_id = ?`, [userId]
         );
 
-        const totalAmount = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        let totalAmount = 0;
+        items.forEach(item => { totalAmount += item.quantity * parseFloat(item.price); });
 
         if (totalAmount <= 0) return res.status(400).json({ message: "Cart is empty" });
 
+        // 2. Create Razorpay Order (Amount must be in Paise)
         const options = {
-            amount: totalAmount * 100, 
+            amount: Math.round(totalAmount * 100), 
             currency: "INR",
             receipt: `receipt_${Date.now()}`
         };
 
         const order = await razorpay.orders.create(options);
         
+        // Send order details + user info for the modal
         res.json({
             order_id: order.id,
             amount: order.amount,
@@ -56,14 +60,15 @@ exports.verifyPayment = async (req, res) => {
             return res.status(400).json({ message: "Cart is empty" });
         }
 
-        // 2. Calculate Final Total
+        // 2. Calculate Final Total Safely
         let totalAmount = 0;
-        cartItems.forEach(item => { totalAmount += item.quantity * item.price; });
+        cartItems.forEach(item => { totalAmount += item.quantity * parseFloat(item.price); });
 
         // 3. Create the actual Order in the database
+        // FIXED: Changed 'Paid' to 'processing' to respect your database's strict column rules
         const [orderResult] = await db.query(
             'INSERT INTO orders (user_id, total_amount, status, razorpay_payment_id) VALUES (?, ?, ?, ?)',
-            [userId, totalAmount, 'Paid', razorpay_payment_id]
+            [userId, totalAmount, 'processing', razorpay_payment_id] 
         );
         const orderId = orderResult.insertId;
 
@@ -82,6 +87,7 @@ exports.verifyPayment = async (req, res) => {
         res.json({ success: true, message: "Acquisition archived." });
     } catch (err) {
         console.error("Payment sync failed:", err);
+        // This will now send the exact database error to your frontend alert if it ever fails again
         res.status(500).json({ error: err.message });
     }
 };
