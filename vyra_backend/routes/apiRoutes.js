@@ -9,12 +9,14 @@ const contactController = require('../controllers/contactController');
 const auth = require('../middleware/auth');
 const adminController = require('../controllers/adminController');
 const upload = require('../middleware/upload');
+const chatController = require('../controllers/chatController');
 
 // Public Routes
 router.post('/register', authController.register);
 router.post('/login', authController.login);
 router.post('/auth/google', authController.googleLogin);
 router.get('/products', productController.getAllProducts);
+router.post('/chat', chatController.handleChat);
 
 // Admin Routes (Can add an isAdmin middleware later)
 router.post('/products', upload.single('product_image'), productController.createProduct);
