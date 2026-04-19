@@ -164,8 +164,9 @@
                 <label>Email Address</label>
             </div>
             <div class="input-group-custom">
-                <input type="password" id="password" class="auth-input" placeholder=" " required>
+                <input type="password" id="password" class="auth-input" placeholder=" " required style="padding-right: 30px;">
                 <label>Secret Password</label>
+                <i class="fas fa-eye" id="togglePassword" style="position: absolute; right: 0; top: 15px; color: rgba(255,255,255,0.4); cursor: pointer; transition: 0.3s;"></i>
             </div>
             <button type="submit" class="gold-btn-full" id="authSubmitBtn">Enter Boutique</button>
         </form>
@@ -307,6 +308,22 @@
         document.getElementById("toggleText").innerText = isLoginMode ? "NOT A MEMBER?" : "ALREADY RECOGNIZED?";
         document.getElementById("authToggleLink").innerText = isLoginMode ? "CREATE IDENTITY" : "SIGN IN";
     }
+
+    // --- Password Reveal Logic ---
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        const passInput = document.getElementById('password');
+        if (passInput.type === 'password') {
+            passInput.type = 'text';
+            this.classList.remove('fa-eye');
+            this.classList.add('fa-eye-slash');
+            this.style.color = 'var(--gold)';
+        } else {
+            passInput.type = 'password';
+            this.classList.remove('fa-eye-slash');
+            this.classList.add('fa-eye');
+            this.style.color = 'rgba(255,255,255,0.4)';
+        }
+    });
 
     document.getElementById("authForm").addEventListener("submit", async (e) => {
         e.preventDefault();

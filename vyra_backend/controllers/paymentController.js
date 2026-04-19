@@ -9,6 +9,18 @@ const razorpay = new Razorpay({
 exports.createOrder = async (req, res) => {
     try {
         const userId = req.user.id;
+
+        // --- NEW: Strict Shipping Validation ---
+        const [userRecords] = await db.query('SELECT phone, address, city, postal_code FROM users WHERE id = ?', [userId]);
+        const u = userRecords[0];
+        
+        // If any of the required shipping fields are empty, block the order!
+        if (!u.phone || !u.address || !u.city || !u.postal_code) {
+            return res.status(400).json({ 
+                error: "INCOMPLETE_PROFILE", 
+                message: "Shipping identity incomplete. Please update your address in the Client Portal." 
+            });
+        }
         
         // 1. Calculate total from the user's real cart in MySQL
         const [items] = await db.query(
@@ -22,7 +34,7 @@ exports.createOrder = async (req, res) => {
 
         if (totalAmount <= 0) return res.status(400).json({ message: "Cart is empty" });
 
-        // 2. Create Razorpay Order (Amount must be in Paise)
+        // 2. Create Razorpay Order
         const options = {
             amount: Math.round(totalAmount * 100), 
             currency: "INR",
@@ -31,7 +43,6 @@ exports.createOrder = async (req, res) => {
 
         const order = await razorpay.orders.create(options);
         
-        // Send order details + user info for the modal
         res.json({
             order_id: order.id,
             amount: order.amount,
