@@ -98,6 +98,19 @@
         }
         .luxury-card:hover { border-color: var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
+        /* --- LUXURY TOAST NOTIFICATION (MOVED TO GLOBAL SCOPE) --- */
+        #luxury-toast {
+            position: fixed; bottom: 40px; right: 40px;
+            background: var(--glass); backdrop-filter: blur(15px);
+            border: 1px solid var(--gold); padding: 20px 40px;
+            color: white; z-index: 100000; transform: translateY(250%);
+            transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+            font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+            text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+            border-radius: 2px; pointer-events: none;
+        }
+        #luxury-toast.show { transform: translateY(0); }
+
         /* --- MOBILE OPTIMIZATION: DASHBOARDS --- */
         @media (max-width: 768px) {
             .account-bg, .care-wrapper { padding: 140px 10px 40px !important; }
@@ -119,19 +132,6 @@
             .d-flex.justify-content-between.align-items-end { flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 15px !important; }
             .section-header { font-size: 32px !important; text-align: center; }
             .sub-header { text-align: center; }
-
-            /* --- LUXURY TOAST NOTIFICATION --- */
-            #luxury-toast {
-                position: fixed; bottom: 40px; right: 40px;
-                background: var(--glass); backdrop-filter: blur(15px);
-                border: 1px solid var(--gold); padding: 20px 40px;
-                color: white; z-index: 100000; transform: translateY(250%);
-                transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1);
-                font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
-                text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.9);
-                border-radius: 2px; pointer-events: none;
-            }
-            #luxury-toast.show { transform: translateY(0); }
         }
 
     </style>
@@ -278,6 +278,7 @@
         </div>
     </div>
 </div>
+
 <div id="luxury-toast">Notification</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -324,7 +325,9 @@
                 } else {
                     showToast("Identity Established. Please sign in."); toggleAuthMode();
                 }
-            } else { alert(data.message); }
+            } else { 
+                showToast(data.message || data.error || "An unknown error occurred."); 
+            }
         } catch (err) { console.error(err); }
     });
 
@@ -348,8 +351,8 @@
         if (res.ok) {
             const data = await res.json();
             localStorage.setItem("user", JSON.stringify(data.user));
-            alert("Identity Updated.");
-            window.location.reload();
+            showToast("Identity Updated.");
+            setTimeout(() => window.location.reload(), 1500);
         }
     });
 
@@ -426,7 +429,7 @@
             if(res.ok) {
                 loadUserCart(); 
             } else {
-                alert("Failed to remove item from collection.");
+                showToast("Failed to remove item from collection.");
             }
         } catch(e) { console.error("Error removing item:", e); }
     }
@@ -510,7 +513,7 @@
             new bootstrap.Modal(document.getElementById('reviewModal')).show();
         } catch(e) {
             console.error(e);
-            alert("Could not verify your collection history.");
+            showToast("Could not verify your collection history.");
         }
     }
 
@@ -537,11 +540,11 @@
             });
             
             if(res.ok) {
-                alert("Thank you. Your impression has been recorded in the boutique archives.");
+                showToast("Thank you. Your impression has been recorded in the boutique archives.");
                 bootstrap.Modal.getInstance(document.getElementById('reviewModal')).hide();
                 document.getElementById('reviewForm').reset();
             } else {
-                alert("Failed to submit the impression.");
+                showToast("Failed to submit the impression.");
             }
         } catch(e) { console.error(e); }
     });
