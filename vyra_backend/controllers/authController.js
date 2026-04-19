@@ -25,7 +25,7 @@ exports.register = async (req, res) => {
         // In authController.js -> exports.register
         await db.query(
             'INSERT INTO users (full_name, email, password, role) VALUES (?, ?, ?, ?)',
-            [fullName, email, hashedPassword, 'client'] // Explicitly set as 'client'
+            [fullName, email, hashedPassword, 'customer'] // Explicitly set as 'customer'
         );
 
         res.status(201).json({ message: "Account created successfully!" });
